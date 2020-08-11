@@ -1,0 +1,7 @@
+__pycache__
+node_modules
+migrations
+bin
+lib
+include
+.Python
