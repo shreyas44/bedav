@@ -1,0 +1,43 @@
+{
+  "env": {
+      "browser": true,
+      "es2020": true
+  },
+  "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended"
+  ],
+  "parserOptions": {
+      "ecmaFeatures": {
+          "jsx": true
+      },
+      "ecmaVersion": 10,
+      "sourceType": "module"
+  },
+  "parser": "babel-eslint",
+  "plugins": [
+      "react"
+  ],
+  "rules": {
+      "react/prop-types": "off",
+      "react/no-unescaped-entities": "off",
+      "indent": [
+          "error",
+          2
+      ],
+      "linebreak-style": [
+          "error",
+          "unix"
+      ],
+      "quotes": [
+          "off",
+          "double"
+      ],
+      "semi": [
+          "off",
+          "never"
+      ],
+      "camelcase": [2, {"properties": "always"}]
+  }
+}

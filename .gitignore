@@ -5,3 +5,5 @@ bin
 lib
 include
 .Python
+watch.py
+*/pages/static
