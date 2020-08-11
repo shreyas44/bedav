@@ -1,5 +1,5 @@
 import graphene
-from hospitals.schema import Query as HospitalQuery
+from hospitals.schema import Query as HospitalQuery, Mutations as HospitalMutations
 
 class Query(
   HospitalQuery,
@@ -7,5 +7,11 @@ class Query(
 ):
   node = graphene.relay.node.Field()
 
-schema = graphene.Schema(query=Query)
+class Mutations(
+  HospitalMutations,
+  graphene.ObjectType
+):
+  pass
+
+schema = graphene.Schema(query=Query, mutation=Mutations)
   

@@ -17,7 +17,7 @@ class Hospital(models.Model):
   city = models.CharField(max_length=200)
   district = models.CharField(max_length=200)
   state = models.CharField(max_length=200)
-  country = models.CharField(max_length=200)
+  country = models.CharField(max_length=200, default="India")
 
   class Meta:
     db_table = "Hospitals"

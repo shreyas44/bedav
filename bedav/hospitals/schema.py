@@ -1,7 +1,9 @@
+import time
 import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
 from .models import Hospital, Beds, ICU, Ventilators
+from .forms import NewHospitalForm
 
 class HospitalSortField(graphene.Enum):
   NAME = "name"
@@ -12,6 +14,11 @@ class HospitalSortField(graphene.Enum):
   TOTAL_BEDS = "total_beds"
   TOTAL_ICU = "total_ICU"
   TOTAL_VENTILATORS = "total_ventilators"
+
+class DataCategory(graphene.Enum):
+  BEDS = "beds"
+  ICU = "ICU"
+  VENTLILATORS = "ventilators"
 
 class HospitalType(DjangoObjectType):
   beds = graphene.Int()
@@ -76,7 +83,7 @@ class Query(graphene.InputObjectType):
 
     return get_hospitals(order)
 
-class NewHospitalMutationInput(graphene.InputObjectType):
+class NewHospitalInput(graphene.InputObjectType):
   name = graphene.String()
   email = graphene.String()
   phone = graphene.Int()
@@ -87,13 +94,55 @@ class NewHospitalMutationInput(graphene.InputObjectType):
   state = graphene.String()
   # country = graphene.String()
 
+  total = graphene.Int()
+  available = graphene.Int()
+  category = graphene.Argument(DataCategory)
+
 class NewHospitalMutation(graphene.Mutation):
   class Arguments:
-    input = NewHospitalMutationInput()
+    input = NewHospitalInput()
 
   status = graphene.NonNull(graphene.Boolean)
   message = graphene.String()
 
   def mutate(parent, info, input):
-    pass
+    status = False
+    message = None
+    form = NewHospitalForm(**input)
+
+    if form.is_valid():
+      form.save()
+      status = True
+    else:
+      error = form.errors.values()[0]
+      message = error['message']
+
+    return NewHospitalMutation(status=status, message=message)
+
+class UploadData(graphene.Mutation):
+  class Arguments:
+    input = DataCategory()
+
+  status = graphene.NonNull(graphene.Boolean)
+  message = graphene.String()
+
+  def mutate(parent, info, input):
+    def save_object(model):
+      hospital = Hospital.objects.get(id=input.hospital_id)
+      obj = model(time=time.time(), total=input.total, available=input.available, hopsital=hospital)
+      obj.save()
+
+    if input.category == "ventilators":
+      save_object(Ventilators)
+    elif input.category == "ICU":
+      save_object(ICU)
+    elif input.category == "beds":
+      save_object(Beds)
+
+    return UploatData(status=True)
+
+class Mutations(graphene.ObjectType):
+  new_hospital = NewHospitalMutation()
+  upload_data = UploadData()
+    
 
