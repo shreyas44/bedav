@@ -8,7 +8,7 @@ from django.db import models
 #   class Meta:
 #     db_table = "Hospitals"
 
-class Branch(models.Model):
+class Hospital(models.Model):
   name = models.CharField(max_length=200)
   email = models.CharField(max_length=200)
   phone = models.CharField(max_length=20)
@@ -20,10 +20,10 @@ class Branch(models.Model):
   country = models.CharField(max_length=200)
 
   class Meta:
-    db_table = "Branch"
+    db_table = "Hospitals"
 
 class Beds(models.Model):
-  branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name='beds')
+  branch = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='beds')
   available = models.PositiveIntegerField()
   total = models.PositiveIntegerField()
   time = models.FloatField()
@@ -32,7 +32,7 @@ class Beds(models.Model):
     db_table = "Beds"
 
 class ICU(models.Model):
-  branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name='ICU')
+  branch = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='ICU')
   available = models.PositiveIntegerField()
   total = models.PositiveIntegerField()
   time = models.FloatField()
@@ -41,7 +41,7 @@ class ICU(models.Model):
     db_table = "ICU"
 
 class Ventilators(models.Model):
-  branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name='ventilators')
+  branch = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='ventilators')
   available = models.PositiveIntegerField()
   total = models.PositiveIntegerField()
   time = models.FloatField()
