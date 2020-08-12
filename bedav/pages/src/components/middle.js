@@ -6,7 +6,7 @@ import {SelectedFiltersContext} from './home'
 const StyledContainer = styled.div`
   width: 60%;
   box-shadow: 7px 15px 25px 0px rgba(0,0,0,0.1);
-  margin: 25vh auto 0;
+  margin: 15vh auto 0;
   height: 60px;
   border: 1px solid #FEFEFE;
   display: flex;

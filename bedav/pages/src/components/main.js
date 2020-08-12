@@ -2,6 +2,7 @@ import React, {useContext} from 'react'
 import styled from 'styled-components'
 import SearchBar from './searchBar'
 import Middle from './middle'
+import HospitalSection from './hospitals/hospitalSection'
 import { FilterContext } from '../App'
 
 const StyledDiv = styled.div`
@@ -24,6 +25,7 @@ function Main(props) {
   return (
     <StyledDiv filterScreen={filterScreen}>
       <Middle />
+      <HospitalSection />
     </StyledDiv>
   ) 
 }
