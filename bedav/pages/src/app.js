@@ -1,9 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import Header from './components/header'
-import SearchBar from './components/searchBar'
-import RegisterForm from './components/register'
-import LoginForm from './components/login'
+import Home from './components/home' 
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 const ContentWrapper = styled.div`
@@ -15,16 +13,22 @@ const MainContainer = styled.div`
   font-family: 'Roboto', sans-serif;
 `
 
+export const FilterContext = React.createContext()
+
 function App() {
+  const [filterScreen, setFilterScreen] = useState(false)
+
   return (
     <MainContainer>
       <Router>
-        <Header />
-        <ContentWrapper>
-          <Route exact path="/"><SearchBar /></Route>
-          <Route exact path="/register"><RegisterForm /></Route>
-          <Route exact path="/login"><LoginForm /></Route>
-        </ContentWrapper>
+        <FilterContext.Provider value={{filterScreen, setFilterScreen}}>
+          <Header />
+          {/* <Filter filterScreen={filterScreen} setFilterScreen={setFilterScreen} /> */}
+        
+          <ContentWrapper>
+            <Route exact path="/"><Home /></Route>
+          </ContentWrapper>
+        </FilterContext.Provider>
       </Router>
     </MainContainer>
   )

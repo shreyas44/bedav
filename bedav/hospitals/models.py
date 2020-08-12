@@ -18,6 +18,7 @@ class Hospital(models.Model):
   district = models.CharField(max_length=200)
   state = models.CharField(max_length=200)
   country = models.CharField(max_length=200, default="India")
+  category = models.CharField(max_length=200) #gov hos, gov med, pri hos, pri med, covid
 
   class Meta:
     db_table = "Hospitals"

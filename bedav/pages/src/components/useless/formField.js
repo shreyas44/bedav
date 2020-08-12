@@ -7,15 +7,15 @@ const StyledInput = styled.input`
   padding: 15px 5px 5px;
   box-sizing: border-box;
   font-size: 17px;
+  border-bottom: 1px solid #999;
 
   &:focus {
     outline: none;
   }
 `
 
-const StyledDiv = styled.div`
+export const FormFieldContainer = styled.div`
   width: 100%;
-  border-bottom: 1px solid #999;
   position: relative;
   font-weight: 100;
   margin-bottom: 50px;
@@ -40,7 +40,7 @@ function FormField(props) {
   const fieldRef = useRef(null)
 
   return (
-    <StyledDiv>
+    <FormFieldContainer>
       <StyledPlaceHolder onClick={() => fieldRef.current.focus()} value={value}>
         {props.fieldLabel}
         {
@@ -50,7 +50,7 @@ function FormField(props) {
         }
       </StyledPlaceHolder>
       <StyledInput type={props.type || "text"} value={value} onChange={event => { setValue(event.target.value) } } ref={fieldRef}/> 
-    </StyledDiv>
+    </FormFieldContainer>
   )
 }
 

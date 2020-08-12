@@ -52,25 +52,23 @@ class HospitalType(DjangoObjectType):
     name = "Hospital"
     exclude = ('equipment', )
 
-class EquipmentType(DjangoObjectType):
-  class Meta:
-    model = Equipment
-    interfaces = (relay.Node, )
-    name = "Equipment"
-
 class HospitalConnection(relay.Connection):
   class Meta:
     node = HospitalType
 
 class Query(graphene.InputObjectType):
-  hospitals = relay.ConnectionField(HospitalConnection, order_by=graphene.Argument(HospitalSortField), descending=graphene.Boolean(default_value=False))
+  hospitals = relay.ConnectionField(HospitalConnection, order_by=graphene.Argument(HospitalSortField), descending=graphene.Boolean(default_value=False), category_filters=graphene.List(graphene.String))
   
-  def resolve_hospitals(parent, info, order_by, descending, **kwargs):
+  def resolve_hospitals(parent, info, order_by, descending, category_filters, **kwargs):
     prefix = '-' if descending else ''
 
     def get_hospitals(order):
       order = prefix + order
-      return Hospital.objects.order_by(order)
+
+      if len(category_filters) > 0:
+        return Hospital.objects.filter(category__in=category_filters).order_by(order)
+      else:
+        return Hospital.objects.order_by(order) 
 
     if order_by == 'name':
       order = 'name'
