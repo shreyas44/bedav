@@ -7,3 +7,8 @@ include
 .Python
 watch.py
 */pages/static
+*/.ipynb_checkpoints/
+*.ipynb
+*.DS_Store
+chromedriver
+*.code-workspace

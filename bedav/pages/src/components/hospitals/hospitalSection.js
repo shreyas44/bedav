@@ -7,7 +7,7 @@ const StyledDiv = styled.div`
   margin: 50px auto;
   box-sizing: border-box;
   width: 100%;
-  max-width: 1500px;
+  max-width: 1400px;
   display: grid;
   grid-template-columns: repeat(10, auto);
   grid-gap: 5px;

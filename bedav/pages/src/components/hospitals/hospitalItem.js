@@ -17,7 +17,7 @@ export const StyledItem = styled.div`
 `
 
 export const StyledName = styled(StyledItem)`
-  width: 200px;
+  min-width: 200px;
   font-weight: bold;
   background: #f8f8f8;
   color: #0275b3;
