@@ -7,6 +7,11 @@ const StyledHeadingName = styled(StyledName)`
   display: flex;
   align-items: center;
   text-align: center;
+
+  &:hover {
+    font-size: 15px;
+    color: #0275b3;
+  }
 `
 
 const StyledHeading = styled(StyledNumber)`
@@ -23,12 +28,14 @@ function HospitalHeader() {
 
   const fields = [
     'Distance',
-    'Beds Used',
-    'Beds Available',
+    'Gen Occupied',
+    'Gen Available',
+    'HDU Occupied',
+    'HDU Available',
     'ICU Used',
     'ICU Available',
-    'Ventilators Used',
-    'Ventilators Available',
+    'Vent Used',
+    'Vent Available',
   ]
 
   const headings = fields.map((item, index) => <StyledHeading counter={index} key={index}>{item}</StyledHeading>)

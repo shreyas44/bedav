@@ -21,6 +21,13 @@ export const StyledName = styled(StyledItem)`
   font-weight: bold;
   background: #f8f8f8;
   color: #0275b3;
+  transition: all 0.1s;
+  cursor: pointer;
+
+  &:hover {
+    font-size: 16px;
+    color: #004266;
+  }
 `
 
 export const StyledNumber = styled(StyledItem)`

@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
   position: absolute;
   top: 60px;
   left: 0;
-  margin: 0 20px;
+  margin: 0;
   background: white;
   opacity: ${({filterScreen}) => filterScreen ? 0 : 1};
   transition: opacity 0.2s;
