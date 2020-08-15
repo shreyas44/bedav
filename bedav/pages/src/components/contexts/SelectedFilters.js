@@ -5,14 +5,17 @@ const SelectedFiltersContext = React.createContext()
 function filterReducer(state, action) {
   const filter = action.type
   const includes = state.includes(filter)
+  let new_state = [...state]
+
+  console.log(state, filter)
 
   if (includes) {
-    state.splice(state.indexOf(filter), 1)
+    new_state.splice(state.indexOf(filter), 1)
   } else {
-    state.push(filter)
+    new_state.push(filter)
   }
 
-  return [...state]
+  return [...new_state]
 }
 
 export function SelectedFiltersProvider(props) {

@@ -1,7 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import SearchBar from './searchBar'
-import SelectedFiltersContext from './contexts/SelectedFilters'
 
 const StyledContainer = styled.div`
   width: 60%;
@@ -22,34 +21,9 @@ const StyledContainer = styled.div`
   }
 `
 
-const StyledDiv = styled.div`
-  color: grey;
-  position: absolute;
-  bottom: 90px;
-`
-
 function Middle() {
-  const {filters} = useContext(SelectedFiltersContext)
-
-  const fields = {
-    "gov hos": "Government Hospital",
-    "gov med": "Government Medical College",
-    "pri hos": "Private Hospital",
-    "pri med": "Private Medical College",
-    "covid": "Covid Care Centres"
-  }
-
-  let categories;
-  if (filters.length > 0) {
-    categories =
-      <StyledDiv>
-        Categories: {filters.map(item => fields[item]).join(', ')}
-      </StyledDiv>
-  }
-
   return (
     <StyledContainer>
-      {categories}
       <SearchBar />
     </StyledContainer>
   )

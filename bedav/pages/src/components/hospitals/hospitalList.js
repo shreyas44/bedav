@@ -10,7 +10,7 @@ function HospitalList(props) {
   let counter = 0;
   const items = list.map((item, index) => {
     counter += 1
-    return <HospitalItem key={index} counter={counter} hospital={item.node}/>
+    return <HospitalItem key={index} counter={counter} hospital={item.node} dataToShow={props.dataToShow}/>
   })
   
   return <>{items}</>

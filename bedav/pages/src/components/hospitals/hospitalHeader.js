@@ -5,8 +5,7 @@ import { StyledRow, StyledName, StyledNumber } from './hospitalItem'
 const StyledHeadingName = styled(StyledName)`
   padding: 15px;
   display: flex;
-  align-items: center;
-  text-align: center;
+  text-align: left;
 
   &:hover {
     font-size: 15px;
@@ -17,34 +16,52 @@ const StyledHeadingName = styled(StyledName)`
 const StyledHeading = styled(StyledNumber)`
   font-weight: bold;
   padding: 15px;
-  display: flex;
-  align-items: center;
-  text-align: center;
+  justify-content: center;
   background-color: #f8f8f8;
-  color: ${({counter}) => counter % 2 == 0 ? "#C3423F" : "#08A045"};
+  color: ${({colorTheme}) => colorTheme === "red" ? "#C3423F" : colorTheme === "green" ? "#08A045" : null};
 `
 
-function HospitalHeader() {
+function HospitalHeader(props) {
 
-  const fields = [
-    'Gen Occupied',
-    'Gen Available',
-    'HDU Occupied',
-    'HDU Available',
-    'ICU Used',
-    'ICU Available',
-    'Vent Used',
-    'Vent Available',
-  ]
+  let colorTheme;
+  if(props.dataToShow === "occupied") {
+    colorTheme = "red"
+  } else {
+    colorTheme = "green"
+  }
 
-  const headings = fields.map((item, index) => <StyledHeading counter={index} key={index}>{item}</StyledHeading>)
+  function renderHeading(text1, text2) {
+    return (
+      <StyledHeading colorTheme={colorTheme}>
+        {text1}
+        <br/>
+        {text2} / Total
+      </StyledHeading>
+    )
+  }
 
   return (
     <StyledRow>
+
       <StyledHeadingName counter={2}>Name</StyledHeadingName>
       <StyledHeading style={{color: '#004266'}}>Distance</StyledHeading>
-      {/* <StyledHeading counter={1}>Distance</StyledHeading> */}
-      {headings}
+      <StyledHeading style={{color: '#004266'}}>Hospital Type</StyledHeading>
+
+      {
+        props.dataToShow === "occupied" ? 
+        <>
+          {renderHeading("General", "Occupied")}
+          {renderHeading("HDU", "Occupied")}
+          {renderHeading("ICU", "Occupied")}
+          {renderHeading("Ventilators", "Used")}
+        </> : props.dataToShow == "available" ? 
+        <>
+          {renderHeading("General", "Available")}
+          {renderHeading("HDU", "Available")}
+          {renderHeading("ICU", "Available")}
+          {renderHeading("Ventilators", "Available")} 
+        </> : null}
+
     </StyledRow>
   ) 
 }

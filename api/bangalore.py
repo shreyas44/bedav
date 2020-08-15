@@ -147,12 +147,7 @@ def add_bangalore_hospitals():
             "category": item.loc['category'],
         }
 
-        # print(item)
-
         def hospital_exists(name, place_id=None):
-            # if place_id:
-            #     obj = Hospital.objects.filter(place_id=place_id).first()
-            # else:
             obj = Hospital.objects.filter(name=name).first() 
 
             if obj is None:

@@ -5,6 +5,8 @@ import HospitalList from './hospitalList'
 import {graphql, QueryRenderer} from 'react-relay'
 import environment from '../../Environment'
 import SearchHospitalContext from '../contexts/SearchHospital'
+import SelectedFitlersContext from '../contexts/SelectedFilters'
+import HospitalDataOptions from './hospitalDataOptions'
 
 const StyledDiv = styled.div`
   margin: 10vh auto;
@@ -12,9 +14,10 @@ const StyledDiv = styled.div`
   width: 100%;
   max-width: 1400px;
   display: grid;
-  grid-template-columns: repeat(10, auto);
+  grid-template-columns: 250px auto 150px repeat(4, auto);
   grid-gap: 5px;
   font-size: 15px;
+  position: relative;
 `
 
 const StyledP = styled.p`
@@ -26,13 +29,15 @@ const StyledP = styled.p`
 function HospitalSection(props) {
   const [lat, setLat] = useState()
   const [lon, setLon] = useState()
-  const [rerender, setRerender] = useState(null)
+  const [dataToShow, setDataToShow] = useState("occupied")
   const {searchQuery} = useContext(SearchHospitalContext)
+  const {filters} = useContext(SelectedFitlersContext)
+
+  console.log(filters)
 
   function setLatLon(position) {
     setLat(position.coords.latitude)
     setLon(position.coords.longitude)
-    setRerender(false)
   }
 
   if(navigator.geolocation) {
@@ -41,23 +46,26 @@ function HospitalSection(props) {
 
   return (
     <StyledDiv>
+      <HospitalDataOptions 
+        dataToShow={dataToShow}
+        setDataToShow={setDataToShow}
+      />
       <StyledP>
-        Gen - General;
         HDU - High Dependency Unit;
         ICU - Intensive Care Unit;
-        Vent - Ventilators
+        N.A. - Not Applicable
       </StyledP>
-      <HospitalHeader />
+      <HospitalHeader dataToShow={dataToShow}/>
       <QueryRenderer 
         environment={environment}
         query={graphql`
-          query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String) {
-            hospitals(first:10, lat: $lat, lon: $lon, searchQuery: $searchQuery) {
+          query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String]) {
+            hospitals(first:10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters) {
               ...hospitalList_hospitalList
             }
           }
         `}
-        variables={{lat, lon, searchQuery}}
+        variables={{lat: lat, lon: lon, searchQuery: searchQuery, categoryFilters: filters}}
         render={({error, props}) => {
           if(error) {
             return <div>{error}</div>
@@ -67,9 +75,7 @@ function HospitalSection(props) {
             return <div>Loading...</div>
           }
 
-          if (!rerender) {
-            return <HospitalList hospitalList={props.hospitals}/>
-          }
+          return <HospitalList hospitalList={props.hospitals} dataToShow={dataToShow}/>          
         }}
       />
     </StyledDiv>

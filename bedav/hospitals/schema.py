@@ -40,6 +40,33 @@ class DataCategory(graphene.Enum):
   ICU = "ICU"
   VENTLILATORS = "vent"
 
+# class HospitalTypes(graphene.Enum):
+#   GOVERNMENT_HOSPITAL = "gov hos"
+
+def get_available(instance, category):
+  obj = instance.equipment.filter(branch=instance, category=category).order_by('-time').first()
+
+  if obj is None:
+    return None
+
+  return obj.available
+
+def get_total(instance, category):
+  obj = instance.equipment.filter(branch=instance, category=category).order_by('-time').first()
+
+  if obj is None:
+    return None
+
+  return obj.total
+
+def get_occupied(instance, category):
+  obj = instance.equipment.filter(branch=instance, category=category).order_by('-time').first()
+
+  if obj is None:
+    return None
+
+  return obj.total - obj.available
+
 class HospitalType(DjangoObjectType):
   general_available = graphene.Int()
   ICU_available = graphene.Int()
@@ -59,44 +86,41 @@ class HospitalType(DjangoObjectType):
     return round(hospital.distance/1000, 1)
 
   def resolve_general_available(hospital, info):
-    return hospital.equipment.filter(branch=hospital, category="gen").order_by('-time').first().available
+    return get_available(hospital, "gen")
 
   def resolve_ICU_available(hospital, info):
-    return hospital.equipment.filter(branch=hospital, category="ICU").order_by('-time').first().available
+    return get_available(hospital, "ICU")
     
   def resolve_HDU_available(hospital, info):
-    return hospital.equipment.filter(branch=hospital, category="HDU").order_by('-time').first().available
+    return get_available(hospital, "HDU")
 
   def resolve_ventilators_available(hospital, info):
-    return hospital.equipment.filter(branch=hospital, category="vent").order_by('-time').first().available
+    return get_available(hospital, "vent")
 
   def resolve_general_total(hospital, info):
-    return hospital.equipment.filter(branch=hospital, category="gen").order_by('-time').first().total
+    return get_total(hospital, "gen")
 
   def resolve_ICU_total(hospital, info):
-    return hospital.equipment.filter(branch=hospital, category="ICU").order_by('-time').first().total
+    return get_total(hospital, "ICU")
 
   def resolve_HDU_total(hospital, info):
-    return hospital.equipment.filter(branch=hospital, category="HDU").order_by('-time').first().total
-
-  def resolve_general_occupied(hospital, info):
-    equipment = hospital.equipment.filter(branch=hospital, category="gen").order_by('-time').first()
-    return equipment.total - equipment.available
-
-  def resolve_HDU_occupied(hospital, info):
-    equipment = hospital.equipment.filter(branch=hospital, category="HDU").order_by('-time').first()
-    return equipment.total - equipment.available
-
-  def resolve_ICU_occupied(hospital, info):
-    equipment = hospital.equipment.filter(branch=hospital, category="ICU").order_by('-time').first()
-    return equipment.total - equipment.available
-
-  def resolve_ventilators_occupied(hospital, info):
-    equipment = hospital.equipment.filter(branch=hospital, category="vent").order_by('-time').first()
-    return equipment.total - equipment.available
+    return get_total(hospital, "HDU")
 
   def resolve_ventilators_total(hospital, info):
-    return hospital.equipment.filter(branch=hospital, category="vent").order_by('-time').first().total
+    return get_total(hospital, "vent")
+
+  def resolve_general_occupied(hospital, info):
+    return get_occupied(hospital, "gen")
+
+  def resolve_HDU_occupied(hospital, info):
+    return get_occupied(hospital, "HDU")
+
+  def resolve_ICU_occupied(hospital, info):
+    return get_occupied(hospital, "ICU")
+
+  def resolve_ventilators_occupied(hospital, info):
+    return get_occupied(hospital, "vent")
+
 
   class Meta:
     model = Hospital

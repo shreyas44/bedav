@@ -13,6 +13,7 @@ export type hospitalSectionQueryVariables = {|
   lat?: ?number,
   lon?: ?number,
   searchQuery?: ?string,
+  categoryFilters?: ?$ReadOnlyArray<?string>,
 |};
 export type hospitalSectionQueryResponse = {|
   +hospitals: ?{|
@@ -31,13 +32,15 @@ query hospitalSectionQuery(
   $lat: Float
   $lon: Float
   $searchQuery: String
+  $categoryFilters: [String]
 ) {
-  hospitals(first: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery) {
+  hospitals(first: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters) {
     ...hospitalList_hospitalList
   }
 }
 
 fragment hospitalItem_hospital on Hospital {
+  category
   name
   distance
   generalOccupied
@@ -48,6 +51,10 @@ fragment hospitalItem_hospital on Hospital {
   ICUAvailable
   ventilatorsOccupied
   ventilatorsAvailable
+  generalTotal
+  ventilatorsTotal
+  ICUTotal
+  HDUTotal
 }
 
 fragment hospitalList_hospitalList on HospitalConnection {
@@ -61,24 +68,32 @@ fragment hospitalList_hospitalList on HospitalConnection {
 */
 
 const node/*: ConcreteRequest*/ = (function(){
-var v0 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "categoryFilters"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "lat"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "lon"
+},
+v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "searchQuery"
+},
+v4 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "lat"
+    "kind": "Variable",
+    "name": "categoryFilters",
+    "variableName": "categoryFilters"
   },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "lon"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "searchQuery"
-  }
-],
-v1 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -102,14 +117,19 @@ v1 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v3/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "hospitalSectionQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "HospitalConnection",
         "kind": "LinkedField",
         "name": "hospitals",
@@ -129,13 +149,18 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v3/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "hospitalSectionQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "HospitalConnection",
         "kind": "LinkedField",
         "name": "hospitals",
@@ -162,6 +187,13 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "id",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "category",
                     "storageKey": null
                   },
                   {
@@ -233,6 +265,34 @@ return {
                     "kind": "ScalarField",
                     "name": "ventilatorsAvailable",
                     "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "generalTotal",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "ventilatorsTotal",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "ICUTotal",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "HDUTotal",
+                    "storageKey": null
                   }
                 ],
                 "storageKey": null
@@ -246,16 +306,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "4af24664b27f1256420e61cc2beba825",
+    "cacheID": "ef468c71f1aff74994f8a7c9e867b162",
     "id": null,
     "metadata": {},
     "name": "hospitalSectionQuery",
     "operationKind": "query",
-    "text": "query hospitalSectionQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n) {\n  hospitals(first: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery) {\n    ...hospitalList_hospitalList\n  }\n}\n\nfragment hospitalItem_hospital on Hospital {\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  HDUOccupied\n  HDUAvailable\n  ICUOccupied\n  ICUAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n}\n\nfragment hospitalList_hospitalList on HospitalConnection {\n  edges {\n    node {\n      id\n      ...hospitalItem_hospital\n    }\n  }\n}\n"
+    "text": "query hospitalSectionQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n) {\n  hospitals(first: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters) {\n    ...hospitalList_hospitalList\n  }\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  HDUOccupied\n  HDUAvailable\n  ICUOccupied\n  ICUAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  ICUTotal\n  HDUTotal\n}\n\nfragment hospitalList_hospitalList on HospitalConnection {\n  edges {\n    node {\n      id\n      ...hospitalItem_hospital\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '0235e47a5ebda3aa98ec75e83612b901';
+(node/*: any*/).hash = '17fe53490e17e3b09c7d7f928a101673';
 
 module.exports = node;

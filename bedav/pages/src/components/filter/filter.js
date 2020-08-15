@@ -5,18 +5,18 @@ import FilterField from './filterField'
 import FilterSection from './filterSection'
 
 const StyledDiv = styled.div`
-  height: calc(100vh - 60px);
-  width: 100%;
-  padding: 15px 35px;
+  height: 100%;
+  width: fit-content;
+  padding: 75px 55px 15px 35px;
   box-sizing: border-box;
   position: fixed;
-  top: 60px;
-  left: 0;
-  margin: 0 20px;
+  top: 0;
+  right: 0;
   background: white;
   opacity: ${({filterScreen}) => filterScreen ? 1 : 0};
   transition: opacity 0.2s;
-  z-index: ${({filterScreen}) => filterScreen ? 1 : -1}; 
+  z-index: ${({filterScreen}) => filterScreen ? -1 : -3};; 
+  box-shadow: -10px 0px 10px 1px #ddd;
 `
 
 function FilterScreen(props) {
@@ -30,12 +30,15 @@ function FilterScreen(props) {
     "covid": "Covid Care Centres"
   }
 
-  let FilterFields = Object.keys(fields).map(key => <FilterField key={key} value={key}>{fields[key]}</FilterField>)
+  let CategoryFilterFields = Object.keys(fields).map(key => <FilterField key={key} value={key}>{fields[key]}</FilterField>)
 
   return (
     <StyledDiv filterScreen={filterScreen}>
+      <FilterSection name="Sort">
+        
+      </FilterSection>
       <FilterSection name="Category">
-        {FilterFields}
+        {CategoryFilterFields}
       </FilterSection>
     </StyledDiv>
   ) 

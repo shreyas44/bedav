@@ -2,7 +2,6 @@ import React, {useContext} from 'react'
 import styled from 'styled-components'
 import Middle from './middle'
 import HospitalSection from './hospitals/hospitalSection'
-import FilterScreenContext from './contexts/FilterScreen'
 import { SearchHospitalProvider } from './contexts/SearchHospital'
 
 const StyledDiv = styled.div`
@@ -14,17 +13,14 @@ const StyledDiv = styled.div`
   left: 0;
   margin: 0;
   background: white;
-  opacity: ${({filterScreen}) => filterScreen ? 0 : 1};
   transition: opacity 0.2s;
-  z-index: ${({filterScreen}) => filterScreen ? -1 : 1};
+  z-index: -2;
 `
 
 function Main(props) {
-  const {filterScreen} = useContext(FilterScreenContext)
-
   return (
     <SearchHospitalProvider>
-      <StyledDiv filterScreen={filterScreen}>
+      <StyledDiv>
         <Middle />
         <HospitalSection />
       </StyledDiv>
