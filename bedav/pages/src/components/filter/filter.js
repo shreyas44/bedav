@@ -1,8 +1,10 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import styled from 'styled-components'
 import FilterScreenContext from '../contexts/FilterScreen'
 import FilterField from './filterField'
 import FilterSection from './filterSection'
+import SortDropdown from './sortDropdown'
+import SortOrderDropdwon from './sortOrderDropdown'
 
 const StyledDiv = styled.div`
   height: 100%;
@@ -21,6 +23,26 @@ const StyledDiv = styled.div`
 
 function FilterScreen(props) {
   const {filterScreen} = useContext(FilterScreenContext)
+  const {currentDropdown, setCurrentDropdown} = useState()
+  const {sortValue, setSortValue} = useState()
+  const {sortOrderValue, setSortOrderValue} = useState()
+
+  const sortValues = {
+    DISTANCE: "Distance",
+    GENERAL_OCCUPIED: "General Ward Occupied",
+    HDU_OCCUPIED: "HDU Occupied",
+    ICU_OCCUPIED: "ICU Occupied",
+    VENTILATORS_USED: "Ventilators Used",
+    GENERAL_AVAILABLE: "General Ward Available",
+    HDU_AVAILABLE: "HDU Available",
+    ICU_AVAILABLE: "ICU Available",
+    VENTILATORS_AVAILABLE: "Ventilators Available"
+  }
+
+  const sortOrder = {
+    ASCENDING: "Increading",
+    DESCENDING: "Decreasing"
+  }
 
   const fields = {
     "gov hos": "Government Hospital",
@@ -35,7 +57,8 @@ function FilterScreen(props) {
   return (
     <StyledDiv filterScreen={filterScreen}>
       <FilterSection name="Sort">
-        
+        <SortDropdown />
+        <SortOrderDropdwon />
       </FilterSection>
       <FilterSection name="Category">
         {CategoryFilterFields}

@@ -33,8 +33,6 @@ function HospitalSection(props) {
   const {searchQuery} = useContext(SearchHospitalContext)
   const {filters} = useContext(SelectedFitlersContext)
 
-  console.log(filters)
-
   function setLatLon(position) {
     setLat(position.coords.latitude)
     setLon(position.coords.longitude)

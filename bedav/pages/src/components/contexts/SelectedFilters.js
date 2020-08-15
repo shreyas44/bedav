@@ -7,8 +7,6 @@ function filterReducer(state, action) {
   const includes = state.includes(filter)
   let new_state = [...state]
 
-  console.log(state, filter)
-
   if (includes) {
     new_state.splice(state.indexOf(filter), 1)
   } else {
