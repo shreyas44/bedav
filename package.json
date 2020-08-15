@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --config webpack.config.js"
+    "start": "webpack --config webpack.config.js",
+    "relay": "relay-compiler --src ./bedav/pages/src --schema ./bedav/schema.graphql"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "@react-google-maps/api": "^1.9.12",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-relay": "^10.0.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.1.1"
@@ -32,8 +34,12 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
+    "babel-plugin-relay": "^10.0.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "eslint-plugin-react-hooks": "^4.0.8",
+    "graphql": "^15.3.0",
+    "relay-compiler": "^10.0.1",
+    "relay-config": "^10.0.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   }

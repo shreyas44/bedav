@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
-import { FilterContext } from '../App'
+import FilterScreenContext from './contexts/FilterScreen'
 
 const StyledH = css`
   font-size: 33px;
@@ -22,7 +22,7 @@ const StyledHeading = styled.h1`
 `
 
 function Heading() {
-  const {filterScreen} = useContext(FilterContext)
+  const {filterScreen} = useContext(FilterScreenContext)
 
   if(filterScreen) {
     return <StyledHeading>Filter</StyledHeading>

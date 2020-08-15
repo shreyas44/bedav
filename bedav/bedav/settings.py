@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'hospitals',
-    'pages'
+    'pages',
+    'graphene_django'
 ]
 
 MIDDLEWARE = [
@@ -77,15 +79,12 @@ WSGI_APPLICATION = 'bedav.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'bedav',
         'USER': 'root',
-        'PASSWORD': 'Jaihind123456',
+        'PASSWORD': 'abcd',
         'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            "init_command": "SET foreign_key_checks = 0;",
-        },
+        'PORT': '5432',
     }
 }
 
@@ -127,3 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+GRAPHENE = {
+    "SCHEMA": "bedav.schema.schema" 
+}

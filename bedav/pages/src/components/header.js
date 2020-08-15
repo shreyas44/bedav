@@ -5,7 +5,7 @@ import Heading from './heading'
 import FilterListIcon from '@material-ui/icons/FilterList';
 import CloseIcon from '@material-ui/icons/Close';
 // import Filter from './filter'
-import { FilterContext } from '../App'
+import FilterScreenContext from './contexts/FilterScreen'
 
 const StyledDiv = styled.div`
   height: fit-content;
@@ -42,7 +42,7 @@ const StyledCloseIcon = styled(CloseIcon)`
 `
 
 function Header() {
-  const context = useContext(FilterContext)
+  const context = useContext(FilterScreenContext)
 
   const Icon = context.filterScreen ? StyledCloseIcon : StyledFilterIcon
 

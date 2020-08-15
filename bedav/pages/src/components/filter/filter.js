@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
-import { FilterContext } from '../../App'
+import FilterScreenContext from '../contexts/FilterScreen'
 import FilterField from './filterField'
 import FilterSection from './filterSection'
 
@@ -20,7 +20,7 @@ const StyledDiv = styled.div`
 `
 
 function FilterScreen(props) {
-  const {filterScreen} = useContext(FilterContext)
+  const {filterScreen} = useContext(FilterScreenContext)
 
   const fields = {
     "gov hos": "Government Hospital",

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react'
 import styled from 'styled-components'
 import Checkbox from './checkbox'
-import {SelectedFiltersContext} from '../home'
+import SelectedFiltersContext from '../contexts/SelectedFilters'
 
 const StyledDiv = styled.div`
   margin: 0 0 30px;

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import SearchBar from './searchBar'
-import {SelectedFiltersContext} from './home'
+import SelectedFiltersContext from './contexts/SelectedFilters'
 
 const StyledContainer = styled.div`
   width: 60%;

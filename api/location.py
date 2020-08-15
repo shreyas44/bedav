@@ -1,4 +1,5 @@
 import requests, urllib, json
+from django.contrib.gis.geos import Point
 
 KEY = "AIzaSyDMJnJXbyp-pH4xaWY8_S1RI-mUEV1EzB0"
 
@@ -24,8 +25,7 @@ def get_location_info(name):
 
     # get lat and long
     location = result['geometry']['location']
-    ret_data['latitude'] = location['lat']
-    ret_data['longitude'] = location['lng']
+    ret_data['location'] = Point(location['lng'], location['lat'])
 
     address = result['formatted_address']
 

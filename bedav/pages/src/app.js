@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Header from './components/header'
 import Home from './components/home' 
 import {BrowserRouter as Router, Route} from 'react-router-dom'
+import { FilterScreenProvider } from './components/contexts/FilterScreen'
 
 const ContentWrapper = styled.div`
   max-width: 1500px;
@@ -16,19 +17,17 @@ const MainContainer = styled.div`
 export const FilterContext = React.createContext()
 
 function App() {
-  const [filterScreen, setFilterScreen] = useState(false)
-
   return (
     <MainContainer>
       <Router>
-        <FilterContext.Provider value={{filterScreen, setFilterScreen}}>
+        <FilterScreenProvider>
           <Header />
           {/* <Filter filterScreen={filterScreen} setFilterScreen={setFilterScreen} /> */}
         
           <ContentWrapper>
             <Route exact path="/"><Home /></Route>
           </ContentWrapper>
-        </FilterContext.Provider>
+        </FilterScreenProvider>
       </Router>
     </MainContainer>
   )

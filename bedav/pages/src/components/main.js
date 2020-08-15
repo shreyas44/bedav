@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
-import SearchBar from './searchBar'
 import Middle from './middle'
 import HospitalSection from './hospitals/hospitalSection'
-import { FilterContext } from '../App'
+import FilterScreenContext from './contexts/FilterScreen'
+import { SearchHospitalProvider } from './contexts/SearchHospital'
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -20,13 +20,15 @@ const StyledDiv = styled.div`
 `
 
 function Main(props) {
-  const {filterScreen} = useContext(FilterContext)
+  const {filterScreen} = useContext(FilterScreenContext)
 
   return (
-    <StyledDiv filterScreen={filterScreen}>
-      <Middle />
-      <HospitalSection />
-    </StyledDiv>
+    <SearchHospitalProvider>
+      <StyledDiv filterScreen={filterScreen}>
+        <Middle />
+        <HospitalSection />
+      </StyledDiv>
+    </SearchHospitalProvider>
   ) 
 }
 

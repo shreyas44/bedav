@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {useState, useContext} from 'react'
 import styled from 'styled-components'
 import HospitalHeader from './hospitalHeader'
 import HospitalList from './hospitalList'
+import {graphql, QueryRenderer} from 'react-relay'
+import environment from '../../Environment'
+import SearchHospitalContext from '../contexts/SearchHospital'
 
 const StyledDiv = styled.div`
-  margin: 50px auto;
+  margin: 10vh auto;
   box-sizing: border-box;
   width: 100%;
   max-width: 1400px;
@@ -21,6 +24,21 @@ const StyledP = styled.p`
 `
 
 function HospitalSection(props) {
+  const [lat, setLat] = useState()
+  const [lon, setLon] = useState()
+  const [rerender, setRerender] = useState(null)
+  const {searchQuery} = useContext(SearchHospitalContext)
+
+  function setLatLon(position) {
+    setLat(position.coords.latitude)
+    setLon(position.coords.longitude)
+    setRerender(false)
+  }
+
+  if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(setLatLon)
+  }
+
   return (
     <StyledDiv>
       <StyledP>
@@ -30,7 +48,30 @@ function HospitalSection(props) {
         Vent - Ventilators
       </StyledP>
       <HospitalHeader />
-      <HospitalList />
+      <QueryRenderer 
+        environment={environment}
+        query={graphql`
+          query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String) {
+            hospitals(first:10, lat: $lat, lon: $lon, searchQuery: $searchQuery) {
+              ...hospitalList_hospitalList
+            }
+          }
+        `}
+        variables={{lat, lon, searchQuery}}
+        render={({error, props}) => {
+          if(error) {
+            return <div>{error}</div>
+          }
+
+          if(!props) {
+            return <div>Loading...</div>
+          }
+
+          if (!rerender) {
+            return <HospitalList hospitalList={props.hospitals}/>
+          }
+        }}
+      />
     </StyledDiv>
   )
 }

@@ -1,19 +1,10 @@
-from django.db import models
-
-# class Hospital(models.Model):
-#   name = models.CharField(max_length=200)
-#   email = models.CharField(max_length=200)
-#   phone = models.CharField(max_length=20)
-
-#   class Meta:
-#     db_table = "Hospitals"
+from django.contrib.gis.db import models
 
 class Hospital(models.Model):
   name = models.CharField(max_length=200)
   website = models.CharField(max_length=3000, null=True)
   phone = models.CharField(max_length=20, null=True)
-  latitude = models.FloatField(null=True)
-  longitude = models.FloatField(null=True)
+  location = models.PointField(geography=True, srid=4326, null=True, verbose_name="Location")
   city = models.CharField(max_length=200, null=True)
   district = models.CharField(max_length=200, null=True)
   state = models.CharField(max_length=200, null=True)

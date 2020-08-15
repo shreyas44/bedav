@@ -1,0 +1,68 @@
+schema {
+  query: Query
+}
+
+type Hospital implements Node {
+  id: ID!
+  name: String!
+  website: String
+  phone: String
+  city: String
+  district: String
+  state: String
+  country: String
+  postalCode: Int
+  placeId: String
+  address: String
+  category: String
+  generalAvailable: Int
+  ICUAvailable: Int
+  ventilatorsAvailable: Int
+  HDUAvailable: Int
+  generalTotal: Int
+  ICUTotal: Int
+  ventilatorsTotal: Int
+  HDUTotal: Int
+  generalOccupied: Int
+  ICUOccupied: Int
+  HDUOccupied: Int
+  ventilatorsOccupied: Int
+  distance: Float
+}
+
+type HospitalConnection {
+  pageInfo: PageInfo!
+  edges: [HospitalEdge]!
+}
+
+type HospitalEdge {
+  node: Hospital
+  cursor: String!
+}
+
+enum HospitalSortField {
+  NAME
+  DISTANCE
+  CURRENT_BEDS
+  CURRENT_ICU
+  CURRENT_VENTILATORS
+  TOTAL_BEDS
+  TOTAL_ICU
+  TOTAL_VENTILATORS
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  hospitals(orderBy: HospitalSortField = DISTANCE, descending: Boolean = false, categoryFilters: [String] = [], lat: Float = 0.0, lon: Float = 0.0, searchQuery: String = "", before: String, after: String, first: Int, last: Int): HospitalConnection
+  node(id: ID!): Node
+}

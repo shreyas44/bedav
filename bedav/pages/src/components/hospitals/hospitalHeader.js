@@ -21,13 +21,12 @@ const StyledHeading = styled(StyledNumber)`
   align-items: center;
   text-align: center;
   background-color: #f8f8f8;
-  color: ${({counter}) => counter % 2 != 0 ? "#C3423F" : "#08A045"};
+  color: ${({counter}) => counter % 2 == 0 ? "#C3423F" : "#08A045"};
 `
 
 function HospitalHeader() {
 
   const fields = [
-    'Distance',
     'Gen Occupied',
     'Gen Available',
     'HDU Occupied',
@@ -43,6 +42,7 @@ function HospitalHeader() {
   return (
     <StyledRow>
       <StyledHeadingName counter={2}>Name</StyledHeadingName>
+      <StyledHeading style={{color: '#004266'}}>Distance</StyledHeading>
       {/* <StyledHeading counter={1}>Distance</StyledHeading> */}
       {headings}
     </StyledRow>

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import {graphql, createFragmentContainer} from 'react-relay'
 
 export const StyledRow = styled.div`
   align-items: center;
@@ -34,20 +35,44 @@ export const StyledNumber = styled(StyledItem)`
   flex-grow: 1;
   text-align: right;
   background: ${({counter}) => counter % 2 == 0 ? "#f8f8f8" : "white"};
-  color: ${({index}) => index % 2 != 0 ? "#C3423F" : "#08A045"};
+  color: ${({index}) => index % 2 == 0 ? "#C3423F" : "#08A045"};
 `
 
 function HospitalItem(props) {
-  let {name, counter, ...items} = props
+  let {counter, hospital} = props
+  // const {name, ...items} = hospital
 
-  items = Object.values(items)
-  items = items.map((item, index) => <StyledNumber key={index} index={index} counter={counter}>{item}</StyledNumber>)
+
+  let {name, distance, ...details} = hospital
+  details = Object.values(details)
+  details = details.map((item, index) => <StyledNumber key={index} index={index} counter={counter}>{item === null ? "N.A." : item}</StyledNumber>)
   return (
-    <StyledRow counter={props.counter}>
-      <StyledName counter={props.counter}>{props.name}</StyledName>
-      {items}
+    <StyledRow counter={counter}>
+      <StyledName counter={counter}>{name}</StyledName>
+      <StyledNumber style={{color: '#004266'}} counter={counter}>{distance ? `${distance} km` : "N.A."}</StyledNumber>
+      {details}
     </StyledRow>
   )
 }
 
-export default HospitalItem
+export default createFragmentContainer(
+  HospitalItem,
+  {
+    hospital: graphql`
+      fragment hospitalItem_hospital on Hospital {
+        name
+        distance
+        generalOccupied
+        generalAvailable
+        HDUOccupied
+        HDUAvailable
+        ICUOccupied
+        ICUAvailable
+        ventilatorsOccupied
+        ventilatorsAvailable
+      }
+    `
+  }
+)
+
+// export default HospitalItem

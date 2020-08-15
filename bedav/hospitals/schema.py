@@ -3,7 +3,26 @@ import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
 from .models import Hospital, Beds, ICU, Ventilators, Equipment
-from .forms import NewHospitalForm
+from math import radians, sin, cos, asin, sqrt
+from django.contrib.gis.db.models.functions import GeometryDistance
+from django.contrib.gis.geos import Point
+from django.db.models import F
+# from .forms import NewHospitalForm
+
+def get_distance(hos_lat, user_lat, hos_lon, user_lon) -> float:
+  hos_lat = radians(float(hospital.latitude))
+  hos_lon = radians(float(hospital.longitude))
+  user_lat = radians(float(coords['lat']))
+  user_lon = radians(float(coords['lon']))
+  lat_diff = hos_lat - user_lat
+  lon_diff = hos_lon - user_lon
+
+  a = sin(lat_diff / 2)**2 + cos(hos_lat) * cos(user_lat) * sin(lon_diff/2)**2
+  c = 2 * asin(sqrt(a))
+
+  distance =  c * 6371
+  distance = round(distance, 2)
+  return distance
 
 class HospitalSortField(graphene.Enum):
   NAME = "name"
@@ -22,54 +41,108 @@ class DataCategory(graphene.Enum):
   VENTLILATORS = "vent"
 
 class HospitalType(DjangoObjectType):
-  general = graphene.Int()
-  ICU = graphene.Int()
-  ventilators = graphene.Int()
-  total_general = graphene.Int()
-  total_ICU = graohene.Int()
-  total_ventilators = graphene.Int()
+  general_available = graphene.Int()
+  ICU_available = graphene.Int()
+  ventilators_available = graphene.Int()
+  HDU_available = graphene.Int()
+  general_total = graphene.Int()
+  ICU_total = graphene.Int()
+  ventilators_total = graphene.Int()
+  HDU_total = graphene.Int()
+  general_occupied = graphene.Int()
+  ICU_occupied = graphene.Int()
+  HDU_occupied = graphene.Int()
+  ventilators_occupied = graphene.Int()
+  distance = graphene.Float()
 
-  def resolve_general(hospital, info):
+  def resolve_distance(hospital, info):
+    return round(hospital.distance/1000, 1)
+
+  def resolve_general_available(hospital, info):
     return hospital.equipment.filter(branch=hospital, category="gen").order_by('-time').first().available
 
-  def resolve_ICU(hospital, info):
+  def resolve_ICU_available(hospital, info):
     return hospital.equipment.filter(branch=hospital, category="ICU").order_by('-time').first().available
+    
+  def resolve_HDU_available(hospital, info):
+    return hospital.equipment.filter(branch=hospital, category="HDU").order_by('-time').first().available
 
-  def resolve_ventilators(hospital, info):
+  def resolve_ventilators_available(hospital, info):
     return hospital.equipment.filter(branch=hospital, category="vent").order_by('-time').first().available
 
-  def resolve_total_general(hospital, info):
+  def resolve_general_total(hospital, info):
     return hospital.equipment.filter(branch=hospital, category="gen").order_by('-time').first().total
 
-  def resolve_total_ICU(hospital, info):
+  def resolve_ICU_total(hospital, info):
     return hospital.equipment.filter(branch=hospital, category="ICU").order_by('-time').first().total
 
-  def resolve_total_ventilators(hospital, info):
+  def resolve_HDU_total(hospital, info):
+    return hospital.equipment.filter(branch=hospital, category="HDU").order_by('-time').first().total
+
+  def resolve_general_occupied(hospital, info):
+    equipment = hospital.equipment.filter(branch=hospital, category="gen").order_by('-time').first()
+    return equipment.total - equipment.available
+
+  def resolve_HDU_occupied(hospital, info):
+    equipment = hospital.equipment.filter(branch=hospital, category="HDU").order_by('-time').first()
+    return equipment.total - equipment.available
+
+  def resolve_ICU_occupied(hospital, info):
+    equipment = hospital.equipment.filter(branch=hospital, category="ICU").order_by('-time').first()
+    return equipment.total - equipment.available
+
+  def resolve_ventilators_occupied(hospital, info):
+    equipment = hospital.equipment.filter(branch=hospital, category="vent").order_by('-time').first()
+    return equipment.total - equipment.available
+
+  def resolve_ventilators_total(hospital, info):
     return hospital.equipment.filter(branch=hospital, category="vent").order_by('-time').first().total
 
   class Meta:
     model = Hospital
     interfaces = (relay.Node, )
     name = "Hospital"
-    exclude = ('equipment', )
+    exclude = ('equipment', 'location')
 
 class HospitalConnection(relay.Connection):
   class Meta:
     node = HospitalType
 
-class Query(graphene.InputObjectType):
-  hospitals = relay.ConnectionField(HospitalConnection, order_by=graphene.Argument(HospitalSortField), descending=graphene.Boolean(default_value=False), category_filters=graphene.List(graphene.String), lat=graphene.Float(), lon=graphene.Float())
+class Query(graphene.ObjectType):
+  hospitals = relay.ConnectionField(HospitalConnection,
+    order_by=graphene.Argument(HospitalSortField,
+    required=False, default_value="distance"),
+    descending=graphene.Boolean(default_value=False, required=False),
+    category_filters=graphene.List(graphene.String, required=False, default_value=[]),
+    lat=graphene.Float(required=False, default_value=0),
+    lon=graphene.Float(required=False, default_value=0),
+    search_query=graphene.String(required=False, default_value='')
+  )
   
-  def resolve_hospitals(parent, info, order_by, descending, category_filters, lat, lon, **kwargs):
+  def resolve_hospitals(parent, info, order_by, descending, category_filters, lat, lon, search_query, **kwargs):
+    info.context.coords = {"lat": lat, "lon": lon}
+    coords = Point(lon, lat, srid=4326)
+
     prefix = '-' if descending else ''
 
     def get_hospitals(order):
       order = prefix + order
 
-      if len(category_filters) > 0:
-        return Hospital.objects.filter(category__in=category_filters).order_by(order)
-      else:
-        return Hospital.objects.order_by(order)
+      if order != "distance":
+
+        if len(category_filters) > 0:
+          hospitals =  Hospital.objects.filter(category__in=category_filters, name__icontains=search_query).order_by(order)
+        else:
+          hospitals = Hospital.objects.filter(name__icontains=search_query).order_by(order)
+
+      elif order == "distance":
+
+        if len(category_filters) > 0:
+          hospitals =  Hospital.objects.filter(category__in=category_filters, name__icontains=search_query).annotate(distance=GeometryDistance("location", coords)).order_by(order)
+        else:
+          hospitals = Hospital.objects.filter(name__icontains=search_query).annotate(distance=GeometryDistance("location", coords)).order_by(order)
+
+      return hospitals
 
     if order_by == 'name':
       order = 'name'
@@ -79,8 +152,13 @@ class Query(graphene.InputObjectType):
       order = 'ICU__total' if order_by == "total_ICU" else "ICU__available"
     elif 'ventilators' in order_by:
       order = 'ventilators__total' if order_by == "total_ventilators" else "ventilators__available"
+    elif order_by == "distance":
+      order = "distance"
+    else:
+      order = "distance"
 
     return get_hospitals(order)
+
 
 class NewHospitalInput(graphene.InputObjectType):
   name = graphene.String()
@@ -147,10 +225,7 @@ class UploadData(graphene.Mutation):
     return UploatData(status=True)
 
 class Mutations(graphene.ObjectType):
-  new_hospital = NewHospitalMutation()
-  upload_data = UploadData()
-    
-
-#https://www.google.com/maps/dir/12.9123753,77.7063437/Jayanagar+General+Hospital,+32nd+Cross,+4th+B+Block,+beside+Rajiv+Gandhi+Health+Institute,+Tilak+Nagar,+Jayanagar,+Bengaluru,+Karnataka+560041/@12.9201935,77.6149278,13z/data=!3m1!4b1!4m17!1m6!3m5!1s0x3bae15a840000001:0xbfd7355ffa3eee92!2sJayanagar+General+Hospital!8m2!3d12.9262377!4d77.5928008!4m9!1m1!4e1!1m5!1m1!1s0x3bae15a840000001:0xbfd7355ffa3eee92!2m2!1d77.5928008!2d12.9262377!3e0
-
-#https://www.google.com/maps/dir/12.9123564,77.7063747/Onesta+Gandhi+Bazaar,+%2390,+First+Floor,+Gandhi+Bazaar+Main+Rd,+Basavanagudi,+Bengaluru,+Karnataka+560004/@12.9614445,77.5389895,13z/data=!4m13!1m2!2m1!1sOnesta!4m9!1m1!4e1!1m5!1m1!1s0x3bae15f393b0cb11:0xa55b67ec5183acc9!2m2!1d77.5689764!2d12.9472641!3e0
+  # new_hospital = NewHospitalMutation()
+  # upload_data = UploadData()
+  
+  pass

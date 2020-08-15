@@ -1,70 +1,35 @@
 import React from 'react'
 import styled from 'styled-components'
 import HospitalItem from './hospitalItem'
-
-const sample = [
-  {
-    name: "Apollo",
-    beds: 300,
-    availableBeds: 100,
-    HDU: 200,
-    HDUAvailable: 250,
-    ICU: 100,
-    availableICU: 50,
-    ventilators: 100,
-    availableVentilators: 50,
-    distance: 3.1
-  },
-  {
-    name: "Fortis",
-    beds: 300,
-    availableBeds: 100,
-    HDU: 200,
-    HDUAvailable: 250,
-    ICU: 100,
-    availableICU: 50,
-    ventilators: 100,
-    availableVentilators: 50,
-    distance: 3.1
-  },
-  {
-    name: "Apollo",
-    beds: 300,
-    availableBeds: 100,
-    HDU: 200,
-    HDUAvailable: 250,
-    ICU: 100,
-    availableICU: 50,
-    ventilators: 100,
-    availableVentilators: 50,
-    distance: 3.1
-  },
-  {
-    name: "Apollo",
-    beds: 300,
-    availableBeds: 100,
-    HDU: 200,
-    HDUAvailable: 250,
-    ICU: 100,
-    availableICU: 50,
-    ventilators: 100,
-    availableVentilators: 50,
-    distance: 3.1
-  }
-]
-
+import {graphql, createFragmentContainer} from 'react-relay'
 
 function HospitalList(props) {
   // const {list} = props
-  const list = sample
+  const list = props.hospitalList.edges
 
   let counter = 0;
   const items = list.map((item, index) => {
     counter += 1
-    return <HospitalItem key={index} {...item} counter={counter}/>
+    return <HospitalItem key={index} counter={counter} hospital={item.node}/>
   })
   
   return <>{items}</>
 }
 
-export default HospitalList
+export default createFragmentContainer(
+  HospitalList,
+  {
+    hospitalList: graphql`
+      fragment hospitalList_hospitalList on HospitalConnection {
+        edges {
+          node {
+            id
+            ...hospitalItem_hospital
+          }
+        }
+      }
+    `
+  }
+)
+
+// export default HospitalList

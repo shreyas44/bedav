@@ -1,17 +1,12 @@
 import graphene
-from hospitals.schema import Query as HospitalQuery, Mutations as HospitalMutations
+from graphene import relay
+from hospitals.schema import (
+  Query as HospitalQuery
+)
 
-class Query(
-  HospitalQuery,
-  graphene.ObjectType
-):
-  node = graphene.relay.node.Field()
+class Query(HospitalQuery, graphene.ObjectType):
+  node = relay.Node.Field()
 
-class Mutations(
-  HospitalMutations,
-  graphene.ObjectType
-):
-  pass
 
-schema = graphene.Schema(query=Query, mutation=Mutations)
+schema = graphene.Schema(query=Query)
   

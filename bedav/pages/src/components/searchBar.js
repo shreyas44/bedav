@@ -1,6 +1,7 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useContext} from 'react'
 import styled from 'styled-components'
 import MaterialSearchIcon from '@material-ui/icons/Search'
+import SearchHospitalContext from './contexts/SearchHospital'
 
 let SearchIcon = ({className}) => <MaterialSearchIcon className={className} />
 
@@ -28,13 +29,19 @@ const StyledInput = styled.input`
 `
 
 function SearchBar() {
-  let [query, setQuery] = useState('')
+  let {searchQuery, setSearchQuery} = useContext(SearchHospitalContext)
   let [focused, setFocus] = useState(false)
 
   return (
     <> 
       <StyledSearchIcon focused={focused}/>
-      <StyledInput type="text" value={query} onChange={event => { setQuery(event.target.value) }} placeholder="Search for a hospital..." onFocus={() => { setFocus(true) }} onBlur={() => { setFocus(false) }} />
+      <StyledInput 
+        type="text"
+        value={searchQuery}
+        onChange={event => { setSearchQuery(event.target.value) }}
+        placeholder="Search for a hospital..."
+        onFocus={() => { setFocus(true) }} onBlur={() => { setFocus(false) }} 
+       />
     </>
   )
 }
