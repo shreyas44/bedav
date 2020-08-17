@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
   width: 100%;
   /* box-shadow: 0 1px 2px rgba(0,0,0,0.08); */
   position: fixed;
-  top: 5px;
+  top: 0;
   left: 0;
   padding: 15px 35px;
   box-sizing: border-box;

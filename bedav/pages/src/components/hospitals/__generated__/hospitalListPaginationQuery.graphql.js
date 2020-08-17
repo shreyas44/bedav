@@ -10,7 +10,8 @@
 import type { ConcreteRequest } from 'relay-runtime';
 type hospitalList_hospitalList$ref = any;
 export type HospitalSortField = "AVAILABLE_GENERAL" | "AVAILABLE_HDU" | "AVAILABLE_ICU" | "AVAILABLE_VENTILATORS" | "DISTANCE" | "NAME" | "OCCUPIED_GENERAL" | "OCCUPIED_HDU" | "OCCUPIED_ICU" | "TOTAL_BEDS" | "TOTAL_HDU" | "TOTAL_ICU" | "TOTAL_VENTILATORS" | "USED_VENTILATORS" | "%future added value";
-export type hospitalSectionQueryVariables = {|
+export type hospitalListPaginationQueryVariables = {|
+  count?: ?number,
   lat?: ?number,
   lon?: ?number,
   searchQuery?: ?string,
@@ -19,18 +20,19 @@ export type hospitalSectionQueryVariables = {|
   descending?: ?boolean,
   cursor?: ?string,
 |};
-export type hospitalSectionQueryResponse = {|
+export type hospitalListPaginationQueryResponse = {|
   +$fragmentRefs: hospitalList_hospitalList$ref
 |};
-export type hospitalSectionQuery = {|
-  variables: hospitalSectionQueryVariables,
-  response: hospitalSectionQueryResponse,
+export type hospitalListPaginationQuery = {|
+  variables: hospitalListPaginationQueryVariables,
+  response: hospitalListPaginationQueryResponse,
 |};
 */
 
 
 /*
-query hospitalSectionQuery(
+query hospitalListPaginationQuery(
+  $count: Int
   $lat: Float
   $lon: Float
   $searchQuery: String
@@ -39,7 +41,7 @@ query hospitalSectionQuery(
   $descending: Boolean
   $cursor: String
 ) {
-  ...hospitalList_hospitalList_3JtWik
+  ...hospitalList_hospitalList_2CSWMY
 }
 
 fragment hospitalItem_hospital on Hospital {
@@ -60,8 +62,8 @@ fragment hospitalItem_hospital on Hospital {
   HDUTotal
 }
 
-fragment hospitalList_hospitalList_3JtWik on Query {
-  hospitals(first: 10, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
+fragment hospitalList_hospitalList_2CSWMY on Query {
+  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
     edges {
       node {
         id
@@ -87,80 +89,85 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "cursor"
+  "name": "count"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "descending"
+  "name": "cursor"
 },
 v3 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "lat"
+  "name": "descending"
 },
 v4 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "lon"
+  "name": "lat"
 },
 v5 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "orderBy"
+  "name": "lon"
 },
 v6 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "searchQuery"
+  "name": "orderBy"
 },
 v7 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "searchQuery"
+},
+v8 = {
   "kind": "Variable",
   "name": "categoryFilters",
   "variableName": "categoryFilters"
 },
-v8 = {
+v9 = {
   "kind": "Variable",
   "name": "descending",
   "variableName": "descending"
 },
-v9 = {
+v10 = {
   "kind": "Variable",
   "name": "lat",
   "variableName": "lat"
 },
-v10 = {
+v11 = {
   "kind": "Variable",
   "name": "lon",
   "variableName": "lon"
 },
-v11 = {
+v12 = {
   "kind": "Variable",
   "name": "orderBy",
   "variableName": "orderBy"
 },
-v12 = {
+v13 = {
   "kind": "Variable",
   "name": "searchQuery",
   "variableName": "searchQuery"
 },
-v13 = [
+v14 = [
   {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
   },
-  (v7/*: any*/),
   (v8/*: any*/),
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10
-  },
   (v9/*: any*/),
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count"
+  },
   (v10/*: any*/),
   (v11/*: any*/),
-  (v12/*: any*/)
+  (v12/*: any*/),
+  (v13/*: any*/)
 ];
 return {
   "fragment": {
@@ -171,30 +178,31 @@ return {
       (v3/*: any*/),
       (v4/*: any*/),
       (v5/*: any*/),
-      (v6/*: any*/)
+      (v6/*: any*/),
+      (v7/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "hospitalSectionQuery",
+    "name": "hospitalListPaginationQuery",
     "selections": [
       {
         "args": [
-          (v7/*: any*/),
+          (v8/*: any*/),
           {
-            "kind": "Literal",
+            "kind": "Variable",
             "name": "count",
-            "value": 10
+            "variableName": "count"
           },
           {
             "kind": "Variable",
             "name": "cursor",
             "variableName": "cursor"
           },
-          (v8/*: any*/),
           (v9/*: any*/),
           (v10/*: any*/),
           (v11/*: any*/),
-          (v12/*: any*/)
+          (v12/*: any*/),
+          (v13/*: any*/)
         ],
         "kind": "FragmentSpread",
         "name": "hospitalList_hospitalList"
@@ -206,20 +214,21 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v3/*: any*/),
+      (v1/*: any*/),
       (v4/*: any*/),
-      (v6/*: any*/),
-      (v0/*: any*/),
       (v5/*: any*/),
-      (v2/*: any*/),
-      (v1/*: any*/)
+      (v7/*: any*/),
+      (v0/*: any*/),
+      (v6/*: any*/),
+      (v3/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Operation",
-    "name": "hospitalSectionQuery",
+    "name": "hospitalListPaginationQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v13/*: any*/),
+        "args": (v14/*: any*/),
         "concreteType": "HospitalConnection",
         "kind": "LinkedField",
         "name": "hospitals",
@@ -403,7 +412,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v13/*: any*/),
+        "args": (v14/*: any*/),
         "filters": [
           "lat",
           "lon",
@@ -420,16 +429,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3fc9f7abf8774809e45d16f3d8e72eec",
+    "cacheID": "e54d6a16c194af9c0648827188e5719d",
     "id": null,
     "metadata": {},
-    "name": "hospitalSectionQuery",
+    "name": "hospitalListPaginationQuery",
     "operationKind": "query",
-    "text": "query hospitalSectionQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...hospitalList_hospitalList_3JtWik\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  HDUOccupied\n  HDUAvailable\n  ICUOccupied\n  ICUAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  ICUTotal\n  HDUTotal\n}\n\nfragment hospitalList_hospitalList_3JtWik on Query {\n  hospitals(first: 10, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...hospitalItem_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query hospitalListPaginationQuery(\n  $count: Int\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...hospitalList_hospitalList_2CSWMY\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  HDUOccupied\n  HDUAvailable\n  ICUOccupied\n  ICUAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  ICUTotal\n  HDUTotal\n}\n\nfragment hospitalList_hospitalList_2CSWMY on Query {\n  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...hospitalItem_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '300810cbb337721a6507a2dd97192d68';
+(node/*: any*/).hash = '96699f39490568827eb8b92987255771';
 
 module.exports = node;

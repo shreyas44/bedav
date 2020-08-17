@@ -59,10 +59,12 @@ function HospitalSection(props) {
       <QueryRenderer 
         environment={environment}
         query={graphql`
-          query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean) {
-            hospitals(first:10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
-              ...hospitalList_hospitalList
-            }
+          query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
+            # hospitals(first:10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
+            #   ...hospitalList_hospitalList
+            # }
+
+            ...hospitalList_hospitalList @arguments(count: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
           }
         `}
         variables={{lat: lat, lon: lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
@@ -75,7 +77,8 @@ function HospitalSection(props) {
             return <div>Loading...</div>
           }
 
-          return <HospitalList hospitalList={props.hospitals} dataToShow={dataToShow}/>          
+          console.log(props)
+          return <HospitalList hospitalList={{...props}} dataToShow={dataToShow}/>          
         }}
       />
     </StyledDiv>

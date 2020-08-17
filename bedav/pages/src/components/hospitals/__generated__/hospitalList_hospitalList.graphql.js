@@ -13,12 +13,18 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type hospitalList_hospitalList$ref: FragmentReference;
 declare export opaque type hospitalList_hospitalList$fragmentType: hospitalList_hospitalList$ref;
 export type hospitalList_hospitalList = {|
-  +edges: $ReadOnlyArray<?{|
-    +node: ?{|
-      +id: string,
-      +$fragmentRefs: hospitalItem_hospital$ref,
-    |}
-  |}>,
+  +hospitals: ?{|
+    +edges: $ReadOnlyArray<?{|
+      +node: ?{|
+        +id: string,
+        +$fragmentRefs: hospitalItem_hospital$ref,
+      |}
+    |}>,
+    +pageInfo: {|
+      +endCursor: ?string,
+      +hasNextPage: boolean,
+    |},
+  |},
   +$refType: hospitalList_hospitalList$ref,
 |};
 export type hospitalList_hospitalList$data = hospitalList_hospitalList;
@@ -31,38 +37,171 @@ export type hospitalList_hospitalList$key = {
 
 
 const node/*: ReaderFragment*/ = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "categoryFilters"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "cursor"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "descending"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "lat"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "lon"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "orderBy"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "searchQuery"
+    }
+  ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": [
+          "hospitals"
+        ]
+      }
+    ]
+  },
   "name": "hospitalList_hospitalList",
   "selections": [
     {
-      "alias": null,
-      "args": null,
-      "concreteType": "HospitalEdge",
+      "alias": "hospitals",
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "categoryFilters",
+          "variableName": "categoryFilters"
+        },
+        {
+          "kind": "Variable",
+          "name": "descending",
+          "variableName": "descending"
+        },
+        {
+          "kind": "Variable",
+          "name": "lat",
+          "variableName": "lat"
+        },
+        {
+          "kind": "Variable",
+          "name": "lon",
+          "variableName": "lon"
+        },
+        {
+          "kind": "Variable",
+          "name": "orderBy",
+          "variableName": "orderBy"
+        },
+        {
+          "kind": "Variable",
+          "name": "searchQuery",
+          "variableName": "searchQuery"
+        }
+      ],
+      "concreteType": "HospitalConnection",
       "kind": "LinkedField",
-      "name": "edges",
-      "plural": true,
+      "name": "__hospitalList_hospitals_connection",
+      "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "Hospital",
+          "concreteType": "HospitalEdge",
           "kind": "LinkedField",
-          "name": "node",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Hospital",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                },
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "hospitalItem_hospital"
+                }
+              ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
-              "name": "id",
+              "name": "endCursor",
               "storageKey": null
             },
             {
+              "alias": null,
               "args": null,
-              "kind": "FragmentSpread",
-              "name": "hospitalItem_hospital"
+              "kind": "ScalarField",
+              "name": "hasNextPage",
+              "storageKey": null
             }
           ],
           "storageKey": null
@@ -71,10 +210,10 @@ const node/*: ReaderFragment*/ = {
       "storageKey": null
     }
   ],
-  "type": "HospitalConnection",
+  "type": "Query",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '60260ef2564a4429a1737ba7570f61d3';
+(node/*: any*/).hash = 'e9441233ff715a50f5dde2fd3266e900';
 
 module.exports = node;
