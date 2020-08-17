@@ -14,7 +14,7 @@ type Hospital implements Node {
   postalCode: Int
   placeId: String
   address: String
-  category: String
+  category: String!
   generalAvailable: Int
   ICUAvailable: Int
   ventilatorsAvailable: Int
@@ -43,11 +43,17 @@ type HospitalEdge {
 enum HospitalSortField {
   NAME
   DISTANCE
-  CURRENT_BEDS
-  CURRENT_ICU
-  CURRENT_VENTILATORS
+  AVAILABLE_GENERAL
+  AVAILABLE_HDU
+  AVAILABLE_ICU
+  AVAILABLE_VENTILATORS
+  OCCUPIED_GENERAL
+  OCCUPIED_HDU
+  OCCUPIED_ICU
+  USED_VENTILATORS
   TOTAL_BEDS
   TOTAL_ICU
+  TOTAL_HDU
   TOTAL_VENTILATORS
 }
 

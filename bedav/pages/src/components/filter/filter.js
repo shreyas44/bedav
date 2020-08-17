@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react'
 import styled from 'styled-components'
 import FilterScreenContext from '../contexts/FilterScreen'
+import SortContext from '../contexts/Sort'
 import FilterField from './filterField'
 import FilterSection from './filterSection'
 import SortDropdown from './sortDropdown'
@@ -21,26 +22,58 @@ const StyledDiv = styled.div`
   box-shadow: -10px 0px 10px 1px #ddd;
 `
 
+const StyledContainer = styled.div`
+  margin-top: -5px;
+`
+
 function FilterScreen(props) {
   const {filterScreen} = useContext(FilterScreenContext)
+  const {sortValue, setSortValue} = useContext(SortContext)
   const {currentDropdown, setCurrentDropdown} = useState()
-  const {sortValue, setSortValue} = useState()
-  const {sortOrderValue, setSortOrderValue} = useState()
+
+  function setSortValueField(field) {
+    let newSortValue = {
+      field: field,
+      descending: sortValue.descending
+    }
+
+    console.log(field)
+    console.log(newSortValue)
+
+    setSortValue(newSortValue)
+  }
+
+  function setSortOrder(value) {
+    let newValue;
+
+    if(value == "ASCENDING") {
+      newValue = false
+    } else if(value == "DESCENDING") {
+      newValue = true
+    }
+
+    let newSortValue = {
+      field: sortValue.field,
+      descending: newValue
+    }
+
+    setSortValue(newSortValue)
+  }
 
   const sortValues = {
     DISTANCE: "Distance",
-    GENERAL_OCCUPIED: "General Ward Occupied",
-    HDU_OCCUPIED: "HDU Occupied",
-    ICU_OCCUPIED: "ICU Occupied",
-    VENTILATORS_USED: "Ventilators Used",
-    GENERAL_AVAILABLE: "General Ward Available",
-    HDU_AVAILABLE: "HDU Available",
-    ICU_AVAILABLE: "ICU Available",
-    VENTILATORS_AVAILABLE: "Ventilators Available"
+    OCCUPIED_GENERAL: "General Ward Occupied",
+    OCCUPIED_HDU: "HDU Occupied",
+    OCCUPIED_ICU: "ICU Occupied",
+    USED_VENTILATORS: "Ventilators Used",
+    AVAILABLE_GENERAL: "General Ward Available",
+    AVAILABLE_HDU: "HDU Available",
+    AVAILABLE_ICU: "ICU Available",
+    AVAILABLE_VENTILATORS: "Ventilators Available"
   }
 
   const sortOrder = {
-    ASCENDING: "Increading",
+    ASCENDING: "Increasing",
     DESCENDING: "Decreasing"
   }
 
@@ -56,9 +89,11 @@ function FilterScreen(props) {
 
   return (
     <StyledDiv filterScreen={filterScreen}>
-      <FilterSection name="Sort">
-        <SortDropdown />
-        <SortOrderDropdwon />
+      <FilterSection name="Sort By">
+        <StyledContainer>
+          <SortDropdown values={sortValues} value={sortValue.field} setValue={setSortValueField}/>
+          <SortOrderDropdwon values={sortOrder} value={sortValue.descending ? "DESCENDING" : "ASCENDING"} setValue={setSortOrder}/>
+        </StyledContainer>
       </FilterSection>
       <FilterSection name="Category">
         {CategoryFilterFields}

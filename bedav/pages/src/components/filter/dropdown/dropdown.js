@@ -5,7 +5,7 @@ import DropdownMenu from './dropdownMenu'
 
 const MainContainer = styled.div`
   position: relative;
-  margin: 5px 0;
+  margin: 10px 0;
 `
 
 const StyledDiv = styled.div`
@@ -20,11 +20,11 @@ const StyledDiv = styled.div`
 `
 
 const StyledSpan = styled.span`
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 100;
   position: relative;
   top: 2px;
-  padding: 15px;
+  padding: 10px;
 `
 
 const StyledIcon = styled(ExpandMoreIcon)`
@@ -39,24 +39,22 @@ function Dropdown(props) {
   const {values, value, setValue} = props
   const [open, setOpen] = useState(false)
 
-  let currentValues = [...values]
-  console.log(value)
-  console.log(currentValues.indexOf(value))
-  currentValues.splice(currentValues.indexOf(value), 1)
-  console.log(currentValues)
+  let currentValues = {...values}
+  delete currentValues[value]
 
   function handleClick(event) {
-    setValue(event.target.textContent.trim())
+    console.log(event.target.getAttribute('value'))
+    setValue(event.target.getAttribute('value'))
     setOpen(false)
   }
 
   return (
     <MainContainer>
       <StyledDiv open={open}>
-        <StyledSpan>{value}</StyledSpan>
+        <StyledSpan>{values[value]}</StyledSpan>
         <StyledIcon  open={open} onClick={() => setOpen(!open)}/>
       </StyledDiv>
-      <DropdownMenu 
+      <DropdownMenu
         values={currentValues}
         onClick={handleClick}
         open={open}

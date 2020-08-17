@@ -12,3 +12,4 @@ watch.py
 *.DS_Store
 chromedriver
 *.code-workspace
+*/.vscode/

@@ -9,11 +9,15 @@ const StyledHeading = styled.h1`
 `
 
 const StyledDiv = styled.div`
-  margin-top: 5px;
+  margin-top: 30px;
+
+  &:first-child {
+    margin-top: 0;
+  }
 `
 
 const StyledContainer = styled.div`
-  margin: 30px 10px;
+  margin: 20px 10px;
 `
 
 function FilterSection(props) {

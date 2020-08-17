@@ -10,10 +10,10 @@ from django.db.models import F
 # from .forms import NewHospitalForm
 
 def get_distance(hos_lat, user_lat, hos_lon, user_lon) -> float:
-  hos_lat = radians(float(hospital.latitude))
-  hos_lon = radians(float(hospital.longitude))
-  user_lat = radians(float(coords['lat']))
-  user_lon = radians(float(coords['lon']))
+  hos_lat = radians(float(hos_lat))
+  hos_lon = radians(float(hos_lat))
+  user_lat = radians(float(user_lat))
+  user_lon = radians(float(user_lon))
   lat_diff = hos_lat - user_lat
   lon_diff = hos_lon - user_lon
 
@@ -21,17 +21,23 @@ def get_distance(hos_lat, user_lat, hos_lon, user_lon) -> float:
   c = 2 * asin(sqrt(a))
 
   distance =  c * 6371
-  distance = round(distance, 2)
+  # distance = round(distance, 2)
   return distance
 
 class HospitalSortField(graphene.Enum):
   NAME = "name"
   DISTANCE = "distance"
-  CURRENT_BEDS = 'current_beds'
-  CURRENT_ICU = "current_ICU"
-  CURRENT_VENTILATORS = 'current_ventilators'
-  TOTAL_BEDS = "total_beds"
+  AVAILABLE_GENERAL = 'available_general'
+  AVAILABLE_HDU = "available_HDU"
+  AVAILABLE_ICU = "available_ICU"
+  AVAILABLE_VENTILATORS = 'available_ventilators'
+  OCCUPIED_GENERAL = "occupied_general"
+  OCCUPIED_HDU = "occupied_HDU"
+  OCCUPIED_ICU = "occupied_ICU"
+  USED_VENTILATORS = "used_ventilators"
+  TOTAL_BEDS = "total_general"
   TOTAL_ICU = "total_ICU"
+  TOTAL_HDU = "total_HDU"
   TOTAL_VENTILATORS = "total_ventilators"
 
 class DataCategory(graphene.Enum):
@@ -149,17 +155,47 @@ class Query(graphene.ObjectType):
 
     prefix = '-' if descending else ''
 
-    def get_hospitals(order):
+    def get_hospitals(order, equipment_category=None):
+      old_order = order
       order = prefix + order
 
-      if order != "distance":
+      if old_order != "distance":
 
         if len(category_filters) > 0:
-          hospitals =  Hospital.objects.filter(category__in=category_filters, name__icontains=search_query).order_by(order)
-        else:
-          hospitals = Hospital.objects.filter(name__icontains=search_query).order_by(order)
+          equipments = Equipment.objects.filter(category=equipment_category, branch__category__in=category_filters, branch__name__icontains=search_query).annotate(occupied=F('total')-F('available')).order_by(order, '-time', 'branch').distinct("branch").select_related("branch")
+          equipments = list(equipments)
+          equipments.sort(key=lambda equipment: equipment.__dict__[old_order], reverse=True if prefix == "-" else False)
 
-      elif order == "distance":
+          hospitals_a = [equipment.branch for equipment in equipments]
+
+          for hospital in hospitals_a:
+            hcoords = hospital.location.coords
+            ucoords = (lon, lat)
+            hospital.distance = get_distance(hcoords[1], coords[1], hcoords[0], coords[0]) 
+
+          ids = [hospital.id for hospital in hospitals_a]
+          hospitals_b = Hospital.objects.filter(category__in=category_filters, name__icontains=search_query).annotate(distance=GeometryDistance("location", coords)).exclude(id__in=ids)
+        else:
+          equipments = Equipment.objects.filter(category=equipment_category, branch__name__icontains=search_query).annotate(occupied=F('total')-F('available')).order_by('branch', '-time').distinct("branch").select_related("branch")
+          equipments = list(equipments)
+          equipments.sort(key=lambda equipment: equipment.__dict__[old_order], reverse=True if prefix == "-" else False)
+
+          hospitals_a = [equipment.branch for equipment in equipments]
+          
+          for hospital in hospitals_a:
+            hcoords = hospital.location.coords
+            ucoords = (lon, lat)
+            hospital.__dict__['distance'] = get_distance(hcoords[1], ucoords[1], hcoords[0], ucoords[0])
+
+          ids = [hospital.id for hospital in hospitals_a]
+          hospitals_b = Hospital.objects.filter(name__icontains=search_query).annotate(distance=GeometryDistance("location", coords)).exclude(id__in=ids)
+
+        if descending:
+          hospitals = hospitals_a + list(hospitals_b)
+        else:
+          hospitals = list(hospitals_b) + hospitals_a
+
+      elif old_order == "distance":
 
         if len(category_filters) > 0:
           hospitals =  Hospital.objects.filter(category__in=category_filters, name__icontains=search_query).annotate(distance=GeometryDistance("location", coords)).order_by(order)
@@ -168,20 +204,73 @@ class Query(graphene.ObjectType):
 
       return hospitals
 
-    if order_by == 'name':
-      order = 'name'
-    elif 'beds' in order_by:
-      order = 'gen__total' if order_by == "total_gen" else "gen__available"
-    elif 'ICU' in order_by:
-      order = 'ICU__total' if order_by == "total_ICU" else "ICU__available"
-    elif 'ventilators' in order_by:
-      order = 'ventilators__total' if order_by == "total_ventilators" else "ventilators__available"
-    elif order_by == "distance":
-      order = "distance"
-    else:
-      order = "distance"
+    o = order_by
+    
+    if o == "total_general":
+      e_cat = "gen"
+      hospitals = get_hospitals("total", equipment_category=e_cat)
+    elif o == "total_ICU":
+      e_cat = "ICU"
+      hospitals = get_hospitals("total", equipment_category=e_cat)
+    elif o == "total_HDU":
+      e_cat = "HDU"
+      hospitals = get_hospitals("total", equipment_category=e_cat)
+    elif o == "total_ventilators":
+      e_cat = "vent"
+      hospitals = get_hospitals("total", equipment_category=e_cat)
+    elif o == "available_general":
+      e_cat = "gen"
+      hospitals = get_hospitals("available", equipment_category=e_cat)
+    elif o == "available_ICU":
+      e_cat = "ICU"
+      hospitals = get_hospitals("available", equipment_category=e_cat)
 
-    return get_hospitals(order)
+    elif o == "available_HDU":
+      e_cat = "HDU"
+      hospitals = get_hospitals("available", equipment_category=e_cat)
+
+    elif o == "available_ventilators":
+      e_cat = "vent"
+      hospitals = get_hospitals("available", equipment_category=e_cat)
+
+    elif o == "occupied_general":
+      e_cat = "gen"
+      hospitals = get_hospitals("occupied", equipment_category=e_cat)
+      
+    elif o == "occupied_ICU":
+      e_cat = "ICU"
+      hospitals = get_hospitals("occupied", equipment_category=e_cat)
+
+    elif o == "occupied_HDU":
+      e_cat = "HDU"
+      hospitals = get_hospitals("occupied", equipment_category=e_cat)
+
+    elif o == "occupied_ventilators":
+      e_cat = "vent"
+      hospitals = get_hospitals("occupied", equipment_category=e_cat)
+
+    elif o == "name":
+      hospitals = get_hospitals("name")
+
+    elif o == "distance":
+      hospitals = get_hospitals("distance")
+    else:
+      hospitals = get_hospitals("occupied", "general")
+
+    # if order_by == 'name':
+    #   order = 'name'
+    # elif 'beds' in order_by:
+    #   order = 'gen__total' if order_by == "total_gen" else "gen__available"
+    # elif 'ICU' in order_by:
+    #   order = 'ICU__total' if order_by == "total_ICU" else "ICU__available"
+    # elif 'ventilators' in order_by:
+    #   order = 'ventilators__total' if order_by == "total_ventilators" else "ventilators__available"
+    # elif order_by == "distance":
+    #   order = "distance"
+    # else:
+    #   order = "distance"
+
+    return hospitals
 
 
 class NewHospitalInput(graphene.InputObjectType):

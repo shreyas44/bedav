@@ -4,7 +4,7 @@ import Checkbox from '../checkbox'
 import SelectedFiltersContext from '../contexts/SelectedFilters'
 
 const StyledDiv = styled.div`
-  margin: 0 0 30px;
+  margin: 0 0 15px;
   display: flex;
   align-items: center;
 `

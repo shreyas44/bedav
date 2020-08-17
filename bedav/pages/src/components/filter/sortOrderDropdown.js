@@ -2,8 +2,7 @@ import React, {useState} from 'react'
 import Dropdown from './dropdown/dropdown'
 
 function SortOrderDropdown(props) {
-  const [value, setValue] = useState("Increasing")
-  const values = ['Increasing', "Decreasing"]
+  const {values, value, setValue} = props 
 
   return (
     <Dropdown 

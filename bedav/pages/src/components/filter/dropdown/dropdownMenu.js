@@ -7,8 +7,9 @@ const StyledDropdownMenu = styled.div`
   width: 100%;
   box-sizing: border-box;
   position: absolute;
-  top: 51px;
+  top: 41px;
   display: ${({open}) => open ? "block" : "none"};
+  z-index: 1;
 
   &::before {
     content: '';
@@ -24,7 +25,7 @@ const StyledDropdownMenu = styled.div`
 function DropdownMenu(props) {
   const {values, onClick} = props
   
-  const items = values.map((value, index) => <DropdownItem key={index} onClick={onClick}>{value}</DropdownItem>)
+  const items = Object.keys(values).map((value, index) => <DropdownItem key={index} onClick={onClick} value={value}>{values[value]}</DropdownItem>)
 
   return (
     <StyledDropdownMenu open={props.open}>

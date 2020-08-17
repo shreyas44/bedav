@@ -6,6 +6,7 @@ import {graphql, QueryRenderer} from 'react-relay'
 import environment from '../../Environment'
 import SearchHospitalContext from '../contexts/SearchHospital'
 import SelectedFitlersContext from '../contexts/SelectedFilters'
+import SortContext from '../contexts/Sort'
 import HospitalDataOptions from './hospitalDataOptions'
 
 const StyledDiv = styled.div`
@@ -32,6 +33,7 @@ function HospitalSection(props) {
   const [dataToShow, setDataToShow] = useState("occupied")
   const {searchQuery} = useContext(SearchHospitalContext)
   const {filters} = useContext(SelectedFitlersContext)
+  const {sortValue} = useContext(SortContext)
 
   function setLatLon(position) {
     setLat(position.coords.latitude)
@@ -57,13 +59,13 @@ function HospitalSection(props) {
       <QueryRenderer 
         environment={environment}
         query={graphql`
-          query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String]) {
-            hospitals(first:10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters) {
+          query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean) {
+            hospitals(first:10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
               ...hospitalList_hospitalList
             }
           }
         `}
-        variables={{lat: lat, lon: lon, searchQuery: searchQuery, categoryFilters: filters}}
+        variables={{lat: lat, lon: lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
         render={({error, props}) => {
           if(error) {
             return <div>{error}</div>

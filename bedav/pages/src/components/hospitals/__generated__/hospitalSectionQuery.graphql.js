@@ -9,11 +9,14 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type hospitalList_hospitalList$ref = any;
+export type HospitalSortField = "AVAILABLE_GENERAL" | "AVAILABLE_HDU" | "AVAILABLE_ICU" | "AVAILABLE_VENTILATORS" | "DISTANCE" | "NAME" | "OCCUPIED_GENERAL" | "OCCUPIED_HDU" | "OCCUPIED_ICU" | "TOTAL_BEDS" | "TOTAL_HDU" | "TOTAL_ICU" | "TOTAL_VENTILATORS" | "USED_VENTILATORS" | "%future added value";
 export type hospitalSectionQueryVariables = {|
   lat?: ?number,
   lon?: ?number,
   searchQuery?: ?string,
   categoryFilters?: ?$ReadOnlyArray<?string>,
+  orderBy?: ?HospitalSortField,
+  descending?: ?boolean,
 |};
 export type hospitalSectionQueryResponse = {|
   +hospitals: ?{|
@@ -33,8 +36,10 @@ query hospitalSectionQuery(
   $lon: Float
   $searchQuery: String
   $categoryFilters: [String]
+  $orderBy: HospitalSortField
+  $descending: Boolean
 ) {
-  hospitals(first: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters) {
+  hospitals(first: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
     ...hospitalList_hospitalList
   }
 }
@@ -76,23 +81,38 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "lat"
+  "name": "descending"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "lon"
+  "name": "lat"
 },
 v3 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "lon"
+},
+v4 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "orderBy"
+},
+v5 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "searchQuery"
 },
-v4 = [
+v6 = [
   {
     "kind": "Variable",
     "name": "categoryFilters",
     "variableName": "categoryFilters"
+  },
+  {
+    "kind": "Variable",
+    "name": "descending",
+    "variableName": "descending"
   },
   {
     "kind": "Literal",
@@ -111,6 +131,11 @@ v4 = [
   },
   {
     "kind": "Variable",
+    "name": "orderBy",
+    "variableName": "orderBy"
+  },
+  {
+    "kind": "Variable",
     "name": "searchQuery",
     "variableName": "searchQuery"
   }
@@ -121,7 +146,9 @@ return {
       (v0/*: any*/),
       (v1/*: any*/),
       (v2/*: any*/),
-      (v3/*: any*/)
+      (v3/*: any*/),
+      (v4/*: any*/),
+      (v5/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -129,7 +156,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v6/*: any*/),
         "concreteType": "HospitalConnection",
         "kind": "LinkedField",
         "name": "hospitals",
@@ -150,17 +177,19 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v1/*: any*/),
       (v2/*: any*/),
       (v3/*: any*/),
-      (v0/*: any*/)
+      (v5/*: any*/),
+      (v0/*: any*/),
+      (v4/*: any*/),
+      (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "hospitalSectionQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v6/*: any*/),
         "concreteType": "HospitalConnection",
         "kind": "LinkedField",
         "name": "hospitals",
@@ -306,16 +335,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ef468c71f1aff74994f8a7c9e867b162",
+    "cacheID": "718aea60b29934e3baeadee234962ac0",
     "id": null,
     "metadata": {},
     "name": "hospitalSectionQuery",
     "operationKind": "query",
-    "text": "query hospitalSectionQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n) {\n  hospitals(first: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters) {\n    ...hospitalList_hospitalList\n  }\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  HDUOccupied\n  HDUAvailable\n  ICUOccupied\n  ICUAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  ICUTotal\n  HDUTotal\n}\n\nfragment hospitalList_hospitalList on HospitalConnection {\n  edges {\n    node {\n      id\n      ...hospitalItem_hospital\n    }\n  }\n}\n"
+    "text": "query hospitalSectionQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n) {\n  hospitals(first: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    ...hospitalList_hospitalList\n  }\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  HDUOccupied\n  HDUAvailable\n  ICUOccupied\n  ICUAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  ICUTotal\n  HDUTotal\n}\n\nfragment hospitalList_hospitalList on HospitalConnection {\n  edges {\n    node {\n      id\n      ...hospitalItem_hospital\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '17fe53490e17e3b09c7d7f928a101673';
+(node/*: any*/).hash = '1285f27f08896345fd543096f8fe8d43';
 
 module.exports = node;
