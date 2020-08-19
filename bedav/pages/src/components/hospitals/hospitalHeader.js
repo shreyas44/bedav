@@ -50,13 +50,13 @@ function HospitalHeader(props) {
       {
         props.dataToShow === "occupied" ? 
         <>
-          {renderHeading("General", "Occupied")}
+          {renderHeading("General Ward", "Occupied")}
           {renderHeading("HDU", "Occupied")}
           {renderHeading("ICU", "Occupied")}
           {renderHeading("Ventilators", "Used")}
         </> : props.dataToShow == "available" ? 
         <>
-          {renderHeading("General", "Available")}
+          {renderHeading("General Ward", "Available")}
           {renderHeading("HDU", "Available")}
           {renderHeading("ICU", "Available")}
           {renderHeading("Ventilators", "Available")} 

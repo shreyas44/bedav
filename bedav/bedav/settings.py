@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'hospitals',
     'pages',
-    'graphene_django'
+    'graphene_django',
+    # 'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'bedav.urls'
@@ -130,3 +132,7 @@ STATIC_URL = '/static/'
 GRAPHENE = {
     "SCHEMA": "bedav.schema.schema" 
 }
+
+INTERNAL_IPS = [
+    '127.0.0.1'
+]

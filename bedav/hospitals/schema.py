@@ -7,7 +7,12 @@ from math import radians, sin, cos, asin, sqrt
 from django.contrib.gis.db.models.functions import GeometryDistance
 from django.contrib.gis.geos import Point
 from django.db.models import F
+from django.db import connection
+from collections import namedtuple
 # from .forms import NewHospitalForm
+
+print(connection.queries)
+connection.queries
 
 def get_distance(hos_lat, user_lat, hos_lon, user_lon) -> float:
   hos_lat = radians(float(hos_lat))
@@ -50,30 +55,36 @@ class DataCategory(graphene.Enum):
 #   GOVERNMENT_HOSPITAL = "gov hos"
 
 def get_available(instance, category):
-  obj = instance.equipment.filter(branch=instance, category=category).order_by('-time').first()
+  hospital = Hospital.objects.get(id=instance.id)
+  obj = hospital.equipment.filter(category=category).order_by('-time').first()
 
   if obj is None:
     return None
 
+  print(connection.queries)
   return obj.available
 
 def get_total(instance, category):
-  obj = instance.equipment.filter(branch=instance, category=category).order_by('-time').first()
+  hospital = Hospital.objects.get(id=instance.id)
+  obj = hospital.equipment.filter(category=category).order_by('-time').first()
 
   if obj is None:
     return None
 
+  print(connection.queries)
   return obj.total
 
 def get_occupied(instance, category):
-  obj = instance.equipment.filter(branch=instance, category=category).order_by('-time').first()
+  hospital = Hospital.objects.get(id=instance.id)
+  obj = hospital.equipment.filter(category=category).order_by('-time').first()
 
   if obj is None:
     return None
 
+  print(connection.queries)
   return obj.total - obj.available
 
-class HospitalType(DjangoObjectType):
+class HospitalType(graphene.ObjectType):
   general_available = graphene.Int()
   ICU_available = graphene.Int()
   ventilators_available = graphene.Int()
@@ -87,6 +98,19 @@ class HospitalType(DjangoObjectType):
   HDU_occupied = graphene.Int()
   ventilators_occupied = graphene.Int()
   distance = graphene.Float()
+
+  id = graphene.NonNull(graphene.ID)
+  name = graphene.String()
+  website = graphene.String()
+  phone = graphene.String()
+  city = graphene.String()
+  district = graphene.String()
+  state = graphene.String()
+  country = graphene.String()
+  postal_code = graphene.Int()
+  place_id = graphene.String()
+  address = graphene.String()
+  category = graphene.String()
 
   def resolve_distance(hospital, info):
     return round(hospital.distance/1000, 1)
@@ -129,10 +153,10 @@ class HospitalType(DjangoObjectType):
 
 
   class Meta:
-    model = Hospital
+    # model = Hospital
     interfaces = (relay.Node, )
     name = "Hospital"
-    exclude = ('equipment', 'location')
+    # exclude = ('equipment', 'location')
 
 class HospitalConnection(relay.Connection):
   class Meta:
@@ -155,45 +179,60 @@ class Query(graphene.ObjectType):
 
     prefix = '-' if descending else ''
 
+    def namedtuplefetch(cursor):
+      desc = cursor.description
+      nt_result = namedtuple('Hospital', [col[0] for col in desc])
+      return [nt_result(*row) for row in cursor.fetchall()]
+
     def get_hospitals(order, equipment_category=None):
       old_order = order
       order = prefix + order
 
       if old_order != "distance":
 
+        cursor = connection.cursor()
+
         if len(category_filters) > 0:
-          equipments = Equipment.objects.filter(category=equipment_category, branch__category__in=category_filters, branch__name__icontains=search_query).annotate(occupied=F('total')-F('available')).order_by(order, '-time', 'branch').distinct("branch").select_related("branch")
-          equipments = list(equipments)
-          equipments.sort(key=lambda equipment: equipment.__dict__[old_order], reverse=True if prefix == "-" else False)
+          query = f'''
+             SELECT 
+            hos.*, (hos."location" <-> %s::geometry AS distance
+            FROM (
+                SELECT DISTINCT ON (branch_id)
+                available, total, (total - available) AS occupied,
+                "Hospitals"."id"
+                FROM "Equipment" 
+                INNER JOIN "Hospitals" ON "Equipment"."branch_id" = "Hospitals"."id"
+                WHERE "Equipment".category=%s
+                ORDER BY branch_id, time DESC
+              ) od
+            FULL OUTER JOIN "Hospitals" AS hos ON hos.id = od.id
+            WHERE hos.name ILIKE %s AND hos.category IN (%s)
+            ORDER BY COALESCE(od.{old_order}, 0) {'DESC' if descending else 'ASC'}
+          '''
 
-          hospitals_a = [equipment.branch for equipment in equipments]
+          cursor.execute(query, [str(coords), equipment_category, '%' + search_query + '%', str(tuple(category_filters))])
 
-          for hospital in hospitals_a:
-            hcoords = hospital.location.coords
-            ucoords = (lon, lat)
-            hospital.distance = get_distance(hcoords[1], coords[1], hcoords[0], coords[0]) 
-
-          ids = [hospital.id for hospital in hospitals_a]
-          hospitals_b = Hospital.objects.filter(category__in=category_filters, name__icontains=search_query).annotate(distance=GeometryDistance("location", coords)).exclude(id__in=ids)
         else:
-          equipments = Equipment.objects.filter(category=equipment_category, branch__name__icontains=search_query).annotate(occupied=F('total')-F('available')).order_by('branch', '-time').distinct("branch").select_related("branch")
-          equipments = list(equipments)
-          equipments.sort(key=lambda equipment: equipment.__dict__[old_order], reverse=True if prefix == "-" else False)
-
-          hospitals_a = [equipment.branch for equipment in equipments]
+          query = f'''
+            SELECT 
+            hos.*, (hos."location" <-> %s::geometry) AS distance
+            FROM (
+                SELECT DISTINCT ON (branch_id)
+                available, total, (total - available) AS occupied,
+                "Hospitals"."id"
+                FROM "Equipment" 
+                INNER JOIN "Hospitals" ON "Equipment"."branch_id" = "Hospitals"."id"
+                WHERE "Equipment".category=%s
+                ORDER BY branch_id, time DESC
+              ) od
+            FULL OUTER JOIN "Hospitals" AS hos ON hos.id = od.id
+            WHERE hos.name ILIKE %s
+            ORDER BY COALESCE(od.{old_order}, 0) {'DESC' if descending else 'ASC'}
+          '''
           
-          for hospital in hospitals_a:
-            hcoords = hospital.location.coords
-            ucoords = (lon, lat)
-            hospital.__dict__['distance'] = get_distance(hcoords[1], ucoords[1], hcoords[0], ucoords[0])
+          cursor.execute(query, [str(coords), equipment_category, '%' + search_query + '%']) 
 
-          ids = [hospital.id for hospital in hospitals_a]
-          hospitals_b = Hospital.objects.filter(name__icontains=search_query).annotate(distance=GeometryDistance("location", coords)).exclude(id__in=ids)
-
-        if descending:
-          hospitals = hospitals_a + list(hospitals_b)
-        else:
-          hospitals = list(hospitals_b) + hospitals_a
+        hospitals = namedtuplefetch(cursor)
 
       elif old_order == "distance":
 
