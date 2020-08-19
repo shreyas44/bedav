@@ -9,25 +9,6 @@ from django.contrib.gis.geos import Point
 from django.db.models import F
 from django.db import connection
 from collections import namedtuple
-# from .forms import NewHospitalForm
-
-print(connection.queries)
-connection.queries
-
-def get_distance(hos_lat, user_lat, hos_lon, user_lon) -> float:
-  hos_lat = radians(float(hos_lat))
-  hos_lon = radians(float(hos_lat))
-  user_lat = radians(float(user_lat))
-  user_lon = radians(float(user_lon))
-  lat_diff = hos_lat - user_lat
-  lon_diff = hos_lon - user_lon
-
-  a = sin(lat_diff / 2)**2 + cos(hos_lat) * cos(user_lat) * sin(lon_diff/2)**2
-  c = 2 * asin(sqrt(a))
-
-  distance =  c * 6371
-  # distance = round(distance, 2)
-  return distance
 
 class HospitalSortField(graphene.Enum):
   NAME = "name"
@@ -50,39 +31,6 @@ class DataCategory(graphene.Enum):
   HDU = "HDU"
   ICU = "ICU"
   VENTLILATORS = "vent"
-
-# class HospitalTypes(graphene.Enum):
-#   GOVERNMENT_HOSPITAL = "gov hos"
-
-def get_available(instance, category):
-  hospital = Hospital.objects.get(id=instance.id)
-  obj = hospital.equipment.filter(category=category).order_by('-time').first()
-
-  if obj is None:
-    return None
-
-  print(connection.queries)
-  return obj.available
-
-def get_total(instance, category):
-  hospital = Hospital.objects.get(id=instance.id)
-  obj = hospital.equipment.filter(category=category).order_by('-time').first()
-
-  if obj is None:
-    return None
-
-  print(connection.queries)
-  return obj.total
-
-def get_occupied(instance, category):
-  hospital = Hospital.objects.get(id=instance.id)
-  obj = hospital.equipment.filter(category=category).order_by('-time').first()
-
-  if obj is None:
-    return None
-
-  print(connection.queries)
-  return obj.total - obj.available
 
 class HospitalType(graphene.ObjectType):
   general_available = graphene.Int()
@@ -113,50 +61,11 @@ class HospitalType(graphene.ObjectType):
   category = graphene.String()
 
   def resolve_distance(hospital, info):
-    return round(hospital.distance/1000, 1)
-
-  def resolve_general_available(hospital, info):
-    return get_available(hospital, "gen")
-
-  def resolve_ICU_available(hospital, info):
-    return get_available(hospital, "ICU")
-    
-  def resolve_HDU_available(hospital, info):
-    return get_available(hospital, "HDU")
-
-  def resolve_ventilators_available(hospital, info):
-    return get_available(hospital, "vent")
-
-  def resolve_general_total(hospital, info):
-    return get_total(hospital, "gen")
-
-  def resolve_ICU_total(hospital, info):
-    return get_total(hospital, "ICU")
-
-  def resolve_HDU_total(hospital, info):
-    return get_total(hospital, "HDU")
-
-  def resolve_ventilators_total(hospital, info):
-    return get_total(hospital, "vent")
-
-  def resolve_general_occupied(hospital, info):
-    return get_occupied(hospital, "gen")
-
-  def resolve_HDU_occupied(hospital, info):
-    return get_occupied(hospital, "HDU")
-
-  def resolve_ICU_occupied(hospital, info):
-    return get_occupied(hospital, "ICU")
-
-  def resolve_ventilators_occupied(hospital, info):
-    return get_occupied(hospital, "vent")
-
+    return round(hospital.distance, 1)
 
   class Meta:
-    # model = Hospital
     interfaces = (relay.Node, )
     name = "Hospital"
-    # exclude = ('equipment', 'location')
 
 class HospitalConnection(relay.Connection):
   class Meta:
@@ -177,137 +86,76 @@ class Query(graphene.ObjectType):
     info.context.coords = {"lat": lat, "lon": lon}
     coords = Point(lon, lat, srid=4326)
 
-    prefix = '-' if descending else ''
-
     def namedtuplefetch(cursor):
       desc = cursor.description
       nt_result = namedtuple('Hospital', [col[0] for col in desc])
       return [nt_result(*row) for row in cursor.fetchall()]
 
-    def get_hospitals(order, equipment_category=None):
-      old_order = order
-      order = prefix + order
+    def get_hospitals(order):
+      joins = '''
+      FULL OUTER JOIN (
+        SELECT DISTINCT ON (branch_id)
+        branch_id, available general_available, total general_total, (total - available) general_occupied
+        FROM "Equipment" WHERE category = 'gen' ORDER BY branch_id, time DESC
+      ) AS eq_gen ON eq_gen.branch_id = hos.id
+      FULL OUTER JOIN (
+        SELECT DISTINCT ON (branch_id)
+        branch_id, available ICU_available, total ICU_total, (total - available) ICU_occupied
+        FROM "Equipment" WHERE category = 'ICU' ORDER BY branch_id, time DESC
+      ) AS eq_ICU ON eq_ICU.branch_id = hos.id
+      FULL OUTER JOIN ( 
+        SELECT DISTINCT ON (branch_id)
+        branch_id, available HDU_available, total HDU_total, (total - available) HDU_occupied
+        FROM "Equipment" WHERE category = 'HDU' ORDER BY branch_id, time DESC
+      ) AS eq_HDU ON eq_HDU.branch_id = hos.id
+      FULL OUTER JOIN (      
+        SELECT DISTINCT ON (branch_id)
+        branch_id, available ventilators_available, total ventilators_total, (total - available) ventilators_occupied
+        FROM "Equipment" WHERE category = 'vent' ORDER BY branch_id, time DESC
+      ) AS eq_vent ON eq_vent.branch_id = hos.id
+      '''
 
-      if old_order != "distance":
+      selections = '''
+        eq_HDU.HDU_available, eq_HDU.HDU_total, eq_HDU.HDU_occupied,
+        eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
+        eq_ICU.ICU_available, eq_ICU.ICU_total, eq_ICU.ICU_occupied,
+        eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
+        hos.*,
+        ((hos."location" <-> %s::geometry) / 1000) AS distance
+      '''
 
-        cursor = connection.cursor()
 
-        if len(category_filters) > 0:
-          query = f'''
-             SELECT 
-            hos.*, (hos."location" <-> %s::geometry AS distance
-            FROM (
-                SELECT DISTINCT ON (branch_id)
-                available, total, (total - available) AS occupied,
-                "Hospitals"."id"
-                FROM "Equipment" 
-                INNER JOIN "Hospitals" ON "Equipment"."branch_id" = "Hospitals"."id"
-                WHERE "Equipment".category=%s
-                ORDER BY branch_id, time DESC
-              ) od
-            FULL OUTER JOIN "Hospitals" AS hos ON hos.id = od.id
-            WHERE hos.name ILIKE %s AND hos.category IN (%s)
-            ORDER BY COALESCE(od.{old_order}, 0) {'DESC' if descending else 'ASC'}
-          '''
+      cursor = connection.cursor()
 
-          cursor.execute(query, [str(coords), equipment_category, '%' + search_query + '%', str(tuple(category_filters))])
+      if len(category_filters) > 0:
+        where_claus = 'WHERE hos.name ILIKE %s AND hos.category IN (%s)'
+        escaped_strings = [str(coords), '%' + search_query + '%', str(tuple(category_filters))]
+      else:
+        where_claus = 'WHERE hos.name ILIKE %s'
+        escaped_strings = [str(coords), '%' + search_query + '%']
 
-        else:
-          query = f'''
-            SELECT 
-            hos.*, (hos."location" <-> %s::geometry) AS distance
-            FROM (
-                SELECT DISTINCT ON (branch_id)
-                available, total, (total - available) AS occupied,
-                "Hospitals"."id"
-                FROM "Equipment" 
-                INNER JOIN "Hospitals" ON "Equipment"."branch_id" = "Hospitals"."id"
-                WHERE "Equipment".category=%s
-                ORDER BY branch_id, time DESC
-              ) od
-            FULL OUTER JOIN "Hospitals" AS hos ON hos.id = od.id
-            WHERE hos.name ILIKE %s
-            ORDER BY COALESCE(od.{old_order}, 0) {'DESC' if descending else 'ASC'}
-          '''
-          
-          cursor.execute(query, [str(coords), equipment_category, '%' + search_query + '%']) 
+      query = f'''
+        SELECT * FROM (
+          SELECT 
+          {selections}
+          FROM "Hospitals" AS hos
+          {joins}
+          {where_claus}
+        ) data
+        ORDER BY COALESCE({order}, 0) {'DESC' if descending else 'ASC'}
+      '''
 
-        hospitals = namedtuplefetch(cursor)
-
-      elif old_order == "distance":
-
-        if len(category_filters) > 0:
-          hospitals =  Hospital.objects.filter(category__in=category_filters, name__icontains=search_query).annotate(distance=GeometryDistance("location", coords)).order_by(order)
-        else:
-          hospitals = Hospital.objects.filter(name__icontains=search_query).annotate(distance=GeometryDistance("location", coords)).order_by(order)
-
+      cursor.execute(query, escaped_strings)
+      hospitals = namedtuplefetch(cursor)
       return hospitals
 
     o = order_by
+
+    if o not in ("distance", "name"):
+      o = o.split("_")[::-1]
+      o = '_'.join(o)
     
-    if o == "total_general":
-      e_cat = "gen"
-      hospitals = get_hospitals("total", equipment_category=e_cat)
-    elif o == "total_ICU":
-      e_cat = "ICU"
-      hospitals = get_hospitals("total", equipment_category=e_cat)
-    elif o == "total_HDU":
-      e_cat = "HDU"
-      hospitals = get_hospitals("total", equipment_category=e_cat)
-    elif o == "total_ventilators":
-      e_cat = "vent"
-      hospitals = get_hospitals("total", equipment_category=e_cat)
-    elif o == "available_general":
-      e_cat = "gen"
-      hospitals = get_hospitals("available", equipment_category=e_cat)
-    elif o == "available_ICU":
-      e_cat = "ICU"
-      hospitals = get_hospitals("available", equipment_category=e_cat)
-
-    elif o == "available_HDU":
-      e_cat = "HDU"
-      hospitals = get_hospitals("available", equipment_category=e_cat)
-
-    elif o == "available_ventilators":
-      e_cat = "vent"
-      hospitals = get_hospitals("available", equipment_category=e_cat)
-
-    elif o == "occupied_general":
-      e_cat = "gen"
-      hospitals = get_hospitals("occupied", equipment_category=e_cat)
-      
-    elif o == "occupied_ICU":
-      e_cat = "ICU"
-      hospitals = get_hospitals("occupied", equipment_category=e_cat)
-
-    elif o == "occupied_HDU":
-      e_cat = "HDU"
-      hospitals = get_hospitals("occupied", equipment_category=e_cat)
-
-    elif o == "occupied_ventilators":
-      e_cat = "vent"
-      hospitals = get_hospitals("occupied", equipment_category=e_cat)
-
-    elif o == "name":
-      hospitals = get_hospitals("name")
-
-    elif o == "distance":
-      hospitals = get_hospitals("distance")
-    else:
-      hospitals = get_hospitals("occupied", "general")
-
-    # if order_by == 'name':
-    #   order = 'name'
-    # elif 'beds' in order_by:
-    #   order = 'gen__total' if order_by == "total_gen" else "gen__available"
-    # elif 'ICU' in order_by:
-    #   order = 'ICU__total' if order_by == "total_ICU" else "ICU__available"
-    # elif 'ventilators' in order_by:
-    #   order = 'ventilators__total' if order_by == "total_ventilators" else "ventilators__available"
-    # elif order_by == "distance":
-    #   order = "distance"
-    # else:
-    #   order = "distance"
+    hospitals = get_hospitals(o)
 
     return hospitals
 

@@ -172,6 +172,7 @@ def add_bangalore_hospitals():
 add_bangalore_hospitals()
 
 def update_bangalore_data():
+    current_time = time.time()
     for index, item in data.iterrows():
         equipment = []
 
@@ -196,7 +197,7 @@ def update_bangalore_data():
                 "available": value,
                 "category": category,
                 "total": item.loc[category + "_total"],
-                "time": time.time(),
+                "time": current_time,
                 "branch": obj
             })
 
