@@ -138,9 +138,7 @@ def get_bangalore_data():
 
     return data
 
-data = get_bangalore_data()
-
-def add_bangalore_hospitals():
+def add_bangalore_hospitals(data):
     for index, item in data[['name','category']].iterrows():
         hospital = {
             "name": item.loc['name'],
@@ -158,7 +156,7 @@ def add_bangalore_hospitals():
         if hospital_exists(hospital['name']):
             continue
 
-        location_info = get_location_info(item.loc['name'])
+        location_info = get_location_info(item.loc['name'], "Bangalore", "Karnataka")
         hospital = {**hospital, **location_info}
         
         contact_info = get_contact_info(hospital['place_id']) if 'place_id' in hospital.keys() else {}
@@ -169,9 +167,26 @@ def add_bangalore_hospitals():
 
         print(index, hospital)
 
-add_bangalore_hospitals()
+def refetch_info():
+    hospitals = Hospital.objects.all()
+    for hospital in hospitals:
+        location_info = get_location_info(hospital.name, "Bangalore", "Karnataka")
+        if location_info != {}:
+            hospital.location = location_info['location']
+            hospital.address = location_info['address']
+            hospital.place_id = location_info['place_id']
+            hospital.state = location_info['state']
+            hospital.country = location_info['country']
+            hospital.district = location_info['district']
+            hospital.city = location_info['city']
+        
+            contact_info = get_contact_info(hospital.place_id)
+            hospital.phone = contact_info['phone']
+            hospital.website = contact_info['website']
 
-def update_bangalore_data():
+            hospital.save()
+
+def update_bangalore_data(data):
     current_time = time.time()
     for index, item in data.iterrows():
         equipment = []
@@ -205,7 +220,11 @@ def update_bangalore_data():
             obj = Equipment(**x)
             obj.save()
 
-update_bangalore_data()
+data = get_banaglore_data()
+add_bangalore_hospitals(data)
+update_bangalore_data(data)
+
+# refetch_info()
 
 
 

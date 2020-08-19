@@ -3,10 +3,10 @@ from django.contrib.gis.geos import Point
 
 KEY = "AIzaSyDMJnJXbyp-pH4xaWY8_S1RI-mUEV1EzB0"
 
-def get_location_info(name):
+def get_location_info(name, city='', state='', country='India'):
     ret_data = {}
 
-    header = {'key':  KEY, "address": name + ", Karnataka, India"}
+    header = {'key':  KEY, "address": f'{name}, {city}, {state}, {country}'}
     url = "https://maps.googleapis.com/maps/api/geocode/json?" + urllib.parse.urlencode(header)
     print(url)
 

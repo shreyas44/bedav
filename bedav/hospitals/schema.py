@@ -93,43 +93,42 @@ class Query(graphene.ObjectType):
 
     def get_hospitals(order):
       joins = '''
-      FULL OUTER JOIN (
-        SELECT DISTINCT ON (branch_id)
-        branch_id, available general_available, total general_total, (total - available) general_occupied
-        FROM "Equipment" WHERE category = 'gen' ORDER BY branch_id, time DESC
-      ) AS eq_gen ON eq_gen.branch_id = hos.id
-      FULL OUTER JOIN (
-        SELECT DISTINCT ON (branch_id)
-        branch_id, available ICU_available, total ICU_total, (total - available) ICU_occupied
-        FROM "Equipment" WHERE category = 'ICU' ORDER BY branch_id, time DESC
-      ) AS eq_ICU ON eq_ICU.branch_id = hos.id
-      FULL OUTER JOIN ( 
-        SELECT DISTINCT ON (branch_id)
-        branch_id, available HDU_available, total HDU_total, (total - available) HDU_occupied
-        FROM "Equipment" WHERE category = 'HDU' ORDER BY branch_id, time DESC
-      ) AS eq_HDU ON eq_HDU.branch_id = hos.id
-      FULL OUTER JOIN (      
-        SELECT DISTINCT ON (branch_id)
-        branch_id, available ventilators_available, total ventilators_total, (total - available) ventilators_occupied
-        FROM "Equipment" WHERE category = 'vent' ORDER BY branch_id, time DESC
-      ) AS eq_vent ON eq_vent.branch_id = hos.id
+        FULL OUTER JOIN (
+          SELECT DISTINCT ON (branch_id)
+          branch_id, available general_available, total general_total, (total - available) general_occupied
+          FROM "Equipment" WHERE category = 'gen' ORDER BY branch_id, time DESC
+        ) AS eq_gen ON eq_gen.branch_id = hos.id
+        FULL OUTER JOIN (
+          SELECT DISTINCT ON (branch_id)
+          branch_id, available ICU_available, total ICU_total, (total - available) ICU_occupied
+          FROM "Equipment" WHERE category = 'ICU' ORDER BY branch_id, time DESC
+        ) AS eq_ICU ON eq_ICU.branch_id = hos.id
+        FULL OUTER JOIN ( 
+          SELECT DISTINCT ON (branch_id)
+          branch_id, available HDU_available, total HDU_total, (total - available) HDU_occupied
+          FROM "Equipment" WHERE category = 'HDU' ORDER BY branch_id, time DESC
+        ) AS eq_HDU ON eq_HDU.branch_id = hos.id
+        FULL OUTER JOIN (      
+          SELECT DISTINCT ON (branch_id)
+          branch_id, available ventilators_available, total ventilators_total, (total - available) ventilators_occupied
+          FROM "Equipment" WHERE category = 'vent' ORDER BY branch_id, time DESC
+        ) AS eq_vent ON eq_vent.branch_id = hos.id
       '''
 
       selections = '''
         eq_HDU.HDU_available, eq_HDU.HDU_total, eq_HDU.HDU_occupied,
         eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
         eq_ICU.ICU_available, eq_ICU.ICU_total, eq_ICU.ICU_occupied,
-        eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
+        eq_vent.ventilators_available as ventilators_used, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
         hos.*,
         ((hos."location" <-> %s::geometry) / 1000) AS distance
       '''
 
-
       cursor = connection.cursor()
 
       if len(category_filters) > 0:
-        where_claus = 'WHERE hos.name ILIKE %s AND hos.category IN (%s)'
-        escaped_strings = [str(coords), '%' + search_query + '%', str(tuple(category_filters))]
+        where_claus = 'WHERE hos.name ILIKE %s AND hos.category IN %s'
+        escaped_strings = [str(coords), '%' + search_query + '%', tuple(category_filters)]
       else:
         where_claus = 'WHERE hos.name ILIKE %s'
         escaped_strings = [str(coords), '%' + search_query + '%']
@@ -146,8 +145,7 @@ class Query(graphene.ObjectType):
       '''
 
       cursor.execute(query, escaped_strings)
-      hospitals = namedtuplefetch(cursor)
-      return hospitals
+      return namedtuplefetch(cursor)
 
     o = order_by
 
