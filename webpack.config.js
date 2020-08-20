@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: "./bedav/pages/src/index.js",
   output: {
     filename: 'main.js',
