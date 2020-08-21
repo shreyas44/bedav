@@ -50,9 +50,9 @@ function Header() {
   return (
     <StyledDiv>
       <Heading />
-      <NavBar>
+      {/* <NavBar>
         <Icon onClick={() => { context.setFilterScreen(!context.filterScreen) } } />
-      </NavBar>
+      </NavBar> */}
     </StyledDiv>
   )
 }

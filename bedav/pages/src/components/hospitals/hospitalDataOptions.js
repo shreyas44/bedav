@@ -26,7 +26,7 @@ const StyledP = styled.p`
 const StyledDiv = styled.div`
   display: flex;
   align-content: center;
-  margin: 0 10px;
+  margin: 0 0 0 15px;
 `
 
 function HospitalDataOption(props) {
@@ -62,19 +62,32 @@ function HospitalDataOptions(props) {
     }
   }
 
+  function handleTotalClick(event) {
+    if(dataToShow !== "total") {
+      setDataToShow("total")
+    } 
+  }
+
   return (
     <StyledOptionsDiv>
       <HospitalDataOption 
-        checked={dataToShow === "occupied"}
-        onClick={handleOccupiedClick}
-        text="Show Occupied"
+        checked={dataToShow === "available"}
+        onClick={handleAvailableClick}
+        text="Available"
       />
 
       <HospitalDataOption 
-        checked={dataToShow === "available"}
-        onClick={handleAvailableClick}
-        text="Show Available"
+        checked={dataToShow === "occupied"}
+        onClick={handleOccupiedClick}
+        text="Occupied"
       />
+
+      <HospitalDataOption 
+        checked={dataToShow === "total"}
+        onClick={handleTotalClick}
+        text="Total"
+      />
+
     </StyledOptionsDiv>
   )
 }

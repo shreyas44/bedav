@@ -60,8 +60,14 @@ class HospitalType(graphene.ObjectType):
   address = graphene.String()
   category = graphene.String()
 
+  # latitude = graphene.Float()
+  # longitude = graphene.Float()
+
   def resolve_distance(hospital, info):
     return round(hospital.distance, 1)
+
+  # def resolve_latitude(hospital, info):
+  #   return hospital.coords.
 
   class Meta:
     interfaces = (relay.Node, )
@@ -119,7 +125,7 @@ class Query(graphene.ObjectType):
         eq_HDU.HDU_available, eq_HDU.HDU_total, eq_HDU.HDU_occupied,
         eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
         eq_ICU.ICU_available, eq_ICU.ICU_total, eq_ICU.ICU_occupied,
-        eq_vent.ventilators_available as ventilators_used, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
+        eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
         hos.*,
         ((hos."location" <-> %s::geometry) / 1000) AS distance
       '''

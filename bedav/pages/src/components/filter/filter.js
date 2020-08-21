@@ -8,18 +8,20 @@ import SortDropdown from './sortDropdown'
 import SortOrderDropdwon from './sortOrderDropdown'
 
 const StyledDiv = styled.div`
-  height: 100%;
+  height: 50%;
   width: fit-content;
-  padding: 75px 55px 15px 35px;
+  padding: 35px 55px 15px 35px;
   box-sizing: border-box;
   position: fixed;
-  top: 0;
-  right: 0;
+  right: 30px;
+  bottom: 100px;
   background: white;
   opacity: ${({filterScreen}) => filterScreen ? 1 : 0};
   transition: opacity 0.2s;
   z-index: ${({filterScreen}) => filterScreen ? -1 : -3};; 
-  box-shadow: -10px 0px 10px 1px #ddd;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+  border-radius: 20px;
+  overflow-y: scroll;
 `
 
 const StyledContainer = styled.div`
@@ -60,12 +62,12 @@ function FilterScreen(props) {
   const sortValues = {
     DISTANCE: "Distance",
     OCCUPIED_GENERAL: "General Ward Occupied",
-    OCCUPIED_HDU: "HDU Occupied",
-    OCCUPIED_ICU: "ICU Occupied",
-    USED_VENTILATORS: "Ventilators Used",
     AVAILABLE_GENERAL: "General Ward Available",
+    OCCUPIED_HDU: "HDU Occupied",
     AVAILABLE_HDU: "HDU Available",
+    OCCUPIED_ICU: "ICU Occupied",
     AVAILABLE_ICU: "ICU Available",
+    USED_VENTILATORS: "Ventilators Used",
     AVAILABLE_VENTILATORS: "Ventilators Available"
   }
 

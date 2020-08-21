@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react'
 import styled from 'styled-components'
 import MaterialSearchIcon from '@material-ui/icons/Search'
-import SearchHospitalContext from './contexts/SearchHospital'
+import SearchHospitalContext from '../contexts/SearchHospital'
 
 let SearchIcon = ({className}) => <MaterialSearchIcon className={className} />
 

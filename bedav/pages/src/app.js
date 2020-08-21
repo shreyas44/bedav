@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import Header from './components/header'
-import Home from './components/home' 
+import Home from './components/home/home' 
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import { FilterScreenProvider } from './components/contexts/FilterScreen'
 

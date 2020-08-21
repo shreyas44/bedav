@@ -1,8 +1,9 @@
 import React, { useReducer } from 'react'
-import Filter from './filter/filter'
+import Filter from '../filter/filter'
 import Main from './main'
-import { SelectedFiltersProvider } from './contexts/SelectedFilters'
-import { SortProvider } from './contexts/Sort'
+import { SelectedFiltersProvider } from '../contexts/SelectedFilters'
+import { SortProvider } from '../contexts/Sort'
+import FilterIcon from '../filter/filterIcon'
 
 function Home() {
   return (
@@ -12,6 +13,7 @@ function Home() {
           <Main />
           <Filter />
         </SortProvider>
+        <FilterIcon />
       </SelectedFiltersProvider>
     </div>
   )

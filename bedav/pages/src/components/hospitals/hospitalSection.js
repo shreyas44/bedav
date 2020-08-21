@@ -9,7 +9,6 @@ import SortContext from '../contexts/Sort'
 import HospitalHeader from './hospitalHeader'
 import HospitalList from './hospitalList'
 import HospitalDataOptions from './hospitalDataOptions'
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 const StyledDiv = styled.div`
   margin: 10vh auto;
@@ -17,21 +16,21 @@ const StyledDiv = styled.div`
   width: 100%;
   max-width: 1400px;
   display: grid;
-  grid-template-columns: 250px auto 150px repeat(4, auto);
+  grid-template-columns: minmax(250px, 300px) auto minmax(150px, 225px) repeat(4, auto);
   grid-gap: 5px;
-  font-size: 15px;
+  font-size: 16px;
   position: relative;
 `
 
 const StyledP = styled.p`
   margin: 0 5px;
   grid-column: 1 / -1;
-  color: #aaa;
+  color: #555;
 `
 
 function HospitalSection(props) {
   const [location, setLocation] = useState({geolocation: false})
-  const [dataToShow, setDataToShow] = useState("occupied")
+  const [dataToShow, setDataToShow] = useState("available")
   const {searchQuery} = useContext(SearchHospitalContext)
   const {filters} = useContext(SelectedFitlersContext)
   const {sortValue, setSortValue} = useContext(SortContext)
@@ -47,14 +46,14 @@ function HospitalSection(props) {
   function setPosition() {
     setSortValue({
       ...sortValue,
-      field: 'DISTANCE'
+      field: 'DISTANCE',
+      descending: false
     })
     navigator.geolocation.getCurrentPosition(setCoords, () => { setLocation({...location, geolocation: false}) })
   }
 
   function requestAndSetPosition() {
     Swal.fire({
-      icon: <LocationOnIcon />,
       title: "Find hospitals closest to you",
       html: "If you want to find the hospitals which are closest to you, please allow <b>bedav</b> to access your location.",
       icon: null,
@@ -108,7 +107,7 @@ function HospitalSection(props) {
         ICU - Intensive Care Unit;
         N.A. - Not Applicable
       </StyledP>
-      <HospitalHeader dataToShow={dataToShow}/>
+      <HospitalHeader dataToShow={dataToShow} geolocation={location.geolocation}/>
       <QueryRenderer 
         environment={environment}
         query={graphql`

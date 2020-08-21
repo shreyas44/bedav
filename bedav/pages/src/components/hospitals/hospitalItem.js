@@ -11,7 +11,6 @@ export const StyledRow = styled.div`
 
 export const StyledItem = styled.div`
   padding: 0 20px;
-  height: 100%;
   border-radius: 5px;
   padding: 15px;
   box-sizing: border-box;
@@ -20,8 +19,6 @@ export const StyledItem = styled.div`
 `
 
 export const StyledName = styled(StyledItem)`
-  /* min-width: 250px;
-  max-width: 300px; */
   font-weight: bold;
   background: #f8f8f8;
   color: #0275b3;
@@ -29,37 +26,16 @@ export const StyledName = styled(StyledItem)`
   cursor: pointer;
 
   &:hover {
-    font-size: 16px;
     color: #004266;
+    background-color: #eee;
   }
 `
 
 export const StyledNumber = styled(StyledItem)`
   text-align: center;
   background: ${({counter}) => counter % 2 == 0 ? "#f8f8f8" : "white"};
-  color: ${({colorTheme}) => colorTheme === "green" ? "#08A045" : colorTheme === "red" ? "#C3423F" : null};
+  color: ${({colorTheme}) => colorTheme === "green" ? "#08A045" : colorTheme === "red" ? "#C3423F" : colorTheme === "blue" ? "rgb(0, 66, 102)": null};
   justify-content: center;
-`
-
-const StyledFraction = styled.div`
-  position: relative;
-  bottom: 3px;
-`
-
-const StyledSpan = styled.span`
-  font-size: 24px;
-  margin: 0 6px;
-  opacity: 0.5;
-  position: relative;
-  top: 3px;
-`
-
-const StyledTotal = styled.div`
-  font-weight: bold;
-  font-size: 19px;
-  display: inline;
-  position: relative;
-  top: 1px;
 `
 
 function HospitalItem(props) {
@@ -73,20 +49,6 @@ function HospitalItem(props) {
     "covid": "Government Covid Care Centre"
   }
 
-  function getText(firstPart, secondPart) {
-    return (
-      <>
-        {firstPart}
-        <StyledSpan>
-          /
-        </StyledSpan>
-        <StyledTotal>
-          {secondPart}
-        </StyledTotal>
-      </>   
-    )
-  }
-
   function getNumberObject(firstPart, secondPart, color) {
     if(secondPart === null || secondPart === 0) {
       return <StyledNumber colorTheme={color} counter={counter}>N.A.</StyledNumber>
@@ -94,9 +56,7 @@ function HospitalItem(props) {
 
     return (
       <StyledNumber colorTheme={color} counter={counter}>
-        <StyledFraction>
-          {getText(firstPart, secondPart)}
-        </StyledFraction>
+        {firstPart}
       </StyledNumber>
     )
   }
@@ -122,7 +82,13 @@ function HospitalItem(props) {
           {getNumberObject(hospital.HDUAvailable, hospital.HDUTotal, "green")}
           {getNumberObject(hospital.ICUAvailable, hospital.ICUTotal, "green")}
           {getNumberObject(hospital.ventilatorsAvailable, hospital.ventilatorsTotal, "green")}
-        </> : null
+        </> : props.dataToShow == "total" ?
+        <>
+          {getNumberObject(hospital.generalTotal, hospital.generalTotal, "blue")}
+          {getNumberObject(hospital.HDUTotal, hospital.HDUTotal, "blue")}
+          {getNumberObject(hospital.ICUTotal, hospital.ICUTotal, "blue")}
+          {getNumberObject(hospital.ventilatorsTotal, hospital.ventilatorsTotal, "blue")} 
+        </>: null
       }
     </StyledRow>
   )
