@@ -35,7 +35,7 @@ export const StyledName = styled(StyledItem)`
 export const StyledNumber = styled(StyledItem)`
   text-align: center;
   background: ${({counter}) => counter % 2 == 0 ? "#f8f8f8" : "white"};
-  color: ${({colorTheme}) => colorTheme === "green" ? "#08A045" : colorTheme === "red" ? "#C3423F" : colorTheme === "blue" ? "rgb(0, 66, 102)": null};
+  color: ${({colorTheme}) => colorTheme === "green" ? "#008033" : colorTheme === "red" ? "#C3423F" : colorTheme === "blue" ? "rgb(0, 66, 102)": null};
   justify-content: center;
 `
 

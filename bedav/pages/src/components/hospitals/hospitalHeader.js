@@ -21,8 +21,6 @@ const StyledHeading = styled(StyledNumber)`
   padding: 15px;
   justify-content: center;
   background-color: #f8f8f8;
-  color: ${({colorTheme}) => colorTheme === "red" ? "#C3423F" : colorTheme === "green" ? "#08A045" : colorTheme == "blue" ? '#004266' : null};
-
   ${({sortable}) => sortable ? "cursor: pointer; &:hover {background-color: #eee;}" : null}
 `
 
@@ -41,8 +39,8 @@ const StyledOrderIcon = styled(FilterListIcon)`
   right: 5px;
   font-size: 16px !important;
   color: ${({active}) => active ? '#ba7e0f' : '#ccc'};
-  transform: ${({descending}) => !descending ? 'rotate(180deg)' : 'rotate(0)'};
-  transition: all 0.1s;
+  transform: ${({descending}) => descending ? 'rotate(180deg)' : 'rotate(0)'};
+  transition: all 0.1s !important;
 `
 
 function HospitalHeader(props) {
@@ -112,11 +110,11 @@ function HospitalHeader(props) {
         style={{color: '#004266'}}
         value="DISTANCE"
         onClick={handleClick}
-        sortable
+        sortable={props.geolocation ? true : undefined}
        >
         Distance
         {!props.geolocation ? <StyledWarningIcon /> : null}
-        <StyledOrderIcon active={sortValue.field == "DISTANCE" ? 1 : 0} descending={sortValue.descending ? 1: 0}/>
+        <StyledOrderIcon active={sortValue.field == "DISTANCE" ? 1 : 0} descending={sortValue.field == "DISTANCE" ? sortValue.descending ? 1 : 0 : 0}/>
       </StyledHeading>
 
       {headings}

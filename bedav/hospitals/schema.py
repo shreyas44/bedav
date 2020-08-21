@@ -21,7 +21,7 @@ class HospitalSortField(graphene.Enum):
   OCCUPIED_HDU = "occupied_HDU"
   OCCUPIED_ICU = "occupied_ICU"
   USED_VENTILATORS = "used_ventilators"
-  TOTAL_BEDS = "total_general"
+  TOTAL_GENERAL = "total_general"
   TOTAL_ICU = "total_ICU"
   TOTAL_HDU = "total_HDU"
   TOTAL_VENTILATORS = "total_ventilators"
@@ -149,8 +149,6 @@ class Query(graphene.ObjectType):
         ) data
         ORDER BY COALESCE({order}, {"''" if order == 'name' else 0}) {'DESC' if descending else 'ASC'}
       '''
-
-      print(query)
 
       cursor.execute(query, escaped_strings)
       return namedtuplefetch(cursor)
