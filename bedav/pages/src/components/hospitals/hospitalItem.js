@@ -16,6 +16,7 @@ export const StyledItem = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  position: relative;
 `
 
 export const StyledName = styled(StyledItem)`
@@ -65,28 +66,28 @@ function HospitalItem(props) {
     <StyledRow counter={counter}>
       <StyledName counter={counter}>{hospital.name}</StyledName>
 
-      <StyledNumber style={{color: '#004266'}} counter={counter}>{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
-
       <StyledNumber style={{color: '#004266'}} counter={counter}>{hospitalTypes[hospital.category]}</StyledNumber>
+
+      <StyledNumber style={{color: '#004266'}} counter={counter}>{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
 
       {
         props.dataToShow === "occupied" ?
         <>
           {getNumberObject(hospital.generalOccupied, hospital.generalTotal, "red")}
-          {getNumberObject(hospital.HDUOccupied, hospital.HDUTotal, "red")}
-          {getNumberObject(hospital.ICUOccupied, hospital.ICUTotal, "red")}
+          {getNumberObject(hospital.hduOccupied, hospital.hduTotal, "red")}
+          {getNumberObject(hospital.icuOccupied, hospital.icuTotal, "red")}
           {getNumberObject(hospital.ventilatorsOccupied, hospital.ventilatorsTotal, "red")}
         </> : props.dataToShow === "available" ?
         <>
           {getNumberObject(hospital.generalAvailable, hospital.generalTotal, "green")}
-          {getNumberObject(hospital.HDUAvailable, hospital.HDUTotal, "green")}
-          {getNumberObject(hospital.ICUAvailable, hospital.ICUTotal, "green")}
+          {getNumberObject(hospital.hduAvailable, hospital.hduTotal, "green")}
+          {getNumberObject(hospital.icuAvailable, hospital.icuTotal, "green")}
           {getNumberObject(hospital.ventilatorsAvailable, hospital.ventilatorsTotal, "green")}
         </> : props.dataToShow == "total" ?
         <>
           {getNumberObject(hospital.generalTotal, hospital.generalTotal, "blue")}
-          {getNumberObject(hospital.HDUTotal, hospital.HDUTotal, "blue")}
-          {getNumberObject(hospital.ICUTotal, hospital.ICUTotal, "blue")}
+          {getNumberObject(hospital.hduTotal, hospital.hduTotal, "blue")}
+          {getNumberObject(hospital.icuTotal, hospital.icuTotal, "blue")}
           {getNumberObject(hospital.ventilatorsTotal, hospital.ventilatorsTotal, "blue")} 
         </>: null
       }
@@ -104,16 +105,16 @@ export default createFragmentContainer(
         distance
         generalOccupied
         generalAvailable
-        HDUOccupied
-        HDUAvailable
-        ICUOccupied
-        ICUAvailable
+        hduOccupied
+        hduAvailable
+        icuOccupied
+        icuAvailable
         ventilatorsOccupied
         ventilatorsAvailable
         generalTotal
         ventilatorsTotal
-        ICUTotal
-        HDUTotal
+        icuTotal
+        hduTotal
       }
     `
   }

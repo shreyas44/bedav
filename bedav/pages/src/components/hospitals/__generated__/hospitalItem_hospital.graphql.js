@@ -17,16 +17,16 @@ export type hospitalItem_hospital = {|
   +distance: ?number,
   +generalOccupied: ?number,
   +generalAvailable: ?number,
-  +HDUOccupied: ?number,
-  +HDUAvailable: ?number,
-  +ICUOccupied: ?number,
-  +ICUAvailable: ?number,
+  +hduOccupied: ?number,
+  +hduAvailable: ?number,
+  +icuOccupied: ?number,
+  +icuAvailable: ?number,
   +ventilatorsOccupied: ?number,
   +ventilatorsAvailable: ?number,
   +generalTotal: ?number,
   +ventilatorsTotal: ?number,
-  +ICUTotal: ?number,
-  +HDUTotal: ?number,
+  +icuTotal: ?number,
+  +hduTotal: ?number,
   +$refType: hospitalItem_hospital$ref,
 |};
 export type hospitalItem_hospital$data = hospitalItem_hospital;
@@ -83,28 +83,28 @@ const node/*: ReaderFragment*/ = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "HDUOccupied",
+      "name": "hduOccupied",
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "HDUAvailable",
+      "name": "hduAvailable",
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "ICUOccupied",
+      "name": "icuOccupied",
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "ICUAvailable",
+      "name": "icuAvailable",
       "storageKey": null
     },
     {
@@ -139,14 +139,14 @@ const node/*: ReaderFragment*/ = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "ICUTotal",
+      "name": "icuTotal",
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "HDUTotal",
+      "name": "hduTotal",
       "storageKey": null
     }
   ],
@@ -154,6 +154,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '6e36bc2cc920e44c13e021aa7d1a67aa';
+(node/*: any*/).hash = '3cc9c8280ae3bdf5aac87e223d2c7944';
 
 module.exports = node;

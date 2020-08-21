@@ -16,7 +16,7 @@ const StyledDiv = styled.div`
   width: 100%;
   max-width: 1400px;
   display: grid;
-  grid-template-columns: minmax(250px, 300px) auto minmax(150px, 225px) repeat(4, auto);
+  grid-template-columns: minmax(250px, 300px) minmax(150px, 225px) repeat(5, auto);
   grid-gap: 5px;
   font-size: 16px;
   position: relative;

@@ -34,16 +34,16 @@ class DataCategory(graphene.Enum):
 
 class HospitalType(graphene.ObjectType):
   general_available = graphene.Int()
-  ICU_available = graphene.Int()
+  icu_available = graphene.Int()
   ventilators_available = graphene.Int()
-  HDU_available = graphene.Int()
+  hdu_available = graphene.Int()
   general_total = graphene.Int()
-  ICU_total = graphene.Int()
+  icu_total = graphene.Int()
   ventilators_total = graphene.Int()
-  HDU_total = graphene.Int()
+  hdu_total = graphene.Int()
   general_occupied = graphene.Int()
-  ICU_occupied = graphene.Int()
-  HDU_occupied = graphene.Int()
+  icu_occupied = graphene.Int()
+  hdu_occupied = graphene.Int()
   ventilators_occupied = graphene.Int()
   distance = graphene.Float()
 
@@ -106,12 +106,12 @@ class Query(graphene.ObjectType):
         ) AS eq_gen ON eq_gen.branch_id = hos.id
         FULL OUTER JOIN (
           SELECT DISTINCT ON (branch_id)
-          branch_id, available ICU_available, total ICU_total, (total - available) ICU_occupied
+          branch_id, available icu_available, total icu_total, (total - available) icu_occupied
           FROM "Equipment" WHERE category = 'ICU' ORDER BY branch_id, time DESC
         ) AS eq_ICU ON eq_ICU.branch_id = hos.id
         FULL OUTER JOIN ( 
           SELECT DISTINCT ON (branch_id)
-          branch_id, available HDU_available, total HDU_total, (total - available) HDU_occupied
+          branch_id, available hdu_available, total hdu_total, (total - available) hdu_occupied
           FROM "Equipment" WHERE category = 'HDU' ORDER BY branch_id, time DESC
         ) AS eq_HDU ON eq_HDU.branch_id = hos.id
         FULL OUTER JOIN (      
@@ -122,9 +122,9 @@ class Query(graphene.ObjectType):
       '''
 
       selections = '''
-        eq_HDU.HDU_available, eq_HDU.HDU_total, eq_HDU.HDU_occupied,
+        eq_HDU.hdu_available, eq_HDU.hdu_total, eq_HDU.hdu_occupied,
         eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
-        eq_ICU.ICU_available, eq_ICU.ICU_total, eq_ICU.ICU_occupied,
+        eq_ICU.icu_available, eq_ICU.icu_total, eq_ICU.icu_occupied,
         eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
         hos.*,
         ((hos."location" <-> %s::geometry) / 1000) AS distance
@@ -149,6 +149,8 @@ class Query(graphene.ObjectType):
         ) data
         ORDER BY COALESCE({order}, {"''" if order == 'name' else 0}) {'DESC' if descending else 'ASC'}
       '''
+
+      print(query)
 
       cursor.execute(query, escaped_strings)
       return namedtuplefetch(cursor)

@@ -50,16 +50,16 @@ fragment hospitalItem_hospital on Hospital {
   distance
   generalOccupied
   generalAvailable
-  HDUOccupied
-  HDUAvailable
-  ICUOccupied
-  ICUAvailable
+  hduOccupied
+  hduAvailable
+  icuOccupied
+  icuAvailable
   ventilatorsOccupied
   ventilatorsAvailable
   generalTotal
   ventilatorsTotal
-  ICUTotal
-  HDUTotal
+  icuTotal
+  hduTotal
 }
 
 fragment hospitalList_hospitalList_2CSWMY on Query {
@@ -296,28 +296,28 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "HDUOccupied",
+                    "name": "hduOccupied",
                     "storageKey": null
                   },
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "HDUAvailable",
+                    "name": "hduAvailable",
                     "storageKey": null
                   },
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "ICUOccupied",
+                    "name": "icuOccupied",
                     "storageKey": null
                   },
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "ICUAvailable",
+                    "name": "icuAvailable",
                     "storageKey": null
                   },
                   {
@@ -352,14 +352,14 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "ICUTotal",
+                    "name": "icuTotal",
                     "storageKey": null
                   },
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "HDUTotal",
+                    "name": "hduTotal",
                     "storageKey": null
                   },
                   {
@@ -429,12 +429,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e54d6a16c194af9c0648827188e5719d",
+    "cacheID": "a8514caf7aa0e08be7d650accff6e508",
     "id": null,
     "metadata": {},
     "name": "hospitalListPaginationQuery",
     "operationKind": "query",
-    "text": "query hospitalListPaginationQuery(\n  $count: Int\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...hospitalList_hospitalList_2CSWMY\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  HDUOccupied\n  HDUAvailable\n  ICUOccupied\n  ICUAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  ICUTotal\n  HDUTotal\n}\n\nfragment hospitalList_hospitalList_2CSWMY on Query {\n  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...hospitalItem_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query hospitalListPaginationQuery(\n  $count: Int\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...hospitalList_hospitalList_2CSWMY\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  hduOccupied\n  hduAvailable\n  icuOccupied\n  icuAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  icuTotal\n  hduTotal\n}\n\nfragment hospitalList_hospitalList_2CSWMY on Query {\n  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...hospitalItem_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

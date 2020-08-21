@@ -1,7 +1,9 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import { StyledRow, StyledName, StyledNumber } from './hospitalItem'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
+import FilterListIcon from '@material-ui/icons/FilterList'
+import SortContext from '../contexts/Sort'
 
 const StyledHeadingName = styled(StyledName)`
   padding: 15px;
@@ -20,9 +22,11 @@ const StyledHeading = styled(StyledNumber)`
   justify-content: center;
   background-color: #f8f8f8;
   color: ${({colorTheme}) => colorTheme === "red" ? "#C3423F" : colorTheme === "green" ? "#08A045" : colorTheme == "blue" ? '#004266' : null};
+
+  ${({sortable}) => sortable ? "cursor: pointer; &:hover {background-color: #eee;}" : null}
 `
 
-const StyledIcon = styled(ErrorOutlineIcon)`
+const StyledWarningIcon = styled(ErrorOutlineIcon)`
   margin-left: 5px;
   font-size: 20px !important;
   position: relative;
@@ -31,8 +35,18 @@ const StyledIcon = styled(ErrorOutlineIcon)`
   cursor: pointer;
 `
 
+const StyledOrderIcon = styled(FilterListIcon)`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 16px !important;
+  color: ${({active}) => active ? '#ba7e0f' : '#ccc'};
+  transform: ${({descending}) => !descending ? 'rotate(180deg)' : 'rotate(0)'};
+  transition: all 0.1s;
+`
 
 function HospitalHeader(props) {
+  const {sortValue, setSortValue} = useContext(SortContext)
 
   let colorTheme;
 
@@ -44,28 +58,66 @@ function HospitalHeader(props) {
     colorTheme = "blue"
   }
 
-  function renderHeading(text1, text2) {
+  function handleClick(event) {
+    const value = event.target.getAttribute("value")
+
+    if(value == sortValue.field) {
+      setSortValue({
+        ...sortValue,
+        descending: !sortValue.descending
+      })
+    } else {
+      setSortValue({
+        descending: false,
+        field: value
+      })
+    }
+  }
+
+  function renderHeading(index, key, text, active, descending) {
     return (
-      <StyledHeading colorTheme={colorTheme}>
-        {text1}
+      <StyledHeading 
+        colorTheme={colorTheme}
+        key={index}
+        value={`${props.dataToShow.toUpperCase()}_${key}`}
+        onClick={handleClick}
+        sortable
+      >
+        {text}
         <br/>
-        {text2}
+        {props.dataToShow[0].toUpperCase() + props.dataToShow.slice(1)}
+        <StyledOrderIcon active={active ? 1 : 0} descending={active ? descending ? 1 : 0 : 0}/>
       </StyledHeading>
     )
   }
 
-  const items = ["General Ward", "HDU", "ICU", "Ventilators"]
-  const headings = items.map((item, index) => renderHeading(item, props.dataToShow[0].toUpperCase() + props.dataToShow.slice(1)))
+  const items = {GENERAL: "General Ward", HDU: "HDU", ICU: "ICU", VENTILATORS: "Ventilators"}
+
+  const headings = Object.keys(items).map((key, index) => 
+    renderHeading(
+      index,
+      key,
+      items[key],
+      sortValue.field == `${props.dataToShow.toUpperCase()}_${key}`,
+      sortValue.descending
+    ))
 
   return (
     <StyledRow>
 
       <StyledHeadingName counter={2}>Name</StyledHeadingName>
-      <StyledHeading style={{color: '#004266'}}>
-        Distance
-        {!props.geolocation ? <StyledIcon /> : null}
-      </StyledHeading>
       <StyledHeading style={{color: '#004266'}}>Hospital Type</StyledHeading>
+
+      <StyledHeading 
+        style={{color: '#004266'}}
+        value="DISTANCE"
+        onClick={handleClick}
+        sortable
+       >
+        Distance
+        {!props.geolocation ? <StyledWarningIcon /> : null}
+        <StyledOrderIcon active={sortValue.field == "DISTANCE" ? 1 : 0} descending={sortValue.descending ? 1: 0}/>
+      </StyledHeading>
 
       {headings}
 
