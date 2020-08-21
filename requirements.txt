@@ -13,14 +13,12 @@ Django==3.1
 django-debug-toolbar==2.2
 djangorestframework==3.11.1
 et-xmlfile==1.0.1
-GDAL==3.1.2
 graphene==2.1.8
 graphene-django==2.12.1
 graphql-core==2.3.2
 graphql-relay==2.0.1
 idna==2.10
 jdcal==1.4.1
-mysqlclient==2.0.1
 numpy==1.19.1
 openpyxl==3.0.4
 pandas==1.1.0

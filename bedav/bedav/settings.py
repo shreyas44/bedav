@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -41,7 +42,6 @@ INSTALLED_APPS = [
     'hospitals',
     'pages',
     'graphene_django',
-    # 'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +52,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'bedav.urls'
@@ -83,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'bedav',
-        'USER': 'root',
-        'PASSWORD': 'abcd',
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASS'],
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -132,7 +131,3 @@ STATIC_URL = '/static/'
 GRAPHENE = {
     "SCHEMA": "bedav.schema.schema" 
 }
-
-INTERNAL_IPS = [
-    '127.0.0.1'
-]
