@@ -36,10 +36,7 @@ function FilterScreen(props) {
       field: field,
       descending: sortValue.descending
     }
-
-    console.log(field)
-    console.log(newSortValue)
-
+    
     setSortValue(newSortValue)
   }
 

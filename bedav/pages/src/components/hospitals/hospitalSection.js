@@ -1,13 +1,15 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import HospitalHeader from './hospitalHeader'
-import HospitalList from './hospitalList'
 import {graphql, QueryRenderer} from 'react-relay'
 import environment from '../../Environment'
+import Swal from 'sweetalert2'
 import SearchHospitalContext from '../contexts/SearchHospital'
 import SelectedFitlersContext from '../contexts/SelectedFilters'
 import SortContext from '../contexts/Sort'
+import HospitalHeader from './hospitalHeader'
+import HospitalList from './hospitalList'
 import HospitalDataOptions from './hospitalDataOptions'
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 const StyledDiv = styled.div`
   margin: 10vh auto;
@@ -28,21 +30,72 @@ const StyledP = styled.p`
 `
 
 function HospitalSection(props) {
-  const [lat, setLat] = useState()
-  const [lon, setLon] = useState()
+  const [location, setLocation] = useState({geolocation: false})
   const [dataToShow, setDataToShow] = useState("occupied")
   const {searchQuery} = useContext(SearchHospitalContext)
   const {filters} = useContext(SelectedFitlersContext)
-  const {sortValue} = useContext(SortContext)
+  const {sortValue, setSortValue} = useContext(SortContext)
 
-  function setLatLon(position) {
-    setLat(position.coords.latitude)
-    setLon(position.coords.longitude)
+  function setCoords(position) {
+    setLocation({
+      geolocation: true,
+      lat: position.coords.latitude,
+      lon: position.coords.longitude
+    })
   }
 
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(setLatLon)
+  function setPosition() {
+    setSortValue({
+      ...sortValue,
+      field: 'DISTANCE'
+    })
+    navigator.geolocation.getCurrentPosition(setCoords, () => { setLocation({...location, geolocation: false}) })
   }
+
+  function requestAndSetPosition() {
+    Swal.fire({
+      icon: <LocationOnIcon />,
+      title: "Find hospitals closest to you",
+      html: "If you want to find the hospitals which are closest to you, please allow <b>bedav</b> to access your location.",
+      icon: null,
+      showCancelButton: true,
+      cancelButtonText: "Not now",
+      confirmButtonText: "Always Allow",
+      padding: '3em 1em',
+      width: '33em',
+      confirmButtonColor: "#28a745"
+    }).then(result => {
+      if(result.isConfirmed === true) {
+        setPosition()
+      }
+    })
+  }
+
+  function handleGeolocationState(result) {
+    console.log(result)
+    switch(result.state) {
+      case 'granted':
+        setPosition()
+        console.log('hey')
+        break
+      case 'prompt':
+        requestAndSetPosition()
+        break
+    }
+  }
+
+  function requestGeolocationRequest() {
+    navigator.permissions.query({name: 'geolocation'}).then(result => {
+      handleGeolocationState(result)
+      result.onchange = handleGeolocationState(result)
+    })
+  }
+
+  useEffect(() => {
+    if(navigator.geolocation) {
+      requestGeolocationRequest()
+    }
+  }, [])
 
   return (
     <StyledDiv>
@@ -60,14 +113,10 @@ function HospitalSection(props) {
         environment={environment}
         query={graphql`
           query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
-            # hospitals(first:10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
-            #   ...hospitalList_hospitalList
-            # }
-
-            ...hospitalList_hospitalList @arguments(count: 10, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+            ...hospitalList_hospitalList @arguments(count: 20, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
           }
         `}
-        variables={{lat: lat, lon: lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
+        variables={{lat: location.lat, lon: location.lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
         render={({error, props}) => {
           if(error) {
             return <div>{error}</div>
@@ -77,8 +126,7 @@ function HospitalSection(props) {
             return <div>Loading...</div>
           }
 
-          console.log(props)
-          return <HospitalList hospitalList={{...props}} dataToShow={dataToShow}/>          
+          return <HospitalList hospitalList={{...props}} dataToShow={dataToShow} geolocation={location.geolocation}/>          
         }}
       />
     </StyledDiv>

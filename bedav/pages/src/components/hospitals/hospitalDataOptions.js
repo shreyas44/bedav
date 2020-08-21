@@ -21,7 +21,6 @@ const StyledP = styled.p`
   align-content: center;
   position: relative;
   top: 1px;
-  font-weight: 100;
 `
 
 const StyledDiv = styled.div`

@@ -141,7 +141,7 @@ class Query(graphene.ObjectType):
           {joins}
           {where_claus}
         ) data
-        ORDER BY COALESCE({order}, 0) {'DESC' if descending else 'ASC'}
+        ORDER BY COALESCE({order}, {"''" if order == 'name' else 0}) {'DESC' if descending else 'ASC'}
       '''
 
       cursor.execute(query, escaped_strings)

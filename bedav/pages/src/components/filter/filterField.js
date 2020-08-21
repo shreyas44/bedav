@@ -12,7 +12,6 @@ const StyledDiv = styled.div`
 const StyledP = styled.p`
   margin: 0 0 0 10px;
   font-size: 17px;
-  font-weight: 100;
   display: inline-block;
 `
 

@@ -5,7 +5,6 @@ const StyledDiv = styled.div`
   padding: 11px 10px;
   border-bottom: 1px solid #eee;
   font-size: 16px;
-  font-weight: 100;
   width: 100%;
   box-sizing: border-box;
   cursor: pointer;

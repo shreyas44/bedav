@@ -39,7 +39,7 @@ query hospitalSectionQuery(
   $descending: Boolean
   $cursor: String
 ) {
-  ...hospitalList_hospitalList_3JtWik
+  ...hospitalList_hospitalList_RqA5n
 }
 
 fragment hospitalItem_hospital on Hospital {
@@ -60,8 +60,8 @@ fragment hospitalItem_hospital on Hospital {
   HDUTotal
 }
 
-fragment hospitalList_hospitalList_3JtWik on Query {
-  hospitals(first: 10, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
+fragment hospitalList_hospitalList_RqA5n on Query {
+  hospitals(first: 20, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
     edges {
       node {
         id
@@ -155,7 +155,7 @@ v13 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10
+    "value": 20
   },
   (v9/*: any*/),
   (v10/*: any*/),
@@ -183,7 +183,7 @@ return {
           {
             "kind": "Literal",
             "name": "count",
-            "value": 10
+            "value": 20
           },
           {
             "kind": "Variable",
@@ -420,16 +420,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3fc9f7abf8774809e45d16f3d8e72eec",
+    "cacheID": "b8a0f51f869a9a3359f8faa58355a962",
     "id": null,
     "metadata": {},
     "name": "hospitalSectionQuery",
     "operationKind": "query",
-    "text": "query hospitalSectionQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...hospitalList_hospitalList_3JtWik\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  HDUOccupied\n  HDUAvailable\n  ICUOccupied\n  ICUAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  ICUTotal\n  HDUTotal\n}\n\nfragment hospitalList_hospitalList_3JtWik on Query {\n  hospitals(first: 10, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...hospitalItem_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query hospitalSectionQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...hospitalList_hospitalList_RqA5n\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  HDUOccupied\n  HDUAvailable\n  ICUOccupied\n  ICUAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  ICUTotal\n  HDUTotal\n}\n\nfragment hospitalList_hospitalList_RqA5n on Query {\n  hospitals(first: 20, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...hospitalItem_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '300810cbb337721a6507a2dd97192d68';
+(node/*: any*/).hash = 'dac3509dfde7a1cb373132f3f2e065c5';
 
 module.exports = node;

@@ -48,7 +48,6 @@ const StyledFraction = styled.div`
 
 const StyledSpan = styled.span`
   font-size: 24px;
-  font-weight: 100;
   margin: 0 6px;
   opacity: 0.5;
   position: relative;
@@ -106,7 +105,7 @@ function HospitalItem(props) {
     <StyledRow counter={counter}>
       <StyledName counter={counter}>{hospital.name}</StyledName>
 
-      <StyledNumber style={{color: '#004266'}} counter={counter}>{hospital.distance ? `${hospital.distance} km` : "N.A."}</StyledNumber>
+      <StyledNumber style={{color: '#004266'}} counter={counter}>{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
 
       <StyledNumber style={{color: '#004266'}} counter={counter}>{hospitalTypes[hospital.category]}</StyledNumber>
 

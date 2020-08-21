@@ -21,7 +21,6 @@ const StyledDiv = styled.div`
 
 const StyledSpan = styled.span`
   font-size: 17px;
-  font-weight: 100;
   position: relative;
   top: 2px;
   padding: 10px;
@@ -43,7 +42,6 @@ function Dropdown(props) {
   delete currentValues[value]
 
   function handleClick(event) {
-    console.log(event.target.getAttribute('value'))
     setValue(event.target.getAttribute('value'))
     setOpen(false)
   }
