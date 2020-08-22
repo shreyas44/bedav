@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import QuestionContainer from './questionContainer'
 import Question from './question'
@@ -25,6 +25,10 @@ const StyledH = styled.h1`
 `
 
 function About() {
+
+  useEffect(() => {
+    document.title = "Bedav - About"
+  }, [])
 
   const faq = {
     "Is this official?": "No, this is not official. However, the data is from official sources. Look below for more info.",
