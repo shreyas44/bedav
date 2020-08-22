@@ -5,7 +5,7 @@ import Question from './question'
 import Answer from './answer'
 
 const StyledDiv = styled.div`
-  width: 70%;
+  width: 90%;
   max-width: 700px;
   margin: 80px auto 0;
   font-family: "Quicksand", sans-serif;

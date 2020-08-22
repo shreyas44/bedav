@@ -109,7 +109,7 @@ function HospitalHeader(props) {
       <StyledHeading 
         style={{color: '#004266'}}
         value="DISTANCE"
-        onClick={props.geoLocation ? handleClick : undefined}
+        onClick={props.geolocation ? handleClick : null}
         sortable={props.geolocation ? true : undefined}
        >
         Distance

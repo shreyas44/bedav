@@ -71,11 +71,9 @@ function HospitalSection(props) {
   }
 
   function handleGeolocationState(result) {
-    console.log(result)
     switch(result.state) {
       case 'granted':
         setPosition()
-        console.log('hey')
         break
       case 'prompt':
         requestAndSetPosition()
