@@ -9,7 +9,7 @@ function fetchQuery(
   operation,
   variables,
 ) {
-  return fetch('/graphql', {
+  return fetch('/graphql/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

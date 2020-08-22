@@ -28,15 +28,16 @@ function About() {
 
   const faq = {
     "Is this official?": "No, this is not official. However, the data is from official sources. Look below for more info.",
-    "Who are you?": "My name is Shreyas, and I am a student current in the 11th grade and studying at Delhi Public School Bangalore East in Bangalore.",
+    "Who are you?": "My name is Shreyas, and I am a student currently in the 11th grade and studying at Delhi Public School Bangalore East in Bangalore.",
     "What are your sources?": `
-      Our sources are the following for the respective cities:
+      Sources for the respective cities are:
       <br>
-      <b>Bangalore</b>: <a href="https://apps.bbmpgov.in/covidbedstatus/">BBMP (Bruhat Bengaluru Mahanagara Palike)</a>
+      <b>Bengaluru</b>: <a href="https://apps.bbmpgov.in/covidbedstatus/">BBMP (Bruhat Bengaluru Mahanagara Palike)</a>
     `,
+    "How often is the data updated?": "The data is fetched from the sources every few hours, but it is updated only when the data has changed.",
     "Can I get access to the data?": "I am currently working on an API so that everyone can get access and make use of this data.",
     "Can I contribute?": "Yes, you can! Email me at <a href='mailto:shreyas.sreenivasa@gmail.com'>shreyas.sreenivasa@gmail.com</a>",
-    "Is this only for bangalore?": "Currently yes it is only for bangalore. However, we are looking to expand to other cities quickly."
+    "Is this only for Bengaluru?": "Currently yes it is only for Bengaluru. However, we are looking to expand to other cities quickly."
   }
 
   const items = Object.keys(faq).map((question, index) => {

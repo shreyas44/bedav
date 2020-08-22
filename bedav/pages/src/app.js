@@ -25,8 +25,6 @@ return (
       <GlobalStyle />    
       <FilterScreenProvider>
         <Header />
-        {/* <Filter filterScreen={filterScreen} setFilterScreen={setFilterScreen} /> */}
-      
         <ContentWrapper>
           <Route exact path="/">
             <Home />
