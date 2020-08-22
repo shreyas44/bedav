@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import Header from './components/header'
 import Home from './components/home/home' 
+import About from './components/about/about'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import { FilterScreenProvider } from './components/contexts/FilterScreen'
 
@@ -27,7 +28,12 @@ return (
         {/* <Filter filterScreen={filterScreen} setFilterScreen={setFilterScreen} /> */}
       
         <ContentWrapper>
-          <Route exact path="/"><Home /></Route>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/about/">
+            <About />
+          </Route>
         </ContentWrapper>
       </FilterScreenProvider>
     </Router>
