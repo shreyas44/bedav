@@ -4,6 +4,7 @@ import { StyledRow, StyledName, StyledNumber } from './hospitalItem'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import SortContext from '../contexts/Sort'
+import Tooltip from '../tooltip'
 
 const StyledHeadingName = styled(StyledName)`
   padding: 15px;
@@ -113,7 +114,11 @@ function HospitalHeader(props) {
         sortable={props.geolocation ? true : undefined}
        >
         Distance
-        {!props.geolocation ? <StyledWarningIcon /> : null}
+        {!props.geolocation ? 
+          <Tooltip text="Allow access to your location to view distance">
+            <StyledWarningIcon />
+          </Tooltip> : null
+        }
         <StyledOrderIcon active={sortValue.field == "DISTANCE" ? 1 : 0} descending={sortValue.field == "DISTANCE" ? sortValue.descending ? 1 : 0 : 1}/>
       </StyledHeading>
 

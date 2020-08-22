@@ -4,10 +4,11 @@ import {Link, useLocation} from 'react-router-dom'
 import HelpIcon from '@material-ui/icons/Help';
 import HomeIcon from '@material-ui/icons/Home';
 import NavBar from './navbarContainer'
+import Tooltip from './tooltip'
 
 const StyledIconWrapper = styled.div`
   display: inline-block;
-  margin-left: 0px;
+  margin-left: 10px;
   cursor: pointer;
   color: ${({active}) => active ? "#0275b3" : "#444"};
 
@@ -21,7 +22,6 @@ export const StyledIcon = css`
   cursor: pointer;
   transition: font-size,color 0.1s;
   color: #444;
-  margin-left: 10px;
   color: inherit;
 `
 
@@ -39,27 +39,31 @@ function Navbar() {
 
   return (
     <NavBar>
-      <Link to="/">
-        <StyledIconWrapper active={pathname == "/" ? 1 : 0}>
-          <StyledHomeIcon 
-            style={{
-              fontSize: "2.05em",
-              position: "relative",
-              top: 3
-            }}
-          />
-        </StyledIconWrapper>
-      </Link>
-
-      <Link to="/about/">
-        <StyledIconWrapper
-          active={pathname == "/about/" ? 1 : 0}
-        >
-          <StyledAboutIcon 
-            style={{fontSize: "1.88em"}}
-          />
-        </StyledIconWrapper>
-      </Link>
+      <Tooltip text="Home" position="bottom">
+        <Link to="/">
+          <StyledIconWrapper active={pathname == "/" ? 1 : 0}>
+            <StyledHomeIcon 
+              style={{
+                fontSize: "2.05em",
+                position: "relative",
+                top: 3
+              }}
+            />
+          </StyledIconWrapper>
+        </Link>
+      </Tooltip>
+      
+      <Tooltip text="About" position="bottom">
+        <Link to="/about/">
+          <StyledIconWrapper
+            active={pathname == "/about/" ? 1 : 0}
+          >
+            <StyledAboutIcon 
+              style={{fontSize: "1.88em"}}
+            />
+          </StyledIconWrapper>
+        </Link>
+      </Tooltip>
     </NavBar>
   )
 }
