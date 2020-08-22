@@ -23,7 +23,6 @@ const StyledDiv = styled.div`
 
 function FilterScreen(props) {
   const {filterScreen} = useContext(FilterScreenContext)
-  const {currentDropdown, setCurrentDropdown} = useState()
 
   const fields = {
     "gov hos": "Government Hospital",

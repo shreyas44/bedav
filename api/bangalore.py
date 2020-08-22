@@ -220,7 +220,7 @@ def update_bangalore_data(data):
             obj = Equipment(**x)
             obj.save()
 
-data = get_banaglore_data()
+data = get_bangalore_data()
 add_bangalore_hospitals(data)
 update_bangalore_data(data)
 

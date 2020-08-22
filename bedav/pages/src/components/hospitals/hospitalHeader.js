@@ -39,7 +39,7 @@ const StyledOrderIcon = styled(FilterListIcon)`
   right: 5px;
   font-size: 16px !important;
   color: ${({active}) => active ? '#ba7e0f' : '#ccc'};
-  transform: ${({descending}) => descending ? 'rotate(180deg)' : 'rotate(0)'};
+  transform: ${({descending}) => !descending ? 'rotate(180deg)' : 'rotate(0)'};
   transition: all 0.1s !important;
 `
 
@@ -66,7 +66,7 @@ function HospitalHeader(props) {
       })
     } else {
       setSortValue({
-        descending: false,
+        descending: true,
         field: value
       })
     }
@@ -84,7 +84,7 @@ function HospitalHeader(props) {
         {text}
         <br/>
         {props.dataToShow[0].toUpperCase() + props.dataToShow.slice(1)}
-        <StyledOrderIcon active={active ? 1 : 0} descending={active ? descending ? 1 : 0 : 0}/>
+        <StyledOrderIcon active={active ? 1 : 0} descending={active ? descending ? 1 : 0 : 1}/>
       </StyledHeading>
     )
   }
@@ -109,12 +109,12 @@ function HospitalHeader(props) {
       <StyledHeading 
         style={{color: '#004266'}}
         value="DISTANCE"
-        onClick={handleClick}
+        onClick={props.geoLocation ? handleClick : undefined}
         sortable={props.geolocation ? true : undefined}
        >
         Distance
         {!props.geolocation ? <StyledWarningIcon /> : null}
-        <StyledOrderIcon active={sortValue.field == "DISTANCE" ? 1 : 0} descending={sortValue.field == "DISTANCE" ? sortValue.descending ? 1 : 0 : 0}/>
+        <StyledOrderIcon active={sortValue.field == "DISTANCE" ? 1 : 0} descending={sortValue.field == "DISTANCE" ? sortValue.descending ? 1 : 0 : 1}/>
       </StyledHeading>
 
       {headings}
