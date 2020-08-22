@@ -29,7 +29,7 @@ const StyledWarningIcon = styled(ErrorOutlineIcon)`
   margin-left: 5px;
   font-size: 20px !important;
   position: relative;
-  bottom: 1.5px;
+  bottom: 1px;
   color: #e67519;
   cursor: pointer;
 `

@@ -17,7 +17,7 @@ const StyledTip = styled.div`
   font-size: 14px;
   word-wrap: break-word;
   text-align: center;
-  transform: ${({position}) => position == "top" ? "translate(calc(-50% + 14px), calc(-100% - 12px))" : position == "bottom" ? "translate(0, calc(100% + 12px))" : null};
+  transform: ${({position}) => position == "top" ? "translate(calc(-50% + 14px), calc(-100% - 11px))" : position == "bottom" ? "translate(0, calc(100% + 12px))" : null};
   cursor: pointer;
   /* calc(-100%-12px) as the square is 10px tall plus 2px for spacing
     -50% + 14px so that the padding is included
