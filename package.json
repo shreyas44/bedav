@@ -8,8 +8,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --config webpack.config.js",
-    "relay": "relay-compiler --src ./bedav/pages/src --schema ./bedav/schema.graphql"
+    "build": "webpack --config webpack.config.js --watch",
+    "start": "webpack-dev-server --open",
+    "relay": "relay-compiler --src ./bedav/pages/src --schema ./bedav/schema.graphql",
+    "watch": "npm-watch build"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +22,7 @@
     "@fortawesome/react-fontawesome": "^0.1.11",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "google-maps-react": "^2.0.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-relay": "^10.0.1",
@@ -36,11 +39,13 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-relay": "^10.0.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "eslint": "^7.7.0",
     "eslint-plugin-react-hooks": "^4.0.8",
     "graphql": "^15.3.0",
     "relay-compiler": "^10.0.1",
     "relay-config": "^10.0.1",
     "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   }
 }

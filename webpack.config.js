@@ -5,7 +5,24 @@ module.exports = {
   entry: "./bedav/pages/src/index.js",
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, "bedav/pages/static/pages/js")
+    path: path.resolve(__dirname, "bedav/pages/static/pages/js"),
+    publicPath: '/static/pages/js/',
+  },
+  devServer: {
+    port: 9000,
+    contentBase: path.resolve(__dirname, "bedav/pages/static"),
+    contentBasePublicPath: 'http://localhost:8000',
+    compress: true,
+    hot: true,
+    proxy: {
+      '/graphql/': {
+        target: 'http://localhost:8000'
+      },
+      '!/static/**': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+      }
+    }
   },
   module: {
     rules: [
