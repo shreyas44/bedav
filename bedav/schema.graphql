@@ -4,17 +4,6 @@ schema {
 
 type Hospital implements Node {
   id: ID!
-  name: String!
-  website: String
-  phone: String
-  city: String
-  district: String
-  state: String
-  country: String
-  postalCode: Int
-  placeId: String
-  address: String
-  category: String!
   generalAvailable: Int
   icuAvailable: Int
   ventilatorsAvailable: Int
@@ -28,6 +17,19 @@ type Hospital implements Node {
   hduOccupied: Int
   ventilatorsOccupied: Int
   distance: Float
+  name: String
+  website: String
+  phone: String
+  city: String
+  district: String
+  state: String
+  country: String
+  postalCode: Int
+  placeId: String
+  address: String
+  category: String
+  latitude: Float
+  longitude: Float
 }
 
 type HospitalConnection {
@@ -70,5 +72,6 @@ type PageInfo {
 
 type Query {
   hospitals(orderBy: HospitalSortField = DISTANCE, descending: Boolean = false, categoryFilters: [String] = [], lat: Float = 0.0, lon: Float = 0.0, searchQuery: String = "", before: String, after: String, first: Int, last: Int): HospitalConnection
+  hospital(id: ID!, lat: Float = 0.0, lon: Float = 0.0): Hospital
   node(id: ID!): Node
 }

@@ -13,3 +13,4 @@ watch.py
 chromedriver
 *.code-workspace
 */.vscode/
+**.swp

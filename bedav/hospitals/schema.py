@@ -59,9 +59,8 @@ class HospitalType(graphene.ObjectType):
   place_id = graphene.String()
   address = graphene.String()
   category = graphene.String()
-
-  # latitude = graphene.Float()
-  # longitude = graphene.Float()
+  latitude = graphene.Float()
+  longitude = graphene.Float()
 
   def resolve_distance(hospital, info):
     return round(hospital.distance, 1)
@@ -87,7 +86,9 @@ class Query(graphene.ObjectType):
     lon=graphene.Float(required=False, default_value=0),
     search_query=graphene.String(required=False, default_value='')
   )
-  
+
+  hospital = graphene.Field(HospitalType, id=grapheneNonNull(graphene.ID()), lat=graphene.Float(default_value=0), lon=graphene.Float(default_value=0))
+
   def resolve_hospitals(parent, info, order_by, descending, category_filters, lat, lon, search_query, **kwargs):
     info.context.coords = {"lat": lat, "lon": lon}
     coords = Point(lon, lat, srid=4326)
@@ -109,12 +110,12 @@ class Query(graphene.ObjectType):
           branch_id, available icu_available, total icu_total, (total - available) icu_occupied
           FROM "Equipment" WHERE category = 'ICU' ORDER BY branch_id, time DESC
         ) AS eq_ICU ON eq_ICU.branch_id = hos.id
-        FULL OUTER JOIN ( 
+        FULL OUTER JOIN (
           SELECT DISTINCT ON (branch_id)
           branch_id, available hdu_available, total hdu_total, (total - available) hdu_occupied
           FROM "Equipment" WHERE category = 'HDU' ORDER BY branch_id, time DESC
         ) AS eq_HDU ON eq_HDU.branch_id = hos.id
-        FULL OUTER JOIN (      
+        FULL OUTER JOIN (
           SELECT DISTINCT ON (branch_id)
           branch_id, available ventilators_available, total ventilators_total, (total - available) ventilators_occupied
           FROM "Equipment" WHERE category = 'vent' ORDER BY branch_id, time DESC
@@ -127,6 +128,7 @@ class Query(graphene.ObjectType):
         eq_ICU.icu_available, eq_ICU.icu_total, eq_ICU.icu_occupied,
         eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
         hos.*,
+        ST_X(hos.location::geometry) as longitude, ST_Y(hos.location::geometry) as latitude,
         ((hos."location" <-> %s::geometry) / 1000) AS distance
       '''
 
@@ -158,11 +160,69 @@ class Query(graphene.ObjectType):
     if o not in ("distance", "name"):
       o = o.split("_")[::-1]
       o = '_'.join(o)
-    
+
     hospitals = get_hospitals(o)
 
     return hospitals
 
+  def resolve_hospital(parent, info, id, lat, lon, **kwargs):
+    coords=Point(lon, lat, srid=4326)
+
+    def namedtuplefetch(cursor):
+      desc = cursor.description
+      nt_result = namedtuple('Hospital', [col[0] for col in desc])
+      return [nt_result(*row) for row in cursor.fetchall()]
+
+    joins = '''
+      FULL OUTER JOIN (
+        SELECT DISTINCT ON (branch_id)
+        branch_id, available general_available, total general_total, (total - available) general_occupied
+        FROM "Equipment" WHERE category = 'gen' ORDER BY branch_id, time DESC
+      ) AS eq_gen ON eq_gen.branch_id = hos.id
+      FULL OUTER JOIN (
+        SELECT DISTINCT ON (branch_id)
+        branch_id, available icu_available, total icu_total, (total - available) icu_occupied
+        FROM "Equipment" WHERE category = 'ICU' ORDER BY branch_id, time DESC
+      ) AS eq_ICU ON eq_ICU.branch_id = hos.id
+      FULL OUTER JOIN (
+        SELECT DISTINCT ON (branch_id)
+        branch_id, available hdu_available, total hdu_total, (total - available) hdu_occupied
+        FROM "Equipment" WHERE category = 'HDU' ORDER BY branch_id, time DESC
+      ) AS eq_HDU ON eq_HDU.branch_id = hos.id
+      FULL OUTER JOIN (
+        SELECT DISTINCT ON (branch_id)
+        branch_id, available ventilators_available, total ventilators_total, (total - available) ventilators_occupied
+        FROM "Equipment" WHERE category = 'vent' ORDER BY branch_id, time DESC
+      ) AS eq_vent ON eq_vent.branch_id = hos.id
+    '''
+
+    selections = '''
+      eq_HDU.hdu_available, eq_HDU.hdu_total, eq_HDU.hdu_occupied,
+      eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
+      eq_ICU.icu_available, eq_ICU.icu_total, eq_ICU.icu_occupied,
+      eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
+      hos.*,
+      ST_X(hos.location::geometry) as longitude, ST_Y(hos.location::geometry) as latitude,
+      ((hos."location" <-> %s::geometry) / 1000) AS distance
+    '''
+
+    query = f'''
+      SELECT {selections}
+      FROM "Hospitals" AS hos
+      {joins}
+      WHERE id=%s
+    '''
+
+    cursor = connection.cursor()
+
+    cursor.execute(query, [str(coords), id])
+    hospital = namedtuplefetch(cursor)[0]
+
+    print(hospital)
+
+    return hospital
+
+# Mutaions
 
 class NewHospitalInput(graphene.InputObjectType):
   name = graphene.String()

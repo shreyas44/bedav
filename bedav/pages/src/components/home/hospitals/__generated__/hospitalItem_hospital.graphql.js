@@ -12,8 +12,8 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type hospitalItem_hospital$ref: FragmentReference;
 declare export opaque type hospitalItem_hospital$fragmentType: hospitalItem_hospital$ref;
 export type hospitalItem_hospital = {|
-  +category: string,
-  +name: string,
+  +category: ?string,
+  +name: ?string,
   +distance: ?number,
   +generalOccupied: ?number,
   +generalAvailable: ?number,
