@@ -9,7 +9,7 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type hospitalList_hospitalList$ref = any;
-export type HospitalSortField = "AVAILABLE_GENERAL" | "AVAILABLE_HDU" | "AVAILABLE_ICU" | "AVAILABLE_VENTILATORS" | "DISTANCE" | "NAME" | "OCCUPIED_GENERAL" | "OCCUPIED_HDU" | "OCCUPIED_ICU" | "TOTAL_BEDS" | "TOTAL_HDU" | "TOTAL_ICU" | "TOTAL_VENTILATORS" | "USED_VENTILATORS" | "%future added value";
+export type HospitalSortField = "AVAILABLE_GENERAL" | "AVAILABLE_HDU" | "AVAILABLE_ICU" | "AVAILABLE_VENTILATORS" | "DISTANCE" | "NAME" | "OCCUPIED_GENERAL" | "OCCUPIED_HDU" | "OCCUPIED_ICU" | "TOTAL_GENERAL" | "TOTAL_HDU" | "TOTAL_ICU" | "TOTAL_VENTILATORS" | "USED_VENTILATORS" | "%future added value";
 export type hospitalSectionQueryVariables = {|
   lat?: ?number,
   lon?: ?number,
@@ -39,7 +39,7 @@ query hospitalSectionQuery(
   $descending: Boolean
   $cursor: String
 ) {
-  ...hospitalList_hospitalList_RqA5n
+  ...hospitalList_hospitalList_G8jr9
 }
 
 fragment hospitalItem_hospital on Hospital {
@@ -60,8 +60,8 @@ fragment hospitalItem_hospital on Hospital {
   hduTotal
 }
 
-fragment hospitalList_hospitalList_RqA5n on Query {
-  hospitals(first: 20, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
+fragment hospitalList_hospitalList_G8jr9 on Query {
+  hospitals(first: 200, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
     edges {
       node {
         id
@@ -155,7 +155,7 @@ v13 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20
+    "value": 200
   },
   (v9/*: any*/),
   (v10/*: any*/),
@@ -183,7 +183,7 @@ return {
           {
             "kind": "Literal",
             "name": "count",
-            "value": 20
+            "value": 200
           },
           {
             "kind": "Variable",
@@ -420,16 +420,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "24246ea936dabbd1f74e051124c6b7a7",
+    "cacheID": "0d6694a07e5f685fc36b71263c757098",
     "id": null,
     "metadata": {},
     "name": "hospitalSectionQuery",
     "operationKind": "query",
-    "text": "query hospitalSectionQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...hospitalList_hospitalList_RqA5n\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  hduOccupied\n  hduAvailable\n  icuOccupied\n  icuAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  icuTotal\n  hduTotal\n}\n\nfragment hospitalList_hospitalList_RqA5n on Query {\n  hospitals(first: 20, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...hospitalItem_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query hospitalSectionQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...hospitalList_hospitalList_G8jr9\n}\n\nfragment hospitalItem_hospital on Hospital {\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  hduOccupied\n  hduAvailable\n  icuOccupied\n  icuAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  icuTotal\n  hduTotal\n}\n\nfragment hospitalList_hospitalList_G8jr9 on Query {\n  hospitals(first: 200, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...hospitalItem_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'dac3509dfde7a1cb373132f3f2e065c5';
+(node/*: any*/).hash = '16925c60cc713885e59a2014c9d2bdf4';
 
 module.exports = node;

@@ -9,6 +9,7 @@ import SortContext from '../contexts/Sort'
 import HospitalHeader from './hospitalHeader'
 import HospitalList from './hospitalList'
 import HospitalDataOptions from './hospitalDataOptions'
+import { useDictState } from '../hooks'
 
 const StyledDiv = styled.div`
   margin: 10vh auto;
@@ -29,30 +30,39 @@ const StyledP = styled.p`
 `
 
 function HospitalSection(props) {
-  const [location, setLocation] = useState({geolocation: false})
-  const [dataToShow, setDataToShow] = useState("available")
+  const [state, setState] = useDictState({
+    geolocation: false,
+    getData: false,
+    dataToShow: "available"
+  })
+
   const {searchQuery} = useContext(SearchHospitalContext)
   const {filters} = useContext(SelectedFitlersContext)
   const {sortValue, setSortValue} = useContext(SortContext)
 
   function setCoords(position) {
-    setLocation({
-      geolocation: true,
-      lat: position.coords.latitude,
-      lon: position.coords.longitude
-    })
-  }
-
-  function setPosition() {
     setSortValue({
       ...sortValue,
       field: 'DISTANCE',
       descending: false
     })
-    navigator.geolocation.getCurrentPosition(setCoords, () => { setLocation({...location, geolocation: false}) })
+
+    setState({
+      geolocation: true,
+      lat: position.coords.latitude,
+      lon: position.coords.longitude,
+      getData: true
+    })
+  }
+
+  function setPosition() {
+    navigator.geolocation.getCurrentPosition(setCoords, () => { setState({geolocation: false}) })
   }
 
   function requestAndSetPosition() {
+    // setState({
+    //   getData: true
+    // })
     Swal.fire({
       title: "Find hospitals closest to you",
       html: "If you want to find the hospitals which are closest to you, please allow <b>bedav</b> to access your location.",
@@ -78,6 +88,10 @@ function HospitalSection(props) {
       case 'prompt':
         requestAndSetPosition()
         break
+      case 'denied':
+        setState({
+          getData: true
+        }) 
     }
   }
 
@@ -97,35 +111,38 @@ function HospitalSection(props) {
   return (
     <StyledDiv>
       <HospitalDataOptions 
-        dataToShow={dataToShow}
-        setDataToShow={setDataToShow}
+        dataToShow={state.dataToShow}
+        setDataToShow={value => { setState({dataToShow: value}) } }
       />
       <StyledP>
         HDU - High Dependency Unit;
         ICU - Intensive Care Unit;
         N.A. - Not Applicable
       </StyledP>
-      <HospitalHeader dataToShow={dataToShow} geolocation={location.geolocation}/>
-      <QueryRenderer 
-        environment={environment}
-        query={graphql`
-          query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
-            ...hospitalList_hospitalList @arguments(count: 20, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
-          }
-        `}
-        variables={{lat: location.lat, lon: location.lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
-        render={({error, props}) => {
-          if(error) {
-            return <div>{error}</div>
-          }
+      <HospitalHeader dataToShow={state.dataToShow} geolocation={state.geolocation}/>
+      { state.getData ? 
+        <QueryRenderer 
+          environment={environment}
+          query={graphql`
+            query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
+              ...hospitalList_hospitalList @arguments(count: 200, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+            }
+          `}
+          variables={{lat: state.lat, lon: state.lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
+          render={({error, props}) => {
+            if(error) {
+              return <div>{error}</div>
+            }
 
-          if(!props) {
-            return <div>Loading...</div>
-          }
+            if(!props) {
+              return <div>Loading...</div>
+            }
 
-          return <HospitalList hospitalList={{...props}} dataToShow={dataToShow} geolocation={location.geolocation}/>          
-        }}
-      />
+            return <HospitalList hospitalList={{...props}} dataToShow={state.dataToShow} geolocation={state.geolocation}/>          
+          }}
+        /> :
+        <div>Loading...</div> 
+      }
     </StyledDiv>
   )
 }
