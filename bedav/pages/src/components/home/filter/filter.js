@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react'
 import styled from 'styled-components'
-import FilterScreenContext from '../contexts/FilterScreen'
+import FilterScreenContext from '../../contexts/FilterScreen'
 import FilterField from './filterField'
 import FilterSection from './filterSection'
 

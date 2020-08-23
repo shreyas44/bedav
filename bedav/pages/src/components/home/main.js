@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
 import Middle from './middle'
-import HospitalSection from '../hospitals/hospitalSection'
+import HospitalSection from './hospitals/hospitalSection'
 import { SearchHospitalProvider } from '../contexts/SearchHospital'
 
 const StyledDiv = styled.div`

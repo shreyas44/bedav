@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {graphql, QueryRenderer} from 'react-relay'
-import environment from '../../Environment'
+import environment from '../../../Environment'
 import Swal from 'sweetalert2'
-import SearchHospitalContext from '../contexts/SearchHospital'
-import SelectedFitlersContext from '../contexts/SelectedFilters'
-import SortContext from '../contexts/Sort'
+import SearchHospitalContext from '../../contexts/SearchHospital'
+import SelectedFitlersContext from '../../contexts/SelectedFilters'
+import SortContext from '../../contexts/Sort'
 import HospitalHeader from './hospitalHeader'
 import HospitalList from './hospitalList'
 import HospitalDataOptions from './hospitalDataOptions'
-import { useDictState } from '../hooks'
+import { useDictState } from '../../hooks'
 
 const StyledDiv = styled.div`
   margin: 10vh auto;

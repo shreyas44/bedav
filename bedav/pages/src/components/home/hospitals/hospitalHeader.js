@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { StyledRow, StyledName, StyledNumber } from './hospitalItem'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import FilterListIcon from '@material-ui/icons/FilterList'
-import SortContext from '../contexts/Sort'
-import Tooltip from '../tooltip'
+import SortContext from '../../contexts/Sort'
+import Tooltip from '../../tooltip'
 
 const StyledHeadingName = styled(StyledName)`
   padding: 15px;

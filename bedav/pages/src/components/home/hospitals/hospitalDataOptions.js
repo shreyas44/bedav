@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Checkbox from '../checkbox'
+import Checkbox from '../../checkbox'
 
 const StyledOptionsDiv = styled.div`
   margin: 5px 0;
