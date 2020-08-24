@@ -12,6 +12,7 @@ const StyledDiv = styled.div`
   max-width: 1500px;
   margin: 100px auto 0;
   padding: 0 20px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
