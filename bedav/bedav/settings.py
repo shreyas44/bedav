@@ -129,7 +129,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 GRAPHENE = {
-    "SCHEMA": "bedav.schema.schema" 
+    "SCHEMA": "bedav.schema.schema"
 }
 
 APPEND_SLASH = True

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 import {graphql, createFragmentContainer} from 'react-relay'
+import { Link } from 'react-router-dom'
 
 export const StyledRow = styled.div`
   align-items: center;
@@ -25,6 +26,7 @@ export const StyledName = styled(StyledItem)`
   color: #0275b3;
   transition: all 0.1s;
   cursor: pointer;
+  text-decoration: none;
 
   &:hover {
     color: #004266;
@@ -39,7 +41,17 @@ export const StyledNumber = styled(StyledItem)`
   justify-content: center;
 `
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &:visited {
+    color: inherit;
+  }
+`
+
 function HospitalItem(props) {
+  const ref = useRef()
   let {counter, hospital} = props
 
   const hospitalTypes = {
@@ -64,7 +76,7 @@ function HospitalItem(props) {
 
   return (
     <StyledRow counter={counter}>
-      <StyledName counter={counter}>{hospital.name}</StyledName>
+      <StyledName counter={counter} onClick={() => ref.current.click()}><StyledLink to={`/hospital/${hospital.id}/`} ref={ref}>{hospital.name}</StyledLink></StyledName>
 
       <StyledNumber style={{color: '#004266'}} counter={counter}>{hospitalTypes[hospital.category]}</StyledNumber>
 
@@ -100,6 +112,7 @@ export default createFragmentContainer(
   {
     hospital: graphql`
       fragment hospitalItem_hospital on Hospital {
+        id
         category
         name
         distance

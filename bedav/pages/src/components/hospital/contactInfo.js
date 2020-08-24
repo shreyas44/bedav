@@ -15,6 +15,7 @@ const ContactContainer = styled.div`
   justify-content: center;
   transition: all 0.1s;
   position: relative;
+  background-color: white;
 
   &:hover {
     transform: scale(1.01);

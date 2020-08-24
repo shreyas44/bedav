@@ -1,49 +1,85 @@
 import React from 'react'
 import styled from 'styled-components'
-import PhoneIcon from '@material-ui/icons/Phone'
-import PublicIcon from '@material-ui/icons/Public'
-import LocationOnIcon from '@material-ui/icons/LocationOn'
-import HospitalMap from './map'
-import ContactInfo from './contactInfo'
+import EquipmentSection from './equipmentSection'
 
 const StyledDiv = styled.div`
   width: 50%;
-  height: 90vh;
-  padding: 0 0 0 10px; /*So that the box shadow of contact is visible*/
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 `
 
-const ContactContainer = styled.div`
-  margin-top: 20px;
+const StyledHeading = styled.h1`
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  color: #0275b3;
+  font-family: "Quicksand", sans-serif;
 `
 
 function LeftSection(props) {
   const {hospital} = props
-  const mapsURL = `https://www.google.com/maps/dir/?api=1&destination_place_id=${hospital.placeId}&destination=${hospital.latitude},${hospital.longitude}`
-
-  const contact = [
-    {
-      icon: PhoneIcon,
-      value: <a href={`tel:${hospital.phone}`} target="_blank">{hospital.phone}</a>
+  const values = {
+    "General Ward": {
+      available: "N.A.",
+      occupied: "N.A.",
+      total: "N.A."
     },
-    {
-      icon: PublicIcon,
-      value: <a href={hospital.website} target="_blank">{`${hospital.name} (${hospital.website})`}</a>
+    "High Dependency Unit": {
+      available: "N.A.",
+      occupied: "N.A.",
+      total: "N.A."
     },
-    {
-      icon: LocationOnIcon,
-      value: <a href={mapsURL} target="_blank">{hospital.address}</a>
+    "Intensive Care Unit": {
+      available: "N.A.",
+      occupied: "N.A.",
+      total: "N.A."
+    },
+    "Ventilators": {
+      available: "N.A.",
+      occupied: "N.A.",
+      total: "N.A."
     }
-  ]
+  }
+  
+  if(hospital.generalTotal !== null && hospital.generalTotal > 0) {
+    values["General Ward"] = {
+      available: hospital.generalAvailable,
+      occupied: hospital.generalOccupied,
+      total: hospital.generalTotal
+    }
+  }
 
-  const contactItems = contact.map((item, index) => item.value ? <ContactInfo key={index} icon={item.icon}>{item.value}</ContactInfo> : null)
+  if(hospital.hduTotal !== null && hospital.hduTotal > 0) {
+    values["High Dependency Unit"] = {
+      available: hospital.hduAvailable,
+      occupied: hospital.hduOccupied,
+      total: hospital.hduTotal
+    }
+  }
+
+  if(hospital.icuTotal !== null && hospital.icuTotal > 0) {
+    values["Intensive Care Unit"] = {
+      available: hospital.icuAvailable,
+      occupied: hospital.icuOccupied,
+      total: hospital.icuTotal
+    }
+  }
+
+  if(hospital.ventilatorsTotal !== null && hospital.ventilatorsTotal > 0) {
+    values["Ventilators"] = {
+      available: hospital.ventilatorsAvailable,
+      occupied: hospital.ventilatorsOccupied,
+      total: hospital.ventilatorsTotal
+    }
+  }
+ 
+  const sections = Object.keys(values).map((value, index) => <EquipmentSection key={index} sectionName={value} values={values[value]} /> )
+
+  console.log(sections)
 
   return (
     <StyledDiv>
-      <HospitalMap lat={hospital.latitude} lon={hospital.longitude} name={hospital.name} url={mapsURL || null}/>
-      <ContactContainer>
-        {contactItems}
-      </ContactContainer>
+      <StyledHeading>{hospital.name}</StyledHeading>
+      {sections}
     </StyledDiv>
   )
 }

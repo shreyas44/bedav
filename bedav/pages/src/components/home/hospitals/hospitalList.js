@@ -8,9 +8,9 @@ function HospitalList(props) {
   useEffect(() => {
     window.addEventListener("scroll", function() {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-          if(props.relay.hasMore() && !props.relay.isLoading()) {
-            props.relay.loadMore(200)
-          }
+        if(props.relay.hasMore() && !props.relay.isLoading()) {
+          props.relay.loadMore(200)
+        }
       }
     })
 
