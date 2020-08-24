@@ -8,11 +8,12 @@ import RightSection from './right'
 
 const StyledDiv = styled.div`
   width: 100%;
+  overflow-y: scroll;
   max-width: 1500px;
   margin: 100px auto 0;
 `
 
-function Hospital(props) {
+function Hospital() {
   const {hospitalId} = useParams()
   return (
     <QueryRenderer

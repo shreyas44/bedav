@@ -87,7 +87,7 @@ class Query(graphene.ObjectType):
     search_query=graphene.String(required=False, default_value='')
   )
 
-  hospital = graphene.Field(HospitalType, id=grapheneNonNull(graphene.ID()), lat=graphene.Float(default_value=0), lon=graphene.Float(default_value=0))
+  hospital = graphene.Field(HospitalType, id=graphene.NonNull(graphene.ID), lat=graphene.Float(default_value=0), lon=graphene.Float(default_value=0))
 
   def resolve_hospitals(parent, info, order_by, descending, category_filters, lat, lon, search_query, **kwargs):
     info.context.coords = {"lat": lat, "lon": lon}
