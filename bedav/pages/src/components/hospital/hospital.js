@@ -11,6 +11,7 @@ const StyledDiv = styled.div`
   overflow-y: scroll;
   max-width: 1500px;
   margin: 100px auto 0;
+  padding: 0 20px;
 `
 
 function Hospital() {
@@ -24,7 +25,9 @@ function Hospital() {
             id
             name
             phone
+            address
             website
+            placeId
             latitude
             longitude
             icuAvailable
@@ -55,7 +58,7 @@ function Hospital() {
         if(props) {
           return (
             <StyledDiv>
-              <LeftSection />
+              <LeftSection hospital={props.hospital}/>
               <RightSection />
             </StyledDiv>
           )

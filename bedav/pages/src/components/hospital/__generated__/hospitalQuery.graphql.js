@@ -16,7 +16,9 @@ export type hospitalQueryResponse = {|
     +id: string,
     +name: ?string,
     +phone: ?string,
+    +address: ?string,
     +website: ?string,
+    +placeId: ?string,
     +latitude: ?number,
     +longitude: ?number,
     +icuAvailable: ?number,
@@ -48,7 +50,9 @@ query hospitalQuery(
     id
     name
     phone
+    address
     website
+    placeId
     latitude
     longitude
     icuAvailable
@@ -115,7 +119,21 @@ v1 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
+        "name": "address",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
         "name": "website",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "placeId",
         "storageKey": null
       },
       {
@@ -238,16 +256,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "dc5e321153d9990cb16e8b053d36e556",
+    "cacheID": "6e91bcb3440cbb10c98b83e076908941",
     "id": null,
     "metadata": {},
     "name": "hospitalQuery",
     "operationKind": "query",
-    "text": "query hospitalQuery(\n  $hospitalID: ID!\n) {\n  hospital(id: $hospitalID) {\n    id\n    name\n    phone\n    website\n    latitude\n    longitude\n    icuAvailable\n    hduAvailable\n    generalAvailable\n    ventilatorsAvailable\n    icuOccupied\n    hduOccupied\n    generalOccupied\n    ventilatorsOccupied\n    icuTotal\n    hduTotal\n    generalTotal\n    ventilatorsTotal\n  }\n}\n"
+    "text": "query hospitalQuery(\n  $hospitalID: ID!\n) {\n  hospital(id: $hospitalID) {\n    id\n    name\n    phone\n    address\n    website\n    placeId\n    latitude\n    longitude\n    icuAvailable\n    hduAvailable\n    generalAvailable\n    ventilatorsAvailable\n    icuOccupied\n    hduOccupied\n    generalOccupied\n    ventilatorsOccupied\n    icuTotal\n    hduTotal\n    generalTotal\n    ventilatorsTotal\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '12c104ad9cd3c5ae3dc4d3f39d8875fd';
+(node/*: any*/).hash = '847715e0f8cce1c4cdaf2a293dae24ba';
 
 module.exports = node;
