@@ -56,7 +56,7 @@ function HospitalSection(props) {
   }
 
   function setPosition() {
-    navigator.geolocation.getCurrentPosition(setCoords, () => { setState({geolocation: false}) })
+    navigator.geolocation.getCurrentPosition(setCoords, () => { setState({geolocation: false, getData: true}) })
   }
 
   function requestAndSetPosition() {
@@ -76,6 +76,10 @@ function HospitalSection(props) {
     }).then(result => {
       if(result.isConfirmed === true) {
         setPosition()
+      } else if (result.isConfirmed === false) {
+      	setState({
+          getData: true
+        })
       }
     })
   }
@@ -96,15 +100,21 @@ function HospitalSection(props) {
   }
 
   function requestGeolocationRequest() {
-    navigator.permissions.query({name: 'geolocation'}).then(result => {
-      handleGeolocationState(result)
-      result.onchange = handleGeolocationState(result)
-    })
+    if(navigator.permissions !== undefined) {
+      navigator.permissions.query({name: 'geolocation'}).then(result => {
+        handleGeolocationState(result)
+        result.onchange = handleGeolocationState(result)
+      })  
+    } else {
+      setPosition()
+    }
   }
 
   useEffect(() => {
     if(navigator.geolocation) {
       requestGeolocationRequest()
+    } else {
+      setState({getData:true})
     }
   }, [])
 
@@ -131,7 +141,7 @@ function HospitalSection(props) {
           variables={{lat: state.lat, lon: state.lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
           render={({error, props}) => {
             if(error) {
-              return <div>{error}</div>
+              return <div>Error, please try again.</div>
             }
 
             if(!props) {
