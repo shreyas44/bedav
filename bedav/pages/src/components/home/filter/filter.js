@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import FilterScreenContext from '../../contexts/FilterScreen'
 import FilterField from './filterField'
 import FilterSection from './filterSection'
+import fields from '../../extra/categories'
 
 const StyledDiv = styled.div`
   max-height: 50%;
@@ -23,15 +24,6 @@ const StyledDiv = styled.div`
 
 function FilterScreen(props) {
   const {filterScreen} = useContext(FilterScreenContext)
-
-  const fields = {
-    "gov hos": "Government Hospital",
-    "gov med": "Government Medical College",
-    "pri hos": "Private Hospital",
-    "pri med": "Private Medical College",
-    "covid": "Covid Care Centres",
-    "pri covid": "Private Covid Care Centres"
-  }
 
   let CategoryFilterFields = Object.keys(fields).map(key => <FilterField key={key} value={key}>{fields[key]}</FilterField>)
 

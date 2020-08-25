@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import EquipmentSection from './equipmentSection'
+import categories from '../extra/categories'
 
 const StyledDiv = styled.div`
   width: 50%;
@@ -8,11 +9,21 @@ const StyledDiv = styled.div`
   flex-direction: column;
 `
 
-const StyledHeading = styled.h1`
-  margin: 0 0 20px 0;
-  font-size: 24px;
+const HeadingContainer = styled.div`
+  margin: 0 0 25px 0;
   color: #0275b3;
-  font-family: "Quicksand", sans-serif;
+  font-family: "Quicksand", sans-seif;
+`
+
+const StyledHeading = styled.h1`
+  margin: 0;
+  font-size: 24px;
+`
+
+const StyledSubHeading = styled.h2`
+  margin: 0px 0 0;
+  font-size: 14px;
+  font-weight: normal;
 `
 
 function LeftSection(props) {
@@ -78,7 +89,10 @@ function LeftSection(props) {
 
   return (
     <StyledDiv>
-      <StyledHeading>{hospital.name}</StyledHeading>
+      <HeadingContainer>
+        <StyledHeading>{hospital.name}</StyledHeading>
+        <StyledSubHeading>{categories[hospital.category]}</StyledSubHeading>
+      </HeadingContainer>
       {sections}
     </StyledDiv>
   )

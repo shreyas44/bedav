@@ -37,6 +37,7 @@ function Hospital() {
             address
             website
             placeId
+            category
             latitude
             longitude
             icuAvailable

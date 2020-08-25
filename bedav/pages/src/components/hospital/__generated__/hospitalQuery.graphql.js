@@ -19,6 +19,7 @@ export type hospitalQueryResponse = {|
     +address: ?string,
     +website: ?string,
     +placeId: ?string,
+    +category: ?string,
     +latitude: ?number,
     +longitude: ?number,
     +icuAvailable: ?number,
@@ -53,6 +54,7 @@ query hospitalQuery(
     address
     website
     placeId
+    category
     latitude
     longitude
     icuAvailable
@@ -134,6 +136,13 @@ v1 = [
         "args": null,
         "kind": "ScalarField",
         "name": "placeId",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "category",
         "storageKey": null
       },
       {
@@ -256,16 +265,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "6e91bcb3440cbb10c98b83e076908941",
+    "cacheID": "970d322198af45dc547b03974c7d5aea",
     "id": null,
     "metadata": {},
     "name": "hospitalQuery",
     "operationKind": "query",
-    "text": "query hospitalQuery(\n  $hospitalID: ID!\n) {\n  hospital(id: $hospitalID) {\n    id\n    name\n    phone\n    address\n    website\n    placeId\n    latitude\n    longitude\n    icuAvailable\n    hduAvailable\n    generalAvailable\n    ventilatorsAvailable\n    icuOccupied\n    hduOccupied\n    generalOccupied\n    ventilatorsOccupied\n    icuTotal\n    hduTotal\n    generalTotal\n    ventilatorsTotal\n  }\n}\n"
+    "text": "query hospitalQuery(\n  $hospitalID: ID!\n) {\n  hospital(id: $hospitalID) {\n    id\n    name\n    phone\n    address\n    website\n    placeId\n    category\n    latitude\n    longitude\n    icuAvailable\n    hduAvailable\n    generalAvailable\n    ventilatorsAvailable\n    icuOccupied\n    hduOccupied\n    generalOccupied\n    ventilatorsOccupied\n    icuTotal\n    hduTotal\n    generalTotal\n    ventilatorsTotal\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '847715e0f8cce1c4cdaf2a293dae24ba';
+(node/*: any*/).hash = '29955eb61b755b8d25401c20e072fa69';
 
 module.exports = node;

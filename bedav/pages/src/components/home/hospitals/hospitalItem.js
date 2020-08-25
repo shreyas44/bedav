@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import styled from 'styled-components'
 import {graphql, createFragmentContainer} from 'react-relay'
 import { Link } from 'react-router-dom'
+import hospitalTypes from '../../extra/categories'
 
 export const StyledRow = styled.div`
   align-items: center;
@@ -53,15 +54,6 @@ const StyledLink = styled(Link)`
 function HospitalItem(props) {
   const ref = useRef()
   let {counter, hospital} = props
-
-  const hospitalTypes = {
-    "pri hos": "Private Hospital",
-    "gov hos": "Government Hospital",
-    "pri med": "Private Medical College",
-    "gov med": "Government Medical College",
-    "covid": "Government Covid Care Centre",
-    "pri covid": "Private Covid Care Centre"
-  }
 
   function getNumberObject(firstPart, secondPart, color) {
     if(secondPart === null || secondPart === 0) {

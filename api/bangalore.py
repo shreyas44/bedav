@@ -5,7 +5,6 @@ import numpy as np
 import requests
 from bs4 import BeautifulSoup as bs
 from location import get_location_info, get_contact_info
-from selenium import webdriver
 
 bedav_dir = str(Path(os.getcwd()).parent) + '/bedav'
 sys.path.append(bedav_dir)
