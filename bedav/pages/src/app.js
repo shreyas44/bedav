@@ -31,7 +31,6 @@ return (
       <Suspense fallback={<div>Loading...</div>}>
         <ContentWrapper>
           <Switch>
-            <Route exact path='/' />
             <Route exact path="/about/">
               <About />
             </Route>
