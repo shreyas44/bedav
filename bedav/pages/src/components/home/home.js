@@ -5,9 +5,13 @@ import { SelectedFiltersProvider } from '../contexts/SelectedFilters'
 import { SortProvider } from '../contexts/Sort'
 import FilterIcon from './filter/filterIcon'
 
-function Home() {
+function Home(props) {
   useEffect(() => {
     document.title = "Bedav - Home"
+  }, [])
+
+  useEffect(() => {
+    props.ensureDidMount()
   }, [])
 
   return (

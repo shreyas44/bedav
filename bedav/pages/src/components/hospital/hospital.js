@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { QueryRenderer, graphql } from 'react-relay'
 import { useParams } from 'react-router-dom'
@@ -23,9 +23,16 @@ const StyledDiv = styled.div`
   }
 `
 
-function Hospital() {
+function Hospital(props) {
   const {hospitalId} = useParams()
-  return (
+
+  //useEffect(() => {
+    //console.log(props)
+    //console.log(props.ensureDidMount)
+    //props.ensureDidMount()
+  //}, [])
+
+ return (
     <QueryRenderer
       environment={environment}
       query={graphql`

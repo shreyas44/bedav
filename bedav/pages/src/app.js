@@ -1,12 +1,14 @@
 import React, { Suspense, lazy } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import Header from './components/header'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
-import { FilterScreenProvider } from './components/contexts/FilterScreen'
+import {BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom'
+import NotLiveRoute from 'react-live-route'
 
+const LiveRoute = withRouter(NotLiveRoute)
 const Home = lazy(() => import('./components/home/home'))
 const About = lazy(() => import('./components/about/about'))
 const Hospital = lazy(() => import('./components/hospital/hospital'))
+const FilterScreenProvider = lazy(() => import('./components/contexts/FilterScreenProvider'))
 
 const ContentWrapper = styled.div`
   max-width: 1500px;
@@ -25,22 +27,29 @@ function App() {
 return (
     <Router>
       <GlobalStyle />    
-      <FilterScreenProvider>
-        <Header />
-        <Suspense fallback={<div>Loading...</div>}>
-          <ContentWrapper>
-            <Route exact path="/">
-              <Home />
-            </Route>
+      <Header />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ContentWrapper>
+          <Switch>
+            <Route exact path='/' />
             <Route exact path="/about/">
               <About />
             </Route>
-            <Route path="/hospital/:hospitalId/">
+            <Route exact path="/hospital/:hospitalId/">
               <Hospital />
             </Route>
-          </ContentWrapper>
-        </Suspense>
-      </FilterScreenProvider>
+          </Switch>
+          <LiveRoute exact
+            path="/"
+            alwaysLive={true}
+            render={props => (
+              <FilterScreenProvider>
+                <Home {...props}/>  
+              </FilterScreenProvider>
+            )}
+          />
+        </ContentWrapper>
+      </Suspense>
     </Router>
   )
 }
