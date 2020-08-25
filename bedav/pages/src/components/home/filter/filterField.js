@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import Checkbox from '../../checkbox'
 import SelectedFiltersContext from '../../contexts/SelectedFilters'
@@ -21,7 +21,7 @@ function FilterField(props) {
 
   return (
     <StyledDiv>
-      <Checkbox checked={filters.includes(value)} onClick={() => {dispatchFilter({type: value})} }/>
+      <Checkbox checked={filters.includes(value)} onClick={() => dispatchFilter({type: value}) }/>
       <StyledP>{children}</StyledP>
     </StyledDiv>
   )

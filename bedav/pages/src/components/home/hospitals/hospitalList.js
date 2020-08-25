@@ -5,16 +5,20 @@ import {graphql, createPaginationContainer} from 'react-relay'
 function HospitalList(props) {
   const list = props.hospitalList.hospitals.edges
 
-  useEffect(() => {
-    window.addEventListener("scroll", function() {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        if(props.relay.hasMore() && !props.relay.isLoading()) {
-          props.relay.loadMore(200)
-        }
+  function getData() {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      if(props.relay.hasMore() && !props.relay.isLoading()) {
+        props.relay.loadMore(200)
       }
-    })
+    }
+  } 
 
-    return window.removeEventListener("scroll", () => {})
+  useEffect(() => {
+    window.addEventListener("scroll", getData)
+
+    return () => {
+      window.removeEventListener("scroll", getData)
+    }
   }, [])
 
   let counter = 0;

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import FilterScreenContext from '../../contexts/FilterScreen'
 import FilterField from './filterField'
@@ -23,12 +23,29 @@ const StyledDiv = styled.div`
 `
 
 function FilterScreen(props) {
-  const {filterScreen} = useContext(FilterScreenContext)
+  const {filterScreen, setFilterScreen} = useContext(FilterScreenContext)
+  let ref = useRef()
+
+  function handleClick(event) {
+    if(ref.current.contains(event.target)) {
+      return
+    }
+
+    setFilterScreen(false)  
+  }
+
+  useEffect(() => {
+    document.addEventListener('click', handleClick)
+    
+    return () => {
+      document.removeEventListener('click', handleClick)  
+    }
+  }, [])
 
   let CategoryFilterFields = Object.keys(fields).map(key => <FilterField key={key} value={key}>{fields[key]}</FilterField>)
 
   return (
-    <StyledDiv filterScreen={filterScreen}>
+    <StyledDiv filterScreen={filterScreen} ref={div => ref.current = div}>
       <FilterSection name="Category">
         {CategoryFilterFields}
       </FilterSection>

@@ -1,8 +1,9 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Middle from './middle'
 import HospitalSection from './hospitals/hospitalSection'
 import { SearchHospitalProvider } from '../contexts/SearchHospital'
+import { SortProvider } from '../contexts/Sort'
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -22,7 +23,9 @@ function Main(props) {
     <SearchHospitalProvider>
       <StyledDiv>
         <Middle />
-        <HospitalSection />
+        <SortProvider>
+          <HospitalSection />
+        </SortProvider>
       </StyledDiv>
     </SearchHospitalProvider>
   ) 

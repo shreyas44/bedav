@@ -17,17 +17,18 @@ const StyledDiv = styled.div`
   justify-content: center;
 `
 
-const CheckedIcon = ({className}) => <FontAwesomeIcon icon={faCheck} className={className}/>
+const CheckedIcon = props => <FontAwesomeIcon icon={faCheck} {...props}/>
 
 const StyledIcon = styled(CheckedIcon)`
   font-size: 14px;
   color: white;
+  display: ${({checked}) => checked ? 'initial' : "none"};
 `
 
 const StyledCircle = styled.div`
   width: ${({size}) => size === "large" ? "11px" : size === "medium" ? "6px" : null};
   height: ${({size}) => size === "large" ? "11px" : size === "medium" ? "6px" : null};
-  display: flex;
+  display: ${({checked}) => checked ? 'flex' : "none"};
   justify-content: center;
   align-content: center;
   border-radius: 100%;
@@ -47,11 +48,10 @@ function Checkbox(props) {
 
   return (
     <StyledDiv checked={checked} onClick={onClick} size={size}>
-      { checked && !radio ? 
-          <StyledIcon /> : 
-        checked && radio ?
-          <StyledCircle size={size}/>
-        : null}
+      { radio ? 
+        <StyledCircle checked={checked} size={size}/> :
+        <StyledIcon checked={checked}/>
+      }
     </StyledDiv>
   )
 }
