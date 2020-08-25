@@ -8,6 +8,7 @@ const MapContainer = styled.div`
   width: 100%;
   position: relative;
   height: 50vh;
+  z-index: -1;
 `
 
 const HospitalOverlayContainer = styled.div`
@@ -29,7 +30,7 @@ const GetDirectionsButton = styled.div`
   font-weight: bold;
   color: #34a1eb;
   padding: 8px 10px 10px;
-  border-top 1px solid #aaa;
+  border-top: 1px solid #aaa;
   cursor: pointer;
   border-radius: 0 0 5px 5px;
 
