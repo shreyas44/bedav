@@ -1,11 +1,12 @@
-import React, {useState} from 'react'
+import React, { Suspense, lazy } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import Header from './components/header'
-import Home from './components/home/home'
-import Hospital from './components/hospital/hospital'
-import About from './components/about/about'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import { FilterScreenProvider } from './components/contexts/FilterScreen'
+
+const Home = lazy(() => import('./components/home/home'))
+const About = lazy(() => import('./components/about/about'))
+const Hospital = lazy(() => import('./components/hospital/hospital'))
 
 const ContentWrapper = styled.div`
   max-width: 1500px;
@@ -26,17 +27,19 @@ return (
       <GlobalStyle />    
       <FilterScreenProvider>
         <Header />
-        <ContentWrapper>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/about/">
-            <About />
-          </Route>
-          <Route path="/hospital/:hospitalId/">
-            <Hospital />
-          </Route>
-        </ContentWrapper>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ContentWrapper>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/about/">
+              <About />
+            </Route>
+            <Route path="/hospital/:hospitalId/">
+              <Hospital />
+            </Route>
+          </ContentWrapper>
+        </Suspense>
       </FilterScreenProvider>
     </Router>
   )

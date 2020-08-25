@@ -85,8 +85,6 @@ function LeftSection(props) {
  
   const sections = Object.keys(values).map((value, index) => <EquipmentSection key={index} sectionName={value} values={values[value]} /> )
 
-  console.log(sections)
-
   return (
     <StyledDiv>
       <HeadingContainer>
