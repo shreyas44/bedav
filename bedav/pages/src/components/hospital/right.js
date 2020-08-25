@@ -33,7 +33,7 @@ function LeftSection(props) {
   if(hospital.website) {
     contact.push({
       icon: PublicIcon,
-      value: <a href={hospital.website} target="_blank">{`${hospital.name} (${hospital.website})`}</a>
+      value: <a href={hospital.website} target="_blank" style={{wordBreak: "break-all"}}>{`${hospital.name} (${hospital.website})`}</a>
     })
   }
 

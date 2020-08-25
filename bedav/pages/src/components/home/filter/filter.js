@@ -29,7 +29,8 @@ function FilterScreen(props) {
     "gov med": "Government Medical College",
     "pri hos": "Private Hospital",
     "pri med": "Private Medical College",
-    "covid": "Covid Care Centres"
+    "covid": "Covid Care Centres",
+    "pri covid": "Private Covid Care Centres"
   }
 
   let CategoryFilterFields = Object.keys(fields).map(key => <FilterField key={key} value={key}>{fields[key]}</FilterField>)

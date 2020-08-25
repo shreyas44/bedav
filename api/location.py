@@ -3,10 +3,15 @@ from django.contrib.gis.geos import Point
 
 KEY = "AIzaSyDMJnJXbyp-pH4xaWY8_S1RI-mUEV1EzB0"
 
-def get_location_info(name, city='', state='', country='India'):
+def get_location_info(name=None, city='', state='', country='India', address=None):
     ret_data = {}
+    
+    if address is None:
+      url_address =  f'{name}, {city}, {state}, {country}'
+    else:
+      url_address = f'{name}, {address}{f", {city}" if city.lower() not in address.lower() else ""}{f", {state}" if state.lower() not in address.lower() else ""}{f", {country}" if country.lower() not in address.lower() else ""}'
 
-    header = {'key':  KEY, "address": f'{name}, {city}, {state}, {country}'}
+    header = {'key':  KEY, "address": url_address}
     url = "https://maps.googleapis.com/maps/api/geocode/json?" + urllib.parse.urlencode(header)
     print(url)
 
@@ -14,7 +19,7 @@ def get_location_info(name, city='', state='', country='India'):
     data = json.loads(data.content.decode('utf-8'))
 
     result = data['results']
-    
+
     if len(result) > 0:
         result = result[0]
     else:
@@ -53,7 +58,7 @@ def get_location_info(name, city='', state='', country='India'):
             ret_data[field] = value
         except IndexError:
             pass
-    
+
     return ret_data
 
 def get_contact_info(place_id):
@@ -64,7 +69,7 @@ def get_contact_info(place_id):
     }
 
     url = "https://maps.googleapis.com/maps/api/place/details/json?" + urllib.parse.urlencode(header)
-    
+
     data = json.loads(requests.get(url).content.decode('utf-8'))
     result = data['result']
 
