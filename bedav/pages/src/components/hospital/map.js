@@ -8,7 +8,7 @@ const MapContainer = styled.div`
   width: 100%;
   position: relative;
   height: 50vh;
-  z-index: -1;
+  z-index: 0;
 
   @media only screen and (max-width: 600px) {
     height: 300px;
@@ -82,6 +82,7 @@ function HospitalMap(props) {
           <OverlayView
             position={center}
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+            zIndex={10}
           >
             <HospitalOverlayContainer>
               <HospitalName>
