@@ -9,6 +9,11 @@ const StyledOptionsDiv = styled.div`
   position: absolute;
   right: 0;
   top: -10px;
+
+  @media only screen and (max-width: 600px) {
+    position: sticky;
+    left: 0;
+  }
 `
 
 const StyledP = styled.p`
@@ -27,6 +32,12 @@ const StyledDiv = styled.div`
   display: flex;
   align-content: center;
   margin: 0 0 0 15px;
+  
+  @media only screen and (max-width: 600px) {
+    &:first-child {
+      margin-left: 0;
+    }
+  }
 `
 
 function HospitalDataOption(props) {
@@ -75,19 +86,16 @@ function HospitalDataOptions(props) {
         onClick={handleAvailableClick}
         text="Available"
       />
-
       <HospitalDataOption 
         checked={dataToShow === "occupied"}
         onClick={handleOccupiedClick}
         text="Occupied"
       />
-
       <HospitalDataOption 
         checked={dataToShow === "total"}
         onClick={handleTotalClick}
         text="Total"
       />
-
     </StyledOptionsDiv>
   )
 }

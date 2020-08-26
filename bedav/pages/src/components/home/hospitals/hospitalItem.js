@@ -80,10 +80,52 @@ const StyledLink = styled(Link)`
   }
 `
 
-function HospitalItem(props) {
+function HospitalName({name, counter, id}) {
   const linkRef = useRef()
   const parentRef = useRef()
   const tooltipRef = useRef()
+
+ function handleClick(event) {
+    if(document.documentElement.clientWidth <= 600) {
+      if(tooltipRef.current.contains(event.target)) {
+        parentRef.current.style.overflow = ["hidden", ""].includes(parentRef.current.style.overflow) ? "initial" : "hidden"
+        return
+      }
+    }
+
+    linkRef.current.click()
+  }
+  
+  let newName = name
+
+  if(document.documentElement.clientWidth <= 600) {
+    if(name.length > 25) {
+      newName = `${name.slice(0,26).trim()}...`
+    }
+
+    return (
+      <StyledName counter={counter} onClick={handleClick} ref={parentRef}>
+        <StyledLink to={`/hospital/${id}`} ref={linkRef}>
+          {newName}
+        </StyledLink>
+        { newName != name ?
+        <Tooltip text={name} innerRef={tooltipRef} onClick={true}> 
+          <StyledInfoIcon />          
+        </Tooltip> : null}
+      </StyledName>
+    ) 
+  } else {
+    return (
+      <StyledName counter={counter} onClick={handleClick} ref={parentRef}>
+        <StyledLink to={`/hospital/${id}`} ref={linkRef}>
+          {name}
+        </StyledLink>
+      </StyledName>
+    )
+  }
+}
+
+function HospitalItem(props) {
   let {counter, hospital} = props
 
   function getNumberObject(firstPart, secondPart, color) {
@@ -98,37 +140,9 @@ function HospitalItem(props) {
     )
   }
 
-  function handleClick(event) {
-    if(tooltipRef.current.contains(event.target)) {
-      parentRef.current.style.overflow = ["hidden", ""].includes(parentRef.current.style.overflow) ? "initial" : "hidden"
-      return
-    }
-
-    linkRef.current.click()
-  }
-
-  const getName = name => {
-    let newName = name
-    if(name.length > 25) {
-      newName = `${name.slice(0,26).trim()}...`
-    }
-
-    return (
-      <StyledName counter={counter} onClick={handleClick} ref={parentRef}>
-        <StyledLink to={`/hospital/${hospital.id}`} ref={linkRef}>
-          {newName}
-        </StyledLink>
-        { newName != name ?
-        <Tooltip text={name} innerRef={tooltipRef} onClick={true}> 
-          <StyledInfoIcon />          
-        </Tooltip> : null }
-      </StyledName>
-    )
-  }
-
   return (
     <StyledRow counter={counter}>
-      {getName(hospital.name)}
+      <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>
 
       <StyledHospitalType style={{color: '#004266'}} counter={counter}>{hospitalTypes[hospital.category]}</StyledHospitalType>
 
