@@ -3,12 +3,6 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   color: ${({color}) => color};
-  padding: 15px;
-  box-sizing: border-box;
-  height: 100px;
-  box-shadow: 2px 4px 8px rgba(0,0,0,0.3);
-  border-radius: 5px;
-  position: relative;
 `
 
 const CardTitle = styled.div`
@@ -24,6 +18,12 @@ const CardText = styled.div`
   bottom: 15px;
   right: 15px;
   font-family: "Quicksand";
+
+  @media only screen and (max-width: 600px) {
+    font-size: 23px;
+    bottom: 7px;
+    right: 7px;
+  }
 `
 
 function capitalizeString(string) {

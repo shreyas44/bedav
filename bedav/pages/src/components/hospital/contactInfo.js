@@ -24,12 +24,15 @@ const ContactContainer = styled.div`
 `
 
 const StyledText = styled.div`
-  margin-left: 10px;
+  margin: auto;
+  text-align: center;
+  width: calc(100% - 46px);
+  padding: 0 10px;
+  box-sizing: border-box;
   font-size: 16px;
   font-weight: bold;
   color: #0073b5;
   text-decoration: none;
-  max-width: 90%;
 
   & a, & a:visited {
     color: inherit;

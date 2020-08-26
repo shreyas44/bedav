@@ -8,9 +8,9 @@ import Tooltip from './tooltip'
 
 const StyledIconWrapper = styled.div`
   display: inline-block;
-  margin-left: 10px;
   cursor: pointer;
   color: ${({active}) => active ? "#0275b3" : "#444"};
+  margin-left: 10px;
 
   &:hover {
     color: #0275b3;

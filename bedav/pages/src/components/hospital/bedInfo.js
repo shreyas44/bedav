@@ -1,32 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
 import EquipmentSection from './equipmentSection'
-import categories from '../extra/categories'
+import HospitalHeading from './hospitalHeading'
 
 const StyledDiv = styled.div`
-  width: 50%;
   display: flex;
   flex-direction: column;
+  order: 1;
+
+  @media only screen and (max-width:600px) {
+    order: 2;
+  }
 `
 
-const HeadingContainer = styled.div`
-  margin: 0 0 25px 0;
-  color: #0275b3;
-  font-family: "Quicksand", sans-seif;
+const StyledHeading = styled(HospitalHeading)`
+  display: none;
+
+  @media only screen and (min-width: 600px) {
+    display: block;
+  }
 `
 
-const StyledHeading = styled.h1`
-  margin: 0;
-  font-size: 24px;
-`
-
-const StyledSubHeading = styled.h2`
-  margin: 0px 0 0;
-  font-size: 14px;
-  font-weight: normal;
-`
-
-function LeftSection(props) {
+function BedInfo(props) {
   const {hospital} = props
   const values = {
     "General Ward": {
@@ -87,13 +82,10 @@ function LeftSection(props) {
 
   return (
     <StyledDiv>
-      <HeadingContainer>
-        <StyledHeading>{hospital.name}</StyledHeading>
-        <StyledSubHeading>{categories[hospital.category]}</StyledSubHeading>
-      </HeadingContainer>
+      <StyledHeading hospital={props.hospital}/> 
       {sections}
     </StyledDiv>
   )
 }
 
-export default LeftSection
+export default BedInfo 

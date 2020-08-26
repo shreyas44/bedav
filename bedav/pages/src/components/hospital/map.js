@@ -9,6 +9,10 @@ const MapContainer = styled.div`
   position: relative;
   height: 50vh;
   z-index: -1;
+
+  @media only screen and (max-width: 600px) {
+    height: 300px;
+  }
 `
 
 const HospitalOverlayContainer = styled.div`

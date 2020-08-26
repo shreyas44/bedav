@@ -5,19 +5,32 @@ import PublicIcon from '@material-ui/icons/Public'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import HospitalMap from './map'
 import ContactInfo from './contactInfo'
+import HospitalHeading from './hospitalHeading'
 
 const StyledDiv = styled.div`
-  width: 50%;
-  height: 90vh;
-  padding: 0 0 0 10px; /*So that the box shadow of contact is visible*/
+  //height: 90vh;
+  padding: 0 5px; /*So that the box shadow of contact is visible*/
   box-sizing: border-box;
+  order: 2;
+
+  @media only screen and (max-width: 600px) {
+    order: 1;
+  }
 `
 
 const ContactContainer = styled.div`
   margin-top: 20px;
 `
 
-function LeftSection(props) {
+const StyledHeading = styled(HospitalHeading)`
+  display: none;
+
+  @media only screen and (max-width: 600px) {
+    display: block;
+  }
+`
+
+function ContactInfoContainer(props) {
   const {hospital} = props
   const mapsURL = `https://www.google.com/maps/dir/?api=1&destination_place_id=${hospital.placeId}&destination=${hospital.latitude},${hospital.longitude}`
 
@@ -48,6 +61,7 @@ function LeftSection(props) {
 
   return (
     <StyledDiv>
+      <StyledHeading hospital={hospital} />
       <HospitalMap lat={hospital.latitude} lon={hospital.longitude} name={hospital.name} url={mapsURL || null}/>
       <ContactContainer>
         {contactItems}
@@ -56,4 +70,4 @@ function LeftSection(props) {
   )
 }
 
-export default LeftSection
+export default ContactInfoContainer 

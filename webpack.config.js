@@ -9,6 +9,10 @@ module.exports = {
     publicPath: '/static/pages/js/',
   },
   devServer: {
+    allowedHosts: [
+      "*"
+    ],
+    host: '0.0.0.0',
     port: 9000,
     contentBase: path.resolve(__dirname, "bedav/pages/static"),
     contentBasePublicPath: 'http://localhost:8000',
@@ -36,3 +40,4 @@ module.exports = {
     ]
   }
 }
+

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { QueryRenderer, graphql } from 'react-relay'
 import { useParams } from 'react-router-dom'
 import environment from '../../Environment'
-import LeftSection from './left'
-import RightSection from './right'
+import HospitalInfo from './info'
+import EquipmentInfo from './bedInfo'
 
 const StyledDiv = styled.div`
   width: 100%;
@@ -19,18 +19,27 @@ const StyledDiv = styled.div`
 
   & > div {
     width: 50%;
+    padding: 0 5px;
+    box-sizing: border-box;
     margin: 0 20px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    & {
+      flex-direction: column;
+      padding: 0;
+      margin-top: 80px;
+    }
+
+    & > div {
+        width: 100%;
+        margin: 10px 0;
+      }
   }
 `
 
 function Hospital(props) {
   const {hospitalId} = useParams()
-
-  //useEffect(() => {
-    //console.log(props)
-    //console.log(props.ensureDidMount)
-    //props.ensureDidMount()
-  //}, [])
 
  return (
     <QueryRenderer
@@ -75,8 +84,8 @@ function Hospital(props) {
         if(props) {
           return (
             <StyledDiv>
-              <LeftSection hospital={props.hospital}/>
-              <RightSection hospital={props.hospital}/>
+              <EquipmentInfo hospital={props.hospital}/>
+              <HospitalInfo hospital={props.hospital}/>
             </StyledDiv>
           )
         }
@@ -86,3 +95,4 @@ function Hospital(props) {
 }
 
 export default Hospital
+
