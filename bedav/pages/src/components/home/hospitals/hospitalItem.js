@@ -1,10 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import styled from 'styled-components'
 import {graphql, createFragmentContainer} from 'react-relay'
 import { Link } from 'react-router-dom'
 import hospitalTypes from '../../extra/categories'
 import Tooltip from '../../tooltip'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import DataToShowContext from '../../contexts/DataToShow'
 
 export const StyledRow = styled.div`
   align-items: center;
@@ -85,7 +86,7 @@ function HospitalName({name, counter, id}) {
   const parentRef = useRef()
   const tooltipRef = useRef()
 
- function handleClick(event) {
+  function handleClick(event) {
     if(document.documentElement.clientWidth <= 600) {
       if(tooltipRef.current.contains(event.target)) {
         parentRef.current.style.overflow = ["hidden", ""].includes(parentRef.current.style.overflow) ? "initial" : "hidden"
@@ -127,6 +128,7 @@ function HospitalName({name, counter, id}) {
 
 function HospitalItem(props) {
   let {counter, hospital} = props
+  const {dataToShow} = useContext(DataToShowContext)
 
   function getNumberObject(firstPart, secondPart, color) {
     if(secondPart === null || secondPart === 0) {
@@ -149,19 +151,19 @@ function HospitalItem(props) {
       <StyledNumber style={{color: '#004266'}} counter={counter}>{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
 
       {
-        props.dataToShow === "occupied" ?
+        dataToShow === "occupied" ?
         <>
           {getNumberObject(hospital.generalOccupied, hospital.generalTotal, "red")}
           {getNumberObject(hospital.hduOccupied, hospital.hduTotal, "red")}
           {getNumberObject(hospital.icuOccupied, hospital.icuTotal, "red")}
           {getNumberObject(hospital.ventilatorsOccupied, hospital.ventilatorsTotal, "red")}
-        </> : props.dataToShow === "available" ?
+        </> : dataToShow === "available" ?
         <>
           {getNumberObject(hospital.generalAvailable, hospital.generalTotal, "green")}
           {getNumberObject(hospital.hduAvailable, hospital.hduTotal, "green")}
           {getNumberObject(hospital.icuAvailable, hospital.icuTotal, "green")}
           {getNumberObject(hospital.ventilatorsAvailable, hospital.ventilatorsTotal, "green")}
-        </> : props.dataToShow == "total" ?
+        </> : dataToShow == "total" ?
         <>
           {getNumberObject(hospital.generalTotal, hospital.generalTotal, "blue")}
           {getNumberObject(hospital.hduTotal, hospital.hduTotal, "blue")}

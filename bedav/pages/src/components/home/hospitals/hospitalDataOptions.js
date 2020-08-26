@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import Checkbox from '../../checkbox'
+import DataToShowContext from '../../contexts/DataToShow'
 
 const StyledOptionsDiv = styled.div`
   margin: 5px 0;
@@ -59,7 +60,7 @@ function HospitalDataOption(props) {
 }
 
 function HospitalDataOptions(props) {
-  const {dataToShow, setDataToShow} = props
+  const {dataToShow, setDataToShow} = useContext(DataToShowContext)
 
   function handleOccupiedClick(event) {
     if(dataToShow !== "occupied") {

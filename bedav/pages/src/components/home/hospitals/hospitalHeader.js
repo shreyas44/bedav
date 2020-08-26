@@ -5,6 +5,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import SortContext from '../../contexts/Sort'
 import Tooltip from '../../tooltip'
+import DataToShowContext from '../../contexts/DataToShow'
 
 const StyledHeadingName = styled(StyledName)`
   padding: 15px;
@@ -71,12 +72,13 @@ const StyledOrderIcon = styled(FilterListIcon)`
 
 function HospitalHeader(props) {
   const {sortValue, setSortValue} = useContext(SortContext)
+  const {dataToShow} = useContext(DataToShowContext)
 
   let colorTheme;
 
-  if(props.dataToShow === "occupied") {
+  if(dataToShow === "occupied") {
     colorTheme = "red"
-  } else if(props.dataToShow === "available") {
+  } else if(dataToShow === "available") {
     colorTheme = "green"
   } else {
     colorTheme = "blue"
@@ -103,13 +105,13 @@ function HospitalHeader(props) {
       <StyledHeading 
         colorTheme={colorTheme}
         key={index}
-        value={`${props.dataToShow.toUpperCase()}_${key}`}
+        value={`${dataToShow.toUpperCase()}_${key}`}
         onClick={handleClick}
         sortable
       >
         {text}
         {/*<br/>
-            {props.dataToShow[0].toUpperCase() + props.dataToShow.slice(1)} */}
+            {dataToShow[0].toUpperCase() + dataToShow.slice(1)} */}
         <StyledOrderIcon active={active ? 1 : 0} descending={active ? descending ? 1 : 0 : 1}/>
       </StyledHeading>
     )
@@ -122,7 +124,7 @@ function HospitalHeader(props) {
       index,
       key,
       items[key],
-      sortValue.field == `${props.dataToShow.toUpperCase()}_${key}`,
+      sortValue.field == `${dataToShow.toUpperCase()}_${key}`,
       sortValue.descending
     ))
 

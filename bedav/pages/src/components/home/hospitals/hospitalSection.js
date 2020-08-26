@@ -10,6 +10,7 @@ import HospitalHeader from './hospitalHeader'
 import HospitalList from './hospitalList'
 import HospitalDataOptions from './hospitalDataOptions'
 import { useDictState } from '../../hooks'
+import { DataToShowProvider } from '../../contexts/DataToShow'
 
 const StyledDiv = styled.div`
   margin: 10vh auto;
@@ -47,7 +48,6 @@ function HospitalSection(props) {
   const [state, setState] = useDictState({
     geolocation: false,
     getData: false,
-    dataToShow: "available"
   })
 
   const {searchQuery} = useContext(SearchHospitalContext)
@@ -133,41 +133,40 @@ function HospitalSection(props) {
   }, [])
 
   return (
-    <StyledDiv>
-      <HospitalDataOptions 
-        dataToShow={state.dataToShow}
-        setDataToShow={value => { setState({dataToShow: value}) } }
-      />
-      <StyledP>
-        HDU - High Dependency Unit;
-        ICU - Intensive Care Unit;
-        N.A. - Not Applicable
-      </StyledP>
-      <HospitalHeader dataToShow={state.dataToShow} geolocation={state.geolocation}/>
-      { state.getData ? 
-        <QueryRenderer 
-          environment={environment}
-          query={graphql`
-            query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
-              ...hospitalList_hospitalList @arguments(count: 200, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
-            }
-          `}
-          variables={{lat: state.lat, lon: state.lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
-          render={({error, props}) => {
-            if(error) {
-              return <div>Error, please try again.</div>
-            }
+    <DataToShowProvider>
+      <StyledDiv>
+        <HospitalDataOptions />
+        <StyledP>
+          HDU - High Dependency Unit;
+          ICU - Intensive Care Unit;
+          N.A. - Not Applicable
+        </StyledP>
+        <HospitalHeader geolocation={state.geolocation}/>
+        { state.getData ? 
+          <QueryRenderer 
+            environment={environment}
+            query={graphql`
+              query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
+                ...hospitalList_hospitalList @arguments(count: 200, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+              }
+            `}
+            variables={{lat: state.lat, lon: state.lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
+            render={({error, props}) => {
+              if(error) {
+                return <div>Error, please try again.</div>
+              }
 
-            if(!props) {
-              return <div>Loading...</div>
-            }
+              if(!props) {
+                return <div>Loading...</div>
+              }
 
-            return <HospitalList hospitalList={{...props}} dataToShow={state.dataToShow} geolocation={state.geolocation}/>          
-          }}
-        /> :
-        <div>Loading...</div> 
-      }
-    </StyledDiv>
+              return <HospitalList hospitalList={{...props}} geolocation={state.geolocation}/>          
+            }}
+          /> :
+          <div>Loading...</div> 
+        }
+      </StyledDiv>
+    </DataToShowProvider>
   )
 }
 
