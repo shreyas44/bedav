@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import {graphql, createFragmentContainer} from 'react-relay'
 import { Link } from 'react-router-dom'
 import hospitalTypes from '../../extra/categories'
+import Tooltip from '../../tooltip'
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 export const StyledRow = styled.div`
   align-items: center;
@@ -12,13 +14,19 @@ export const StyledRow = styled.div`
 `
 
 export const StyledItem = styled.div`
-  padding: 0 20px;
   border-radius: 5px;
   padding: 15px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   position: relative;
+
+  @media only screen and (max-width: 600px) {
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "Quicksand", sans-serif;
+  }
 `
 
 export const StyledName = styled(StyledItem)`
@@ -28,10 +36,19 @@ export const StyledName = styled(StyledItem)`
   transition: all 0.1s;
   cursor: pointer;
   text-decoration: none;
+  position: sticky;
+  left: 0;
+  z-index: 2;
 
   &:hover {
     color: #004266;
     background-color: #eee;
+  }
+
+  @media only screen and (max-width: 600px) {
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
   }
 `
 
@@ -40,6 +57,18 @@ export const StyledNumber = styled(StyledItem)`
   background: ${({counter}) => counter % 2 == 0 ? "#f8f8f8" : "white"};
   color: ${({colorTheme, children}) => children == "N.A." ? "#ddd" : colorTheme == "green" ? "#008033" : colorTheme === "red" ? "#C3423F" : colorTheme === "blue" ? "rgb(0, 66, 102)": null};
   justify-content: center;
+`
+
+export const StyledHospitalType = styled(StyledNumber)`
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
+`
+
+const StyledInfoIcon = styled(InfoOutlinedIcon)`
+  font-size: 19px !important;
+  color: #aaa;
+  padding-left: 5px;
 `
 
 const StyledLink = styled(Link)`
@@ -52,7 +81,9 @@ const StyledLink = styled(Link)`
 `
 
 function HospitalItem(props) {
-  const ref = useRef()
+  const linkRef = useRef()
+  const parentRef = useRef()
+  const tooltipRef = useRef()
   let {counter, hospital} = props
 
   function getNumberObject(firstPart, secondPart, color) {
@@ -67,11 +98,39 @@ function HospitalItem(props) {
     )
   }
 
+  function handleClick(event) {
+    if(tooltipRef.current.contains(event.target)) {
+      parentRef.current.style.overflow = ["hidden", ""].includes(parentRef.current.style.overflow) ? "initial" : "hidden"
+      return
+    }
+
+    linkRef.current.click()
+  }
+
+  const getName = name => {
+    let newName = name
+    if(name.length > 25) {
+      newName = `${name.slice(0,26).trim()}...`
+    }
+
+    return (
+      <StyledName counter={counter} onClick={handleClick} ref={parentRef}>
+        <StyledLink to={`/hospital/${hospital.id}`} ref={linkRef}>
+          {newName}
+        </StyledLink>
+        { newName != name ?
+        <Tooltip text={name} innerRef={tooltipRef} onClick={true}> 
+          <StyledInfoIcon />          
+        </Tooltip> : null }
+      </StyledName>
+    )
+  }
+
   return (
     <StyledRow counter={counter}>
-      <StyledName counter={counter} onClick={() => ref.current.click()}><StyledLink to={`/hospital/${hospital.id}/`} ref={ref}>{hospital.name}</StyledLink></StyledName>
+      {getName(hospital.name)}
 
-      <StyledNumber style={{color: '#004266'}} counter={counter}>{hospitalTypes[hospital.category]}</StyledNumber>
+      <StyledHospitalType style={{color: '#004266'}} counter={counter}>{hospitalTypes[hospital.category]}</StyledHospitalType>
 
       <StyledNumber style={{color: '#004266'}} counter={counter}>{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
 

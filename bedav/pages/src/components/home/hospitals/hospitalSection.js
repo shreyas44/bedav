@@ -21,12 +21,26 @@ const StyledDiv = styled.div`
   grid-gap: 5px;
   font-size: 16px;
   position: relative;
+
+  @media only screen and (max-width: 600px) {
+    //grid-template-columns: minmax(200px, 250px) minmax(80px, 100px) repeat(5, minmax(100px, auto));
+    grid-template-columns: minmax(150px, 175px) repeat(5, auto);
+    overflow-x: scroll;
+    grid-gap: 3px;
+    padding-top: 50px;
+    position: relative;
+    bottom: 60px;
+  }
 `
 
 const StyledP = styled.p`
   margin: 0 5px;
   grid-column: 1 / -1;
   color: #555;
+
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
 `
 
 function HospitalSection(props) {

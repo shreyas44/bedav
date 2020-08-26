@@ -5,12 +5,45 @@ import SearchHospitalContext from '../contexts/SearchHospital'
 
 let SearchIcon = ({className}) => <MaterialSearchIcon className={className} />
 
+const StyledSearchContainer = styled.div`
+  width: 60%;
+  box-shadow: 7px 15px 25px 0px rgba(0,0,0,0.1);
+  margin: 60px auto 0;
+  height: 60px;
+  border: 1px solid #FEFEFE;
+  display: flex;
+  align-content: center;
+  transition: all 0.1s;
+  position: relative;
+
+  &:focus-within {
+    transform: scale(1.01);
+    outline: none;
+    box-shadow: 7px 15px 25px rgba(0,0,0,0.3);
+  }
+
+  @media only screen and (max-width: 600px) {
+    margin-top: 40px;
+    width: calc(100% - 20px);
+    box-shadow: 2.5px 7.5px 12.5px 0 rgba(0,0,0,0.3);
+
+    &:focus-within {
+      transform: none;
+      box-shadow: 2.5px 7.5px 12.5px 0 rgba(0,0,0,0.4);
+    }
+  }
+`
+
 const StyledSearchIcon = styled(SearchIcon)`
   height: inherit !important;
   padding: 0 0 0 20px !important;
   font-size: 1.75rem !important;
   transition: color 0.1s !important;
   color: ${props => props.focused ? "#000" : "#777"};
+
+  @media only screen and (max-width: 600px) {
+    padding: 0 0 0 13px !important;
+  }
 `
 
 const StyledInput = styled.input`
@@ -26,6 +59,10 @@ const StyledInput = styled.input`
     outline: none;
     border: none;
   }
+
+  @media only screen and (max-width: 600px) {
+    padding: 20px 10px;
+  }
 `
 
 function SearchBar() {
@@ -33,7 +70,7 @@ function SearchBar() {
   let [focused, setFocus] = useState(false)
 
   return (
-    <> 
+    <StyledSearchContainer>
       <StyledSearchIcon focused={focused}/>
       <StyledInput 
         type="text"
@@ -42,7 +79,7 @@ function SearchBar() {
         placeholder="Search for a hospital..."
         onFocus={() => { setFocus(true) }} onBlur={() => { setFocus(false) }} 
        />
-    </>
+    </StyledSearchContainer>
   )
 }
 

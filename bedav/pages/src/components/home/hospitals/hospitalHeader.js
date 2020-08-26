@@ -15,6 +15,10 @@ const StyledHeadingName = styled(StyledName)`
     font-size: 16px;
     background-color: #f8f8f8;
   }
+
+  @media only screen and (max-width: 600px) {
+    padding: 10px 5px;
+  }
 `
 
 const StyledHeading = styled(StyledNumber)`
@@ -23,6 +27,16 @@ const StyledHeading = styled(StyledNumber)`
   justify-content: center;
   background-color: #f8f8f8;
   ${({sortable}) => sortable ? "cursor: pointer; &:hover {background-color: #eee;}" : null}
+
+  @media only screen and (max-width: 600px) {
+    padding: 15px 10px;
+  } 
+`
+
+const StyledHospitalTypeHeading = styled(StyledHeading)`
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
 `
 
 const StyledWarningIcon = styled(ErrorOutlineIcon)`
@@ -32,6 +46,13 @@ const StyledWarningIcon = styled(ErrorOutlineIcon)`
   bottom: 1px;
   color: #e67519;
   cursor: pointer;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 17px !important;
+    bottom: 0;
+    top: 2px;
+    margin-left: 3px;
+  }
 `
 
 const StyledOrderIcon = styled(FilterListIcon)`
@@ -42,6 +63,10 @@ const StyledOrderIcon = styled(FilterListIcon)`
   color: ${({active}) => active ? '#ba7e0f' : '#ccc'};
   transform: ${({descending}) => !descending ? 'rotate(180deg)' : 'rotate(0)'};
   transition: all 0.1s !important;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px !important;
+  }
 `
 
 function HospitalHeader(props) {
@@ -83,14 +108,14 @@ function HospitalHeader(props) {
         sortable
       >
         {text}
-        <br/>
-        {props.dataToShow[0].toUpperCase() + props.dataToShow.slice(1)}
+        {/*<br/>
+            {props.dataToShow[0].toUpperCase() + props.dataToShow.slice(1)} */}
         <StyledOrderIcon active={active ? 1 : 0} descending={active ? descending ? 1 : 0 : 1}/>
       </StyledHeading>
     )
   }
 
-  const items = {GENERAL: "General Ward", HDU: "HDU", ICU: "ICU", VENTILATORS: "Ventilators"}
+  const items = {GENERAL: "General", HDU: "HDU", ICU: "ICU", VENTILATORS: "Ventilators"}
 
   const headings = Object.keys(items).map((key, index) => 
     renderHeading(
@@ -105,7 +130,7 @@ function HospitalHeader(props) {
     <StyledRow>
 
       <StyledHeadingName counter={2}>Name</StyledHeadingName>
-      <StyledHeading style={{color: '#004266'}}>Hospital Type</StyledHeading>
+      <StyledHospitalTypeHeading style={{color: '#004266'}}>Hospital Type</StyledHospitalTypeHeading>
 
       <StyledHeading 
         style={{color: '#004266'}}

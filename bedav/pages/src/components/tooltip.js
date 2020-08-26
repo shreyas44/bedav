@@ -59,8 +59,10 @@ function Tooltip(props) {
 
   return (
     <StyledContainer
-      onMouseEnter={toggleTip}
-      onMouseLeave={toggleTip}
+      onMouseEnter={!props.onClick ? toggleTip : null}
+      onMouseLeave={!props.onClick ? toggleTip : null}
+      onClick={props.onClick ? toggleTip: null}
+      ref={props.innerRef || null} 
     >
       <StyledTip role="tooltip" visible={visible} position={props.position || "top"}>
         <StyledWrapper>

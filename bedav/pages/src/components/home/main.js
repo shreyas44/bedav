@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Middle from './middle'
+import SearchBar from './searchBar'
 import HospitalSection from './hospitals/hospitalSection'
 import { SearchHospitalProvider } from '../contexts/SearchHospital'
 import { SortProvider } from '../contexts/Sort'
@@ -16,13 +16,17 @@ const StyledDiv = styled.div`
   background: white;
   transition: opacity 0.2s;
   z-index: -2;
+
+  @media only screen and (max-width: 600px) {
+    padding: 10px;
+  }
 `
 
 function Main(props) {
   return (
     <SearchHospitalProvider>
       <StyledDiv>
-        <Middle />
+        <SearchBar />
         <SortProvider>
           <HospitalSection />
         </SortProvider>
