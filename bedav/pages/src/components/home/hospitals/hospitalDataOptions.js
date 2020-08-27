@@ -14,6 +14,7 @@ const StyledOptionsDiv = styled.div`
   @media only screen and (max-width: 600px) {
     position: sticky;
     left: 0;
+    display: none;
   }
 `
 

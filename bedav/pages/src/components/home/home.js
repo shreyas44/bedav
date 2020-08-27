@@ -1,12 +1,10 @@
-import React, { useEffect, useContext } from 'react'
-import Filter from './filter/filter'
+import React, { useEffect, useContext, useState } from 'react'
+import FilterSection from './filter/filterSec'
 import Main from './main'
 import { SelectedFiltersProvider } from '../contexts/SelectedFilters'
-import FilterScreenContext from '../contexts/FilterScreen'
-import FilterIcon from './filter/filterIcon'
 
 function Home(props) {
-  const {filterScreen} = useContext(FilterScreenContext)
+
   useEffect(() => {
     document.title = "Bedav - Home"
   }, [])
@@ -19,9 +17,7 @@ function Home(props) {
     <div>
       <SelectedFiltersProvider>
         <Main />
-        {filterScreen ?
-          <Filter /> : null }
-        <FilterIcon />
+        <FilterSection />
       </SelectedFiltersProvider>
     </div>
   )

@@ -6,6 +6,8 @@ import hospitalTypes from '../../extra/categories'
 import Tooltip from '../../tooltip'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import DataToShowContext from '../../contexts/DataToShow'
+import useWindowSize from '../../hooks/useWindowSize'
+import { mobileCategories } from '../../extra/categories'
 
 export const StyledRow = styled.div`
   align-items: center;
@@ -58,12 +60,6 @@ export const StyledNumber = styled(StyledItem)`
   background: ${({counter}) => counter % 2 == 0 ? "#f8f8f8" : "white"};
   color: ${({colorTheme, children}) => children == "N.A." ? "#ddd" : colorTheme == "green" ? "#008033" : colorTheme === "red" ? "#C3423F" : colorTheme === "blue" ? "rgb(0, 66, 102)": null};
   justify-content: center;
-`
-
-export const StyledHospitalType = styled(StyledNumber)`
-  @media only screen and (max-width: 600px) {
-    display: none;
-  }
 `
 
 const StyledInfoIcon = styled(InfoOutlinedIcon)`
@@ -129,6 +125,7 @@ function HospitalName({name, counter, id}) {
 function HospitalItem(props) {
   let {counter, hospital} = props
   const {dataToShow} = useContext(DataToShowContext)
+  const [width, _] = useWindowSize()
 
   function getNumberObject(firstPart, secondPart, color) {
     if(secondPart === null || secondPart === 0) {
@@ -146,7 +143,7 @@ function HospitalItem(props) {
     <StyledRow counter={counter}>
       <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>
 
-      <StyledHospitalType style={{color: '#004266'}} counter={counter}>{hospitalTypes[hospital.category]}</StyledHospitalType>
+      <StyledNumber style={{color: '#004266'}} counter={counter}>{width <= 600 ? mobileCategories[hospitalTypes[hospital.category]] : hospitalTypes[hospital.category]}</StyledNumber>
 
       <StyledNumber style={{color: '#004266'}} counter={counter}>{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
 

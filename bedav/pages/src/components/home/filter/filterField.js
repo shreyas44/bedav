@@ -7,12 +7,20 @@ const StyledDiv = styled.div`
   margin: 0 0 15px;
   display: flex;
   align-items: center;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 `
 
 const StyledP = styled.p`
   margin: 0 0 0 10px;
   font-size: 17px;
   display: inline-block;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 15px;
+  }
 `
 
 function FilterField(props) {

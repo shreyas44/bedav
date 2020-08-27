@@ -17,7 +17,7 @@ const StyledDiv = styled.div`
 `
 
 const StyledContainer = styled.div`
-  margin: 20px 10px;
+  margin: 20px 10px 0;
 `
 
 function FilterSection(props) {

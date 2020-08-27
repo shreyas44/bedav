@@ -7,4 +7,13 @@ const categories = {
   "pri covid": "Private Covid Care Centre"
 }
 
+export const mobileCategories = {
+  "Government Hospital": "GH",
+  "Private Hospital": "PH",
+  "Government Medical College": "GMC",
+  "Private Medical College": "PMC",
+  "Government Covid Care Centre": "GCCC",
+  "Private Covid Care Centre": "PCCC",
+}
+
 export default categories

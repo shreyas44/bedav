@@ -11,6 +11,7 @@ import HospitalList from './hospitalList'
 import HospitalDataOptions from './hospitalDataOptions'
 import { useDictState } from '../../hooks'
 import { DataToShowProvider } from '../../contexts/DataToShow'
+import AbbreviationsInfo from './abbreviationsInfo'
 
 const StyledDiv = styled.div`
   margin: 10vh auto;
@@ -25,7 +26,7 @@ const StyledDiv = styled.div`
 
   @media only screen and (max-width: 600px) {
     //grid-template-columns: minmax(200px, 250px) minmax(80px, 100px) repeat(5, minmax(100px, auto));
-    grid-template-columns: minmax(150px, 175px) repeat(5, auto);
+    grid-template-columns: minmax(150px, 175px) repeat(6, auto);
     overflow-x: scroll;
     grid-gap: 3px;
     padding-top: 50px;
@@ -74,9 +75,6 @@ function HospitalSection(props) {
   }
 
   function requestAndSetPosition() {
-    // setState({
-    //   getData: true
-    // })
     Swal.fire({
       title: "Find hospitals closest to you",
       html: "If you want to find the hospitals which are closest to you, please allow <b>bedav</b> to access your location.",
@@ -120,7 +118,7 @@ function HospitalSection(props) {
         result.onchange = handleGeolocationState(result)
       })  
     } else {
-      setPosition()
+      requestAndSetPosition()
     }
   }
 
@@ -135,12 +133,8 @@ function HospitalSection(props) {
   return (
     <DataToShowProvider>
       <StyledDiv>
+        <AbbreviationsInfo />
         <HospitalDataOptions />
-        <StyledP>
-          HDU - High Dependency Unit;
-          ICU - Intensive Care Unit;
-          N.A. - Not Applicable
-        </StyledP>
         <HospitalHeader geolocation={state.geolocation}/>
         { state.getData ? 
           <QueryRenderer 

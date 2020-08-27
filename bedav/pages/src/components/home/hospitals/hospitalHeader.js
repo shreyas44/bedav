@@ -132,7 +132,7 @@ function HospitalHeader(props) {
     <StyledRow>
 
       <StyledHeadingName counter={2}>Name</StyledHeadingName>
-      <StyledHospitalTypeHeading style={{color: '#004266'}}>Hospital Type</StyledHospitalTypeHeading>
+      <StyledHeading style={{color: '#004266'}}>Hospital Type</StyledHeading>
 
       <StyledHeading 
         style={{color: '#004266'}}

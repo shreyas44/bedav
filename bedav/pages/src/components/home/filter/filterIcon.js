@@ -37,7 +37,7 @@ const StyledIcon = styled(props => <FontAwesomeIcon icon={faFilter} {...props}/>
 `
 
 function FilterIcon(props) {
-  const {filterScreen, setFilterScreen} = useContext(FilterScreenContext)
+  const {filterScreen, setFilterScreen} = props
 
   return (
     <IconContainer onClick={() => setFilterScreen(!filterScreen)}>

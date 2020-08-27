@@ -1,14 +1,14 @@
-import React, {useContext, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
-import FilterScreenContext from '../../contexts/FilterScreen'
 import FilterField from './filterField'
 import FilterSection from './filterSection'
-import fields from '../../extra/categories'
+import fields, { mobileCategories } from '../../extra/categories'
 
 const StyledDiv = styled.div`
   max-height: 50%;
   width: fit-content;
-  padding: 35px;
+  max-width: 80%;
+  padding: 35px 35px 40px;
   box-sizing: border-box;
   position: fixed;
   right: 30px;
@@ -20,10 +20,14 @@ const StyledDiv = styled.div`
   box-shadow: 0 10px 20px rgba(0,0,0,0.6);
   border-radius: 20px;
   overflow-y: scroll;
+
+  @media only screen and (max-width: 600px) {
+    padding: 25px 25px 30px;
+  }
 `
 
 function FilterScreen(props) {
-  const {filterScreen, setFilterScreen} = useContext(FilterScreenContext)
+  const {filterScreen, setFilterScreen} = props
   let ref = useRef()
 
   function handleClick(event) {
@@ -42,7 +46,7 @@ function FilterScreen(props) {
     }
   }, [])
 
-  let CategoryFilterFields = Object.keys(fields).map(key => <FilterField key={key} value={key}>{fields[key]}</FilterField>)
+  let CategoryFilterFields = Object.keys(fields).map(key => <FilterField key={key} value={key}>{fields[key]} ({mobileCategories[fields[key]]})</FilterField>)
 
   return (
     <StyledDiv filterScreen={filterScreen} ref={div => ref.current = div}>
