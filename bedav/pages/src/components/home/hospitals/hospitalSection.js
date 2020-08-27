@@ -8,16 +8,13 @@ import SelectedFitlersContext from '../../contexts/SelectedFilters'
 import SortContext from '../../contexts/Sort'
 import HospitalHeader from './hospitalHeader'
 import HospitalList from './hospitalList'
-import HospitalDataOptions from './hospitalDataOptions'
 import { useDictState } from '../../hooks'
 import { DataToShowProvider } from '../../contexts/DataToShow'
 import AbbreviationsInfo from './abbreviationsInfo'
+import HospitalDataDropdown from './hospitalDataDropdown'
 
 const StyledDiv = styled.div`
-  margin: 10vh auto;
-  box-sizing: border-box;
   width: 100%;
-  max-width: 1400px;
   display: grid;
   grid-template-columns: minmax(250px, 300px) minmax(150px, 225px) repeat(5, auto);
   grid-gap: 5px;
@@ -25,24 +22,27 @@ const StyledDiv = styled.div`
   position: relative;
 
   @media only screen and (max-width: 600px) {
-    //grid-template-columns: minmax(200px, 250px) minmax(80px, 100px) repeat(5, minmax(100px, auto));
     grid-template-columns: minmax(150px, 175px) repeat(6, auto);
     overflow-x: scroll;
     grid-gap: 3px;
-    padding-top: 50px;
-    position: relative;
-    bottom: 60px;
   }
 `
 
-const StyledP = styled.p`
-  margin: 0 5px;
-  grid-column: 1 / -1;
-  color: #555;
+const StyledTop = styled.div`
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+  width: 100%;
+`
 
-  @media only screen and (max-width: 600px) {
-    display: none;
-  }
+const StyledContainer = styled.div`
+  position: relative;
+  width: 100%;
+  margin: 10vh auto;
+  box-sizing: border-box;
+  max-width: 1400px;
 `
 
 function HospitalSection(props) {
@@ -132,34 +132,38 @@ function HospitalSection(props) {
 
   return (
     <DataToShowProvider>
-      <StyledDiv>
-        <AbbreviationsInfo />
-        <HospitalDataOptions />
-        <HospitalHeader geolocation={state.geolocation}/>
-        { state.getData ? 
-          <QueryRenderer 
-            environment={environment}
-            query={graphql`
-              query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
-                ...hospitalList_hospitalList @arguments(count: 200, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
-              }
-            `}
-            variables={{lat: state.lat, lon: state.lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
-            render={({error, props}) => {
-              if(error) {
-                return <div>Error, please try again.</div>
-              }
+      <StyledContainer>
+        <StyledTop>
+          <AbbreviationsInfo />
+          <HospitalDataDropdown />
+        </StyledTop >
+        <StyledDiv>
+          <HospitalHeader geolocation={state.geolocation}/>
+          { state.getData ? 
+            <QueryRenderer 
+              environment={environment}
+              query={graphql`
+                query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
+                  ...hospitalList_hospitalList @arguments(count: 200, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+                }
+              `}
+              variables={{lat: state.lat, lon: state.lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
+              render={({error, props}) => {
+                if(error) {
+                  return <div>Error, please try again.</div>
+                }
 
-              if(!props) {
-                return <div>Loading...</div>
-              }
+                if(!props) {
+                  return <div>Loading...</div>
+                }
 
-              return <HospitalList hospitalList={{...props}} geolocation={state.geolocation}/>          
-            }}
-          /> :
-          <div>Loading...</div> 
-        }
-      </StyledDiv>
+                return <HospitalList hospitalList={{...props}} geolocation={state.geolocation}/>          
+              }}
+            /> :
+            <div>Loading...</div> 
+          }
+        </StyledDiv>
+      </StyledContainer>
     </DataToShowProvider>
   )
 }

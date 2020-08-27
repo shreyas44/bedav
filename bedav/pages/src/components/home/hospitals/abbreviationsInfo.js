@@ -6,7 +6,6 @@ import abbreviations from '../../extra/abbreviations'
 import useWindowSize from '../../hooks/useWindowSize'
 
 const StyledDiv = styled.div`
-  grid-column: 1 / -1;
   font-size: 15px;
   color: #777;
   display: ${({visible}) => visible ? "block" : "none"};
@@ -20,7 +19,6 @@ const StyledItem = styled.div`
 const StyledInfoIcon = styled(InfoIcon)`
   font-size: 30px !important;
   color: #555;
-  grid-column: 1 / -1;
   cursor: pointer;
 `
 
@@ -32,13 +30,13 @@ function AbbreivationsInfo() {
   const categoryTtems = Object.keys(mobileCategories).map((item, index) => <StyledItem key={index}>{mobileCategories[item]} - {item}</StyledItem>)
 
   return (
-    <>
+    <div>
       <StyledInfoIcon onClick={() => setVisible(!visible)}/>
       <StyledDiv visible={visible}>
         {typeItems}
         {width <= 600 ? categoryTtems : null}
       </StyledDiv>
-    </>
+    </div>
   )
 }
 
