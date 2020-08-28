@@ -21,7 +21,7 @@ function HospitalList(props) {
     }
   }, [])
   
-  return <HospitalPagination items={list}/>
+  return <HospitalPagination items={list} geolocation={props.geolocation}/>
 }
 
 export default createPaginationContainer(

@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import usePrevious from '../../hooks/usePrevious'
 import useDictState from '../../hooks/useDictState'
-import DataToShowContext from '../../contexts/DataToShow'
 import HospitalItem from './hospitalItem'
 
 function HospitalPagination(props) {
