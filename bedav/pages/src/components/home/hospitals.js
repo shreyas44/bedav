@@ -22,7 +22,7 @@ const StyledDiv = styled.div`
   }
 `
 
-function Main(props) {
+function Hospitals(props) {
   return (
     <SearchHospitalProvider>
       <StyledDiv>
@@ -35,4 +35,4 @@ function Main(props) {
   ) 
 }
 
-export default Main
+export default Hospitals

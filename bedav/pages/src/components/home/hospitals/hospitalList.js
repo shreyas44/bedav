@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import HospitalItem from './hospitalItem'
+import React, { useState, useEffect } from 'react'
+import HospitalPagination from './hospitalPagination'
 import {graphql, createPaginationContainer} from 'react-relay'
 
 function HospitalList(props) {
@@ -11,7 +11,7 @@ function HospitalList(props) {
         props.relay.loadMore(200)
       }
     }
-  } 
+  }
 
   useEffect(() => {
     window.addEventListener("scroll", getData)
@@ -20,14 +20,8 @@ function HospitalList(props) {
       window.removeEventListener("scroll", getData)
     }
   }, [])
-
-  let counter = 0;
-  const items = list.map((item, index) => {
-    counter += 1
-    return <HospitalItem key={index} counter={counter} geolocation={props.geolocation} hospital={item.node}/>
-  })
   
-  return <>{items}</>
+  return <HospitalPagination items={list}/>
 }
 
 export default createPaginationContainer(

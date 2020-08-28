@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import FilterSection from './filter/filterSec'
-import Main from './main'
+import Hospitals from './hospitals'
 import { SelectedFiltersProvider } from '../contexts/SelectedFilters'
 
 function Home(props) {
@@ -16,7 +16,7 @@ function Home(props) {
   return (
     <div>
       <SelectedFiltersProvider>
-        <Main />
+        <Hospitals />
         <FilterSection />
       </SelectedFiltersProvider>
     </div>
