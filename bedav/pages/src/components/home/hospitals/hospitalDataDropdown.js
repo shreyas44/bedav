@@ -7,7 +7,6 @@ const StyledDropdown = styled(Dropdown)`
   width: 50%;
   min-width: 100px;
   max-width: 150px;
-  z-index: 1000;
   box-sizing: border-box;
 `
 

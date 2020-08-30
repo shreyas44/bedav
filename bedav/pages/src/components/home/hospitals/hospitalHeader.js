@@ -34,12 +34,6 @@ const StyledHeading = styled(StyledNumber)`
   } 
 `
 
-const StyledHospitalTypeHeading = styled(StyledHeading)`
-  @media only screen and (max-width: 600px) {
-    display: none;
-  }
-`
-
 const StyledWarningIcon = styled(ErrorOutlineIcon)`
   margin-left: 5px;
   font-size: 20px !important;
@@ -129,7 +123,7 @@ function HospitalHeader(props) {
     ))
 
   return (
-    <StyledRow>
+    <StyledRow visible>
 
       <StyledHeadingName counter={2}>Name</StyledHeadingName>
       <StyledHeading style={{color: '#004266'}}>Hospital Type</StyledHeading>

@@ -16,7 +16,7 @@ const StyledDiv = styled.div`
   align-items: center;
   justify-content: space-between;
   background-color: white;
-  z-index: 1;
+  z-index: 5;
   box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 
   @media only screen and (max-width: 600px) {

@@ -26,6 +26,15 @@ def get_bangalore_data():
     page = requests.get("https://bbmpproject.in/chbms-reports/")
     page_source = page.text
 
+    def replace(source, rep_id):
+      local_page_source = source.rsplit("GovernmentMedical", 1)
+      return rep_id.join(local_page_source)
+
+    page_source = replace(page_source, "cccTable")
+    page_source = replace(page_source, "privateMedicalHospitals")
+    page_source = replace(page_source, "PrivateHospitals")
+
+
     data = pd.DataFrame(columns=["name", "category", "gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied", "address", "phone", "hotel"])
 
     ids = {
@@ -34,7 +43,7 @@ def get_bangalore_data():
         "PrivateHospitals": "pri hos",
         "privateMedicalHospitals": "pri med",
         "cccTable": "covid",
-        "InPrivateHospitals": "pri covid"
+        # "InPrivateHospitals": "pri covid"
     }
 
     for id in ids.keys():
@@ -46,6 +55,9 @@ def get_bangalore_data():
         for row in rows:
             columns = row.find_all("td")
             columns = [column.text.strip() for column in columns] 
+
+            if(columns[0] == ''):
+              break
 
             print(columns)
 
@@ -67,18 +79,18 @@ def get_bangalore_data():
                   "hotel": columns[2].strip()
               }
             else:
-                hospital = {
-                    "name": columns[1],
-                    "category": ids[id],
-                    "gen_total": columns[2],
-                    "HDU_total": columns[3],
-                    "ICU_total": columns[4],
-                    "vent_total": columns[5],
-                    "gen_occupied": columns[7],
-                    "HDU_occupied": columns[8],
-                    "ICU_occupied": columns[9],
-                    "vent_occupied": columns[10]
-                }
+              hospital = {
+                  "name": columns[1],
+                  "category": ids[id],
+                  "gen_total": columns[2],
+                  "HDU_total": columns[3],
+                  "ICU_total": columns[4],
+                  "vent_total": columns[5],
+                  "gen_occupied": columns[7],
+                  "HDU_occupied": columns[8],
+                  "ICU_occupied": columns[9],
+                  "vent_occupied": columns[10]
+              }
 
             data = data.append(hospital, ignore_index=True)
 

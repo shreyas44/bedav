@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react'
+import React, { useState, useContext, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import {graphql, createFragmentContainer} from 'react-relay'
 import { Link } from 'react-router-dom'
@@ -7,13 +7,16 @@ import Tooltip from '../../tooltip'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import DataToShowContext from '../../contexts/DataToShow'
 import useWindowSize from '../../hooks/useWindowSize'
+import useOnScreen from '../../hooks/useOnScreen'
 import { mobileCategories } from '../../extra/categories'
 
 export const StyledRow = styled.div`
-  align-items: center;
-  justify-content: space-between;
-  color: #555;
-  display: contents;
+  ${({visible}) => !visible ? `
+    padding: 15px;
+    height: 16px;
+    grid-column: 1 / -1;
+    background-color: #f8f8f8;
+  ` : `display: contents;`}
 `
 
 export const StyledItem = styled.div`
@@ -124,49 +127,68 @@ function HospitalName({name, counter, id}) {
 
 function HospitalItem(props) {
   let {counter, hospital} = props
+  const [visible, setVisible] = useState(true)
+  const rowRef = useRef()
+  const numRef = useRef()
   const {dataToShow} = useContext(DataToShowContext)
   const [width, _] = useWindowSize()
+  
+  function handleIntersection(entries) {
+    const row = entries[0]
+    const num = entries[1]
 
-  function getNumberObject(firstPart, secondPart, color) {
-    if(secondPart === null || secondPart === 0) {
-      return <StyledNumber colorTheme={color} counter={counter}>N.A.</StyledNumber>
+    if (visible && num && !num.isIntersecting) {
+      setVisible(false)
+      numRef.current = null
     }
 
-    return (
-      <StyledNumber colorTheme={color} counter={counter}>
-        {firstPart}
-      </StyledNumber>
-    )
+    if(!visible && row.isIntersecting) {
+      setVisible(true)
+    }
   }
 
+
+  useEffect(() => {
+    //const observer = new IntersectionObserver(handleIntersection, {threshold: [0,0.1]})
+    //if(rowRef.current) {
+      //observer.observe(rowRef.current)
+    //}
+
+    //if(numRef.current) {
+      //console.log(numRef.current)
+      //observer.observe(numRef.current)
+    //}
+
+    //return () => {
+      //if(rowRef.current) {
+        //observer.unobserve(rowRef.current)
+      //}
+      
+      //if(numRef.current) {
+        //observer.unobserve(numRef.current)
+      //}
+    //}
+  })
+
+  const colorTheme = dataToShow == "available" ? "green" : dataToShow == "total" ? "blue" : dataToShow == "occupied" ? "red" : null  
+  const fieldDataToShow = dataToShow[0].toUpperCase() + dataToShow.slice(1)
+  let fields = ['general', 'hdu', 'icu', 'ventilators']
+  fields = fields.map((item) => {return {total: hospital[item+'Total'], value: hospital[item+fieldDataToShow] } })
+
+  const renderedFields = fields.map((item, index) => <StyledNumber colorTheme={colorTheme} key={index} counter={counter}>{item.total ? item.value : "N.A." }</StyledNumber>)
+
   return (
-    <StyledRow counter={counter}>
-      <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>
-
-      <StyledNumber style={{color: '#004266'}} counter={counter}>{width <= 600 ? mobileCategories[hospitalTypes[hospital.category]] : hospitalTypes[hospital.category]}</StyledNumber>
-
-      <StyledNumber style={{color: '#004266'}} counter={counter}>{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
-
-      {
-        dataToShow === "occupied" ?
+    <StyledRow counter={counter} visible={visible} ref={field => rowRef.current = field}>
+      { visible ?
         <>
-          {getNumberObject(hospital.generalOccupied, hospital.generalTotal, "red")}
-          {getNumberObject(hospital.hduOccupied, hospital.hduTotal, "red")}
-          {getNumberObject(hospital.icuOccupied, hospital.icuTotal, "red")}
-          {getNumberObject(hospital.ventilatorsOccupied, hospital.ventilatorsTotal, "red")}
-        </> : dataToShow === "available" ?
-        <>
-          {getNumberObject(hospital.generalAvailable, hospital.generalTotal, "green")}
-          {getNumberObject(hospital.hduAvailable, hospital.hduTotal, "green")}
-          {getNumberObject(hospital.icuAvailable, hospital.icuTotal, "green")}
-          {getNumberObject(hospital.ventilatorsAvailable, hospital.ventilatorsTotal, "green")}
-        </> : dataToShow == "total" ?
-        <>
-          {getNumberObject(hospital.generalTotal, hospital.generalTotal, "blue")}
-          {getNumberObject(hospital.hduTotal, hospital.hduTotal, "blue")}
-          {getNumberObject(hospital.icuTotal, hospital.icuTotal, "blue")}
-          {getNumberObject(hospital.ventilatorsTotal, hospital.ventilatorsTotal, "blue")} 
-        </>: null
+          <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>
+
+          <StyledNumber style={{color: '#004266'}} counter={counter}>{width <= 600 ? mobileCategories[hospitalTypes[hospital.category]] : hospitalTypes[hospital.category]}</StyledNumber>
+
+          <StyledNumber style={{color: '#004266'}} counter={counter} ref={field => numRef.current = field}>{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
+          
+          {renderedFields}
+        </> : null
       }
     </StyledRow>
   )

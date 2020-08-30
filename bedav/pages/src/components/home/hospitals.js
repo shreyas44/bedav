@@ -9,10 +9,7 @@ const StyledDiv = styled.div`
   width: 100%;
   padding: 15px 35px;
   box-sizing: border-box;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  margin: 0;
+  margin: 60px 0 0;
   background: white;
   transition: opacity 0.2s;
   z-index: -2;
@@ -22,7 +19,7 @@ const StyledDiv = styled.div`
   }
 `
 
-function Main(props) {
+function Hospitals(props) {
   return (
     <SearchHospitalProvider>
       <StyledDiv>
@@ -35,4 +32,4 @@ function Main(props) {
   ) 
 }
 
-export default Main
+export default Hospitals
