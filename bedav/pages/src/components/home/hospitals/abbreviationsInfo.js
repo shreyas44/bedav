@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { mobileCategories } from '../../extra/categories'
 import InfoIcon from '@material-ui/icons/Info'
 import abbreviations from '../../extra/abbreviations'
-import useWindowSize from '../../hooks/useWindowSize'
+import { useWindowSize } from '../../hooks'
 
 const StyledDiv = styled.div`
   font-size: 15px;

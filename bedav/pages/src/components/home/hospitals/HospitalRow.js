@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import {graphql, createFragmentContainer} from 'react-relay'
 import { Link } from 'react-router-dom'
 import hospitalTypes from '../../extra/categories'
-import Tooltip from '../../tooltip'
+import Tooltip from '../../Tooltip'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import DataToShowContext from '../../contexts/DataToShow'
-import useWindowSize from '../../hooks/useWindowSize'
+import { useWindowSize } from '../../hooks'
 import { mobileCategories } from '../../extra/categories'
 
 export const StyledRow = styled.div`

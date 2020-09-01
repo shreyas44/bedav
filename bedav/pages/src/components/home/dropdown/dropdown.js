@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import DropdownItem from './DropdownItem'
-import useDictState from '../../hooks/useDictState'
+import { useDictState } from '../../hooks'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 const StyledContainer = styled.div`

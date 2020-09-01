@@ -8,7 +8,6 @@ const LiveRoute = withRouter(NotLiveRoute)
 const HomePage = lazy(() => import('./components/home'))
 const AboutPage = lazy(() => import('./components/about'))
 const HospitalPage = lazy(() => import('./components/hospital'))
-const FilterScreenProvider = lazy(() => import('./components/contexts/FilterScreenProvider'))
 
 const ContentWrapper = styled.div`
   max-width: 1500px;
@@ -42,9 +41,7 @@ return (
             path="/"
             alwaysLive={true}
             render={props => (
-              <FilterScreenProvider>
-                <HomePage {...props}/>  
-              </FilterScreenProvider>
+              <HomePage {...props}/>  
             )}
           />
         </ContentWrapper>

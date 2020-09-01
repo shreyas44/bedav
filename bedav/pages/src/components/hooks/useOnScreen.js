@@ -24,3 +24,5 @@ function useOnScreen(ref, rootMargin = '0px') {
 
   return isIntersecting;
 }
+
+export default useOnScreen
