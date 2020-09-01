@@ -3,8 +3,14 @@ import styled, { css } from 'styled-components'
 import {Link, useLocation} from 'react-router-dom'
 import HelpIcon from '@material-ui/icons/Help';
 import HomeIcon from '@material-ui/icons/Home';
-import NavBar from './navbarContainer'
 import Tooltip from './Tooltip'
+
+const NavbarContainer = styled.div`
+  float: right;
+  clear: right;
+  position: relative;
+  top: 2.5px;
+`
 
 const StyledIconWrapper = styled.div`
   display: inline-block;
@@ -38,7 +44,7 @@ function Navbar() {
 
 
   return (
-    <NavBar>
+    <NavbarContainer>
       <Tooltip text="Home" position="bottom">
         <Link to="/">
           <StyledIconWrapper active={pathname == "/" ? 1 : 0}>
@@ -64,7 +70,7 @@ function Navbar() {
           </StyledIconWrapper>
         </Link>
       </Tooltip>
-    </NavBar>
+    </NavbarContainer>
   )
 }
 

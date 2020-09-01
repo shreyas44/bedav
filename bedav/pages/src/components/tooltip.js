@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
-const StyledContainer = styled.div`
+const TooltipContainer = styled.div`
   position: relative;
   width: fit-content;
   height: fit-content;
@@ -58,7 +58,7 @@ function Tooltip(props) {
   const toggleTip = () => setVisible(!visible)
 
   return (
-    <StyledContainer
+    <TooltipContainer
       onMouseEnter={!props.onClick ? toggleTip : null}
       onMouseLeave={!props.onClick ? toggleTip : null}
       onClick={props.onClick ? toggleTip: null}
@@ -71,7 +71,7 @@ function Tooltip(props) {
         </StyledWrapper>
       </StyledTip>
       {props.children}
-    </StyledContainer>
+    </TooltipContainer>
   )  
 }
 

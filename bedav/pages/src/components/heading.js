@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
 
-const StyledContainer = styled.div`
+const HeadingContainer = styled.div`
   font-family: "Quicksand", sans-serif;
   float: left;
   margin: 0;
@@ -25,14 +25,14 @@ const StyledDescription = styled.span`
 
 function Heading() {
   return (
-    <StyledContainer>
+    <HeadingContainer>
       <StyledLink to="/">
         bedav
         <StyledDescription>
           Find the hospital you need
         </StyledDescription>
       </StyledLink>
-    </StyledContainer>
+    </HeadingContainer>
   )
 }
 

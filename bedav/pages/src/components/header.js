@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
-import styled, { css } from 'styled-components'
-import { useLocation } from 'react-router-dom'
-import NavBar from './navbar'
-import Heading from './heading'
+import React from 'react'
+import styled from 'styled-components'
+import NavBar from './Navbar'
+import Heading from './Heading'
 
-const StyledDiv = styled.div`
+const HeaderContainer = styled.div`
   height: fit-content;
   width: 100%;
   position: fixed;
@@ -26,10 +25,10 @@ const StyledDiv = styled.div`
 
 function Header() {
   return (
-    <StyledDiv>
+    <HeaderContainer>
       <Heading />
       <NavBar />
-    </StyledDiv>
+    </HeaderContainer>
   )
 }
 
