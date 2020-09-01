@@ -39,11 +39,11 @@ query HospitalGridQuery(
   $descending: Boolean
   $cursor: String
 ) {
-  ...HospitalList_hospitalList_G8jr9
+  ...HospitalList_hospitalList_TsGat
 }
 
-fragment HospitalList_hospitalList_G8jr9 on Query {
-  hospitals(first: 200, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
+fragment HospitalList_hospitalList_TsGat on Query {
+  hospitals(first: 500, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
     edges {
       node {
         id
@@ -156,7 +156,7 @@ v13 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 200
+    "value": 500
   },
   (v9/*: any*/),
   (v10/*: any*/),
@@ -184,7 +184,7 @@ return {
           {
             "kind": "Literal",
             "name": "count",
-            "value": 200
+            "value": 500
           },
           {
             "kind": "Variable",
@@ -421,16 +421,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1ddbedffdbc51f25d8d3e90397c1c201",
+    "cacheID": "6e32ab767fecebab6e5fdeb583132fe5",
     "id": null,
     "metadata": {},
     "name": "HospitalGridQuery",
     "operationKind": "query",
-    "text": "query HospitalGridQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...HospitalList_hospitalList_G8jr9\n}\n\nfragment HospitalList_hospitalList_G8jr9 on Query {\n  hospitals(first: 200, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...HospitalRow_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment HospitalRow_hospital on Hospital {\n  id\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  hduOccupied\n  hduAvailable\n  icuOccupied\n  icuAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  icuTotal\n  hduTotal\n}\n"
+    "text": "query HospitalGridQuery(\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...HospitalList_hospitalList_TsGat\n}\n\nfragment HospitalList_hospitalList_TsGat on Query {\n  hospitals(first: 500, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...HospitalRow_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment HospitalRow_hospital on Hospital {\n  id\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  hduOccupied\n  hduAvailable\n  icuOccupied\n  icuAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  icuTotal\n  hduTotal\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '641dbd95ff7b395ad6d2506839f74e5f';
+(node/*: any*/).hash = '947865df7c6a5106bc67ccfb78e823eb';
 
 module.exports = node;

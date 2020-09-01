@@ -1,15 +1,47 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {graphql, createPaginationContainer} from 'react-relay'
 import HospitalRow from './HospitalRow'
 
 function HospitalList(props) {
   const list = props.hospitalList.hospitals.edges
+  const toBeRendered = useRef(list)
+  const rendered = useRef([])
+  const counter = useRef(0)
+  const [updates, setUpdates] = useState(0)
 
   function getData() {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && toBeRendered.current.length == 0) {
       if(props.relay.hasMore() && !props.relay.isLoading()) {
-        props.relay.loadMore(200)
+        props.relay.loadMore(500)
       }
+    }
+  }
+
+  function getNewRenderedItems(count, hospitals) {
+    let newRendered = hospitals.slice(0,count).map((hospital) => {
+      const component = <HospitalRow hospital={hospital.node} key={hospital.node.id} counter={counter.current + 1} geolocation={props.geolocation}/>
+      counter.current += 1
+      return component
+    })
+    return newRendered
+  }
+
+  function getNewToBeRenderedItems(count, hospitals) {
+    let newToBeRendered  = [...hospitals]
+    newToBeRendered.splice(0,count)
+    return newToBeRendered
+  }
+
+  function loadMore(count) {
+    const hospitals = toBeRendered.current
+    toBeRendered.current = getNewToBeRenderedItems(count, hospitals) 
+    rendered.current = rendered.current.concat(getNewRenderedItems(count, hospitals))
+    setUpdates(updates + 1)
+  }
+
+  function handleScroll() {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+      loadMore(20)
     }
   }
 
@@ -21,9 +53,19 @@ function HospitalList(props) {
     }
   }, [])
 
-  const hospitals = list.map((hospital, index) => <HospitalRow hospital={hospital.node} key={hospital.node.id} counter={index + 1} geolocation={props.geolocation}/>)
-  
-  return <>{hospitals}</>
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll)
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  })
+
+  useEffect(() => {
+    loadMore(20)
+  }, [])
+
+  return <>{rendered.current}</>
 }
 
 export default createPaginationContainer(
