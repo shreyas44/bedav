@@ -1,10 +1,10 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
-import { StyledRow, StyledName, StyledNumber } from './hospitalItem'
+import { StyledRow, StyledName, StyledNumber } from './HospitalRow'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import SortContext from '../../contexts/Sort'
-import Tooltip from '../../tooltip'
+import Tooltip from '../../Tooltip'
 import DataToShowContext from '../../contexts/DataToShow'
 
 const StyledHeadingName = styled(StyledName)`
@@ -64,7 +64,7 @@ const StyledOrderIcon = styled(FilterListIcon)`
   }
 `
 
-function HospitalHeader(props) {
+function HospitalGridHeader(props) {
   const {sortValue, setSortValue} = useContext(SortContext)
   const {dataToShow} = useContext(DataToShowContext)
 
@@ -149,4 +149,4 @@ function HospitalHeader(props) {
   ) 
 }
 
-export default HospitalHeader
+export default HospitalGridHeader

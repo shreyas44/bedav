@@ -5,8 +5,8 @@ import {BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-
 import NotLiveRoute from 'react-live-route'
 
 const LiveRoute = withRouter(NotLiveRoute)
-const HomePage = lazy(() => import('./components/home/home'))
-const AboutPage = lazy(() => import('./components/about/about'))
+const HomePage = lazy(() => import('./components/home'))
+const AboutPage = lazy(() => import('./components/about'))
 const HospitalPage = lazy(() => import('./components/hospital'))
 const FilterScreenProvider = lazy(() => import('./components/contexts/FilterScreenProvider'))
 

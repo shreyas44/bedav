@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import HospitalPagination from './hospitalPagination'
+import React, { useEffect } from 'react'
 import {graphql, createPaginationContainer} from 'react-relay'
+import HospitalRow from './HospitalRow'
 
 function HospitalList(props) {
   const list = props.hospitalList.hospitals.edges
@@ -20,15 +20,17 @@ function HospitalList(props) {
       window.removeEventListener("scroll", getData)
     }
   }, [])
+
+  const hospitals = list.map((hospital, index) => <HospitalRow hospital={hospital.node} key={hospital.node.id} counter={index + 1} geolocation={props.geolocation}/>)
   
-  return <HospitalPagination items={list} geolocation={props.geolocation}/>
+  return <>{hospitals}</>
 }
 
 export default createPaginationContainer(
   HospitalList,
   {
     hospitalList: graphql`
-      fragment hospitalList_hospitalList on Query @argumentDefinitions(
+      fragment HospitalList_hospitalList on Query @argumentDefinitions(
         count: {type: "Int"},
         cursor: {type: "String"},
         lat: {type: "Float"},
@@ -51,7 +53,7 @@ export default createPaginationContainer(
           edges {
             node {
               id
-              ...hospitalItem_hospital
+              ...HospitalRow_hospital
             }
           }
 
@@ -87,8 +89,8 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query hospitalListPaginationQuery($count: Int, $lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
-        ...hospitalList_hospitalList @arguments(count: $count, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+      query HospitalListPaginationQuery($count: Int, $lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
+        ...HospitalList_hospitalList @arguments(count: $count, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
       }
     `
   }

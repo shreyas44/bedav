@@ -12,10 +12,6 @@ const StyledDiv = styled.div`
   margin-left: 5px;
 `
 
-const StyledItem = styled.div`
-  
-`
-
 const StyledInfoIcon = styled(InfoIcon)`
   font-size: 30px !important;
   color: #555;
@@ -26,8 +22,8 @@ function AbbreivationsInfo() {
   const [visible, setVisible] = useState(false)
   const [width, _] = useWindowSize()
 
-  const typeItems = Object.keys(abbreviations).map((item, index) => <StyledItem key={index}>{abbreviations[item]} - {item}</StyledItem>)
-  const categoryTtems = Object.keys(mobileCategories).map((item, index) => <StyledItem key={index}>{mobileCategories[item]} - {item}</StyledItem>)
+  const typeItems = Object.keys(abbreviations).map((item, index) => <div key={index}>{abbreviations[item]} - {item}</div>)
+  const categoryTtems = Object.keys(mobileCategories).map((item, index) => <div key={index}>{mobileCategories[item]} - {item}</div>)
 
   return (
     <div>

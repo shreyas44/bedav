@@ -7,19 +7,13 @@ import Tooltip from '../../tooltip'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import DataToShowContext from '../../contexts/DataToShow'
 import useWindowSize from '../../hooks/useWindowSize'
-import useOnScreen from '../../hooks/useOnScreen'
 import { mobileCategories } from '../../extra/categories'
 
 export const StyledRow = styled.div`
-  ${({visible}) => !visible ? `
-    padding: 15px;
-    height: 16px;
-    grid-column: 1 / -1;
-    background-color: #f8f8f8;
-  ` : `display: contents;`}
+  display: contents;
 `
 
-export const StyledItem = styled.div`
+export const StyledCell = styled.div`
   border-radius: 5px;
   padding: 15px;
   box-sizing: border-box;
@@ -35,7 +29,7 @@ export const StyledItem = styled.div`
   }
 `
 
-export const StyledName = styled(StyledItem)`
+export const StyledName = styled(StyledCell)`
   font-weight: bold;
   background: #f8f8f8;
   color: #0275b3;
@@ -58,7 +52,7 @@ export const StyledName = styled(StyledItem)`
   }
 `
 
-export const StyledNumber = styled(StyledItem)`
+export const StyledNumber = styled(StyledCell)`
   text-align: center;
   background: ${({counter}) => counter % 2 == 0 ? "#f8f8f8" : "white"};
   color: ${({colorTheme, children}) => children == "N.A." ? "#ddd" : colorTheme == "green" ? "#008033" : colorTheme === "red" ? "#C3423F" : colorTheme === "blue" ? "rgb(0, 66, 102)": null};
@@ -125,7 +119,7 @@ function HospitalName({name, counter, id}) {
   }
 }
 
-function HospitalItem(props) {
+function HospitalRow(props) {
   let {counter, hospital} = props
   const [visible, setVisible] = useState(true)
   const {dataToShow} = useContext(DataToShowContext)
@@ -171,10 +165,10 @@ function HospitalItem(props) {
 }
 
 export default createFragmentContainer(
-  HospitalItem,
+  HospitalRow,
   {
     hospital: graphql`
-      fragment hospitalItem_hospital on Hospital {
+      fragment HospitalRow_hospital on Hospital {
         id
         category
         name

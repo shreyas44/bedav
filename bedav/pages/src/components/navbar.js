@@ -4,7 +4,7 @@ import {Link, useLocation} from 'react-router-dom'
 import HelpIcon from '@material-ui/icons/Help';
 import HomeIcon from '@material-ui/icons/Home';
 import NavBar from './navbarContainer'
-import Tooltip from './tooltip'
+import Tooltip from './Tooltip'
 
 const StyledIconWrapper = styled.div`
   display: inline-block;

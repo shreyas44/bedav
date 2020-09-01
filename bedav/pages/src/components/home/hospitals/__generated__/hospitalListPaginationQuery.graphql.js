@@ -8,9 +8,9 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type hospitalList_hospitalList$ref = any;
+type HospitalList_hospitalList$ref = any;
 export type HospitalSortField = "AVAILABLE_GENERAL" | "AVAILABLE_HDU" | "AVAILABLE_ICU" | "AVAILABLE_VENTILATORS" | "DISTANCE" | "NAME" | "OCCUPIED_GENERAL" | "OCCUPIED_HDU" | "OCCUPIED_ICU" | "TOTAL_GENERAL" | "TOTAL_HDU" | "TOTAL_ICU" | "TOTAL_VENTILATORS" | "USED_VENTILATORS" | "%future added value";
-export type hospitalListPaginationQueryVariables = {|
+export type HospitalListPaginationQueryVariables = {|
   count?: ?number,
   lat?: ?number,
   lon?: ?number,
@@ -20,18 +20,18 @@ export type hospitalListPaginationQueryVariables = {|
   descending?: ?boolean,
   cursor?: ?string,
 |};
-export type hospitalListPaginationQueryResponse = {|
-  +$fragmentRefs: hospitalList_hospitalList$ref
+export type HospitalListPaginationQueryResponse = {|
+  +$fragmentRefs: HospitalList_hospitalList$ref
 |};
-export type hospitalListPaginationQuery = {|
-  variables: hospitalListPaginationQueryVariables,
-  response: hospitalListPaginationQueryResponse,
+export type HospitalListPaginationQuery = {|
+  variables: HospitalListPaginationQueryVariables,
+  response: HospitalListPaginationQueryResponse,
 |};
 */
 
 
 /*
-query hospitalListPaginationQuery(
+query HospitalListPaginationQuery(
   $count: Int
   $lat: Float
   $lon: Float
@@ -41,10 +41,27 @@ query hospitalListPaginationQuery(
   $descending: Boolean
   $cursor: String
 ) {
-  ...hospitalList_hospitalList_2CSWMY
+  ...HospitalList_hospitalList_2CSWMY
 }
 
-fragment hospitalItem_hospital on Hospital {
+fragment HospitalList_hospitalList_2CSWMY on Query {
+  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
+    edges {
+      node {
+        id
+        ...HospitalRow_hospital
+        __typename
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+fragment HospitalRow_hospital on Hospital {
   id
   category
   name
@@ -61,23 +78,6 @@ fragment hospitalItem_hospital on Hospital {
   ventilatorsTotal
   icuTotal
   hduTotal
-}
-
-fragment hospitalList_hospitalList_2CSWMY on Query {
-  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
-    edges {
-      node {
-        id
-        ...hospitalItem_hospital
-        __typename
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
 }
 */
 
@@ -184,7 +184,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "hospitalListPaginationQuery",
+    "name": "HospitalListPaginationQuery",
     "selections": [
       {
         "args": [
@@ -206,7 +206,7 @@ return {
           (v13/*: any*/)
         ],
         "kind": "FragmentSpread",
-        "name": "hospitalList_hospitalList"
+        "name": "HospitalList_hospitalList"
       }
     ],
     "type": "Query",
@@ -225,7 +225,7 @@ return {
       (v2/*: any*/)
     ],
     "kind": "Operation",
-    "name": "hospitalListPaginationQuery",
+    "name": "HospitalListPaginationQuery",
     "selections": [
       {
         "alias": null,
@@ -430,16 +430,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5e3a544acdc665a87d764d1480a4411b",
+    "cacheID": "1f7192d094c722dcd0b0eac7e9e71379",
     "id": null,
     "metadata": {},
-    "name": "hospitalListPaginationQuery",
+    "name": "HospitalListPaginationQuery",
     "operationKind": "query",
-    "text": "query hospitalListPaginationQuery(\n  $count: Int\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...hospitalList_hospitalList_2CSWMY\n}\n\nfragment hospitalItem_hospital on Hospital {\n  id\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  hduOccupied\n  hduAvailable\n  icuOccupied\n  icuAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  icuTotal\n  hduTotal\n}\n\nfragment hospitalList_hospitalList_2CSWMY on Query {\n  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...hospitalItem_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HospitalListPaginationQuery(\n  $count: Int\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  ...HospitalList_hospitalList_2CSWMY\n}\n\nfragment HospitalList_hospitalList_2CSWMY on Query {\n  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...HospitalRow_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment HospitalRow_hospital on Hospital {\n  id\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  hduOccupied\n  hduAvailable\n  icuOccupied\n  icuAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  icuTotal\n  hduTotal\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '96699f39490568827eb8b92987255771';
+(node/*: any*/).hash = 'c2fcd3132e37ad0ee76e837c152cd6e4';
 
 module.exports = node;

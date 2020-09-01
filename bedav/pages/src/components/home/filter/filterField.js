@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
-import Checkbox from '../../checkbox'
+import Checkbox from '../../Checkbox'
 import SelectedFiltersContext from '../../contexts/SelectedFilters'
 
-const StyledDiv = styled.div`
+const FilterFieldContainer = styled.div`
   margin: 0 0 15px;
   display: flex;
   align-items: center;
@@ -13,7 +13,7 @@ const StyledDiv = styled.div`
   }
 `
 
-const StyledP = styled.p`
+const FilterFieldText = styled.div`
   margin: 0 0 0 10px;
   font-size: 17px;
   display: inline-block;
@@ -28,10 +28,10 @@ function FilterField(props) {
   const {filters, dispatchFilter} = useContext(SelectedFiltersContext)
 
   return (
-    <StyledDiv>
+    <FilterFieldContainer>
       <Checkbox checked={filters.includes(value)} onClick={() => dispatchFilter({type: value}) }/>
-      <StyledP>{children}</StyledP>
-    </StyledDiv>
+      <FilterFieldText>{children}</FilterFieldText>
+    </FilterFieldContainer>
   )
 }
 

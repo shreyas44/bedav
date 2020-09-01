@@ -1,19 +1,19 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {graphql, QueryRenderer} from 'react-relay'
-import environment from '../../../Environment'
 import Swal from 'sweetalert2'
+import environment from '../../../Environment'
+import { useDictState } from '../../hooks'
 import SearchHospitalContext from '../../contexts/SearchHospital'
 import SelectedFitlersContext from '../../contexts/SelectedFilters'
-import SortContext from '../../contexts/Sort'
-import HospitalHeader from './hospitalHeader'
-import HospitalList from './hospitalList'
-import { useDictState } from '../../hooks'
 import { DataToShowProvider } from '../../contexts/DataToShow'
-import AbbreviationsInfo from './abbreviationsInfo'
-import HospitalDataDropdown from './hospitalDataDropdown'
+import SortContext from '../../contexts/Sort'
+import HospitalGridHeader from './HospitalGridHeader'
+import HospitalList from './HospitalList'
+import AbbreviationsInfo from './AbbreviationsInfo'
+import HospitalDataDropdown from './HospitalDataDropdown'
 
-const StyledDiv = styled.div`
+const GridContainer = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: minmax(250px, 300px) minmax(150px, 225px) repeat(5, auto);
@@ -28,7 +28,7 @@ const StyledDiv = styled.div`
   }
 `
 
-const StyledTop = styled.div`
+const OptionsContainer = styled.div`
   height: fit-content;
   display: flex;
   justify-content: space-between;
@@ -37,7 +37,7 @@ const StyledTop = styled.div`
   width: 100%;
 `
 
-const StyledContainer = styled.div`
+const SectionContainer = styled.div`
   position: relative;
   width: 100%;
   margin: 10vh auto;
@@ -45,7 +45,7 @@ const StyledContainer = styled.div`
   max-width: 1400px;
 `
 
-function HospitalSection(props) {
+function HospitalGrid(props) {
   const [state, setState] = useDictState({
     geolocation: false,
     getData: false,
@@ -132,19 +132,19 @@ function HospitalSection(props) {
 
   return (
     <DataToShowProvider>
-      <StyledContainer>
-        <StyledTop>
+      <SectionContainer>
+        <OptionsContainer>
           <AbbreviationsInfo />
           <HospitalDataDropdown />
-        </StyledTop >
-        <StyledDiv>
-          <HospitalHeader geolocation={state.geolocation}/>
+        </OptionsContainer>
+        <GridContainer>
+          <HospitalGridHeader geolocation={state.geolocation}/>
           { state.getData ? 
             <QueryRenderer 
               environment={environment}
               query={graphql`
-                query hospitalSectionQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
-                  ...hospitalList_hospitalList @arguments(count: 200, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+                query HospitalGridQuery($lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
+                  ...HospitalList_hospitalList @arguments(count: 200, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
                 }
               `}
               variables={{lat: state.lat, lon: state.lon, searchQuery: searchQuery, categoryFilters: filters, orderBy: sortValue.field, descending: sortValue.descending}}
@@ -162,10 +162,10 @@ function HospitalSection(props) {
             /> :
             <div>Loading...</div> 
           }
-        </StyledDiv>
-      </StyledContainer>
+        </GridContainer>
+      </SectionContainer>
     </DataToShowProvider>
   )
 }
 
-export default HospitalSection
+export default HospitalGrid

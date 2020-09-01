@@ -38,14 +38,14 @@ const MainContainer = styled.div`
   }
 `
 
-function Hospital(props) {
+function HospitalPage(props) {
   const {hospitalId} = useParams()
 
  return (
     <QueryRenderer
       environment={environment}
       query={graphql`
-        query hospitalQuery($hospitalID: ID!) {
+        query HospitalPageQuery($hospitalID: ID!) {
           hospital(id: $hospitalID) {
             id
             name
@@ -94,5 +94,4 @@ function Hospital(props) {
   )
 }
 
-export default Hospital
-
+export default HospitalPage

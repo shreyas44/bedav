@@ -9,9 +9,9 @@
 /*::
 import type { ReaderFragment } from 'relay-runtime';
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type hospitalItem_hospital$ref: FragmentReference;
-declare export opaque type hospitalItem_hospital$fragmentType: hospitalItem_hospital$ref;
-export type hospitalItem_hospital = {|
+declare export opaque type HospitalRow_hospital$ref: FragmentReference;
+declare export opaque type HospitalRow_hospital$fragmentType: HospitalRow_hospital$ref;
+export type HospitalRow_hospital = {|
   +id: string,
   +category: ?string,
   +name: ?string,
@@ -28,12 +28,12 @@ export type hospitalItem_hospital = {|
   +ventilatorsTotal: ?number,
   +icuTotal: ?number,
   +hduTotal: ?number,
-  +$refType: hospitalItem_hospital$ref,
+  +$refType: HospitalRow_hospital$ref,
 |};
-export type hospitalItem_hospital$data = hospitalItem_hospital;
-export type hospitalItem_hospital$key = {
-  +$data?: hospitalItem_hospital$data,
-  +$fragmentRefs: hospitalItem_hospital$ref,
+export type HospitalRow_hospital$data = HospitalRow_hospital;
+export type HospitalRow_hospital$key = {
+  +$data?: HospitalRow_hospital$data,
+  +$fragmentRefs: HospitalRow_hospital$ref,
   ...
 };
 */
@@ -43,7 +43,7 @@ const node/*: ReaderFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "hospitalItem_hospital",
+  "name": "HospitalRow_hospital",
   "selections": [
     {
       "alias": null,
@@ -162,6 +162,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '04e7d3def75f321f14a23f03988342c9';
+(node/*: any*/).hash = '505187c1a93084c3022779b0b5da79e3';
 
 module.exports = node;

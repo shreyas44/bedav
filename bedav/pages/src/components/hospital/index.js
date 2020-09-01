@@ -1,1 +1,1 @@
-export {default as default} from './Hospital'
+export {default as default} from './HospitalPage'

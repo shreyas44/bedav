@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import QuestionContainer from './questionContainer'
-import Question from './question'
-import Answer from './answer'
+import QuestionContainer from './QuestionContainer'
+import Question from './Question'
+import Answer from './Answer'
 
-const StyledDiv = styled.div`
+const MainContainer = styled.div`
   width: 90%;
   max-width: 700px;
   margin: 80px auto 0;
@@ -19,12 +19,12 @@ const StyledDiv = styled.div`
   }
 `
 
-const StyledH = styled.h1`
+const PageHeading = styled.h1`
   font-size: 30px;
   margin: 0 0 20px 0;
 `
 
-function About() {
+function AboutPage() {
 
   useEffect(() => {
     document.title = "Bedav - About"
@@ -58,13 +58,13 @@ function About() {
   })
 
   return (
-    <StyledDiv>
-      <StyledH>
+    <MainContainer>
+      <PageHeading>
         About
-      </StyledH>
+      </PageHeading>
       {items}
-    </StyledDiv>
+    </MainContainer>
   )
 }
 
-export default About
+export default AboutPage

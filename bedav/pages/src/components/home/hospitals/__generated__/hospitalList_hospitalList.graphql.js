@@ -8,16 +8,16 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
-type hospitalItem_hospital$ref = any;
+type HospitalRow_hospital$ref = any;
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type hospitalList_hospitalList$ref: FragmentReference;
-declare export opaque type hospitalList_hospitalList$fragmentType: hospitalList_hospitalList$ref;
-export type hospitalList_hospitalList = {|
+declare export opaque type HospitalList_hospitalList$ref: FragmentReference;
+declare export opaque type HospitalList_hospitalList$fragmentType: HospitalList_hospitalList$ref;
+export type HospitalList_hospitalList = {|
   +hospitals: ?{|
     +edges: $ReadOnlyArray<?{|
       +node: ?{|
         +id: string,
-        +$fragmentRefs: hospitalItem_hospital$ref,
+        +$fragmentRefs: HospitalRow_hospital$ref,
       |}
     |}>,
     +pageInfo: {|
@@ -25,12 +25,12 @@ export type hospitalList_hospitalList = {|
       +hasNextPage: boolean,
     |},
   |},
-  +$refType: hospitalList_hospitalList$ref,
+  +$refType: HospitalList_hospitalList$ref,
 |};
-export type hospitalList_hospitalList$data = hospitalList_hospitalList;
-export type hospitalList_hospitalList$key = {
-  +$data?: hospitalList_hospitalList$data,
-  +$fragmentRefs: hospitalList_hospitalList$ref,
+export type HospitalList_hospitalList$data = HospitalList_hospitalList;
+export type HospitalList_hospitalList$key = {
+  +$data?: HospitalList_hospitalList$data,
+  +$fragmentRefs: HospitalList_hospitalList$ref,
   ...
 };
 */
@@ -92,7 +92,7 @@ const node/*: ReaderFragment*/ = {
       }
     ]
   },
-  "name": "hospitalList_hospitalList",
+  "name": "HospitalList_hospitalList",
   "selections": [
     {
       "alias": "hospitals",
@@ -166,7 +166,7 @@ const node/*: ReaderFragment*/ = {
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "hospitalItem_hospital"
+                  "name": "HospitalRow_hospital"
                 }
               ],
               "storageKey": null
@@ -214,6 +214,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = 'e9441233ff715a50f5dde2fd3266e900';
+(node/*: any*/).hash = '0afcd18e195e72698c26c171d3a5205c';
 
 module.exports = node;

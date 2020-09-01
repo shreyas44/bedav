@@ -1,13 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
-import FilterScreenContext from '../../contexts/FilterScreen'
 
 const IconContainer = styled.div`
   padding: 15px;
-  /* height: 40px;
-  width: 40px; */
   box-sizing: border-box;
   border-radius: 50%;
   position: fixed;

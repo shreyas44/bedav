@@ -8,10 +8,10 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type hospitalQueryVariables = {|
+export type HospitalPageQueryVariables = {|
   hospitalID: string
 |};
-export type hospitalQueryResponse = {|
+export type HospitalPageQueryResponse = {|
   +hospital: ?{|
     +id: string,
     +name: ?string,
@@ -36,15 +36,15 @@ export type hospitalQueryResponse = {|
     +ventilatorsTotal: ?number,
   |}
 |};
-export type hospitalQuery = {|
-  variables: hospitalQueryVariables,
-  response: hospitalQueryResponse,
+export type HospitalPageQuery = {|
+  variables: HospitalPageQueryVariables,
+  response: HospitalPageQueryResponse,
 |};
 */
 
 
 /*
-query hospitalQuery(
+query HospitalPageQuery(
   $hospitalID: ID!
 ) {
   hospital(id: $hospitalID) {
@@ -252,7 +252,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "hospitalQuery",
+    "name": "HospitalPageQuery",
     "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
@@ -261,20 +261,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "hospitalQuery",
+    "name": "HospitalPageQuery",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "970d322198af45dc547b03974c7d5aea",
+    "cacheID": "b8b57c5be3998a0c8170ec264b37db6f",
     "id": null,
     "metadata": {},
-    "name": "hospitalQuery",
+    "name": "HospitalPageQuery",
     "operationKind": "query",
-    "text": "query hospitalQuery(\n  $hospitalID: ID!\n) {\n  hospital(id: $hospitalID) {\n    id\n    name\n    phone\n    address\n    website\n    placeId\n    category\n    latitude\n    longitude\n    icuAvailable\n    hduAvailable\n    generalAvailable\n    ventilatorsAvailable\n    icuOccupied\n    hduOccupied\n    generalOccupied\n    ventilatorsOccupied\n    icuTotal\n    hduTotal\n    generalTotal\n    ventilatorsTotal\n  }\n}\n"
+    "text": "query HospitalPageQuery(\n  $hospitalID: ID!\n) {\n  hospital(id: $hospitalID) {\n    id\n    name\n    phone\n    address\n    website\n    placeId\n    category\n    latitude\n    longitude\n    icuAvailable\n    hduAvailable\n    generalAvailable\n    ventilatorsAvailable\n    icuOccupied\n    hduOccupied\n    generalOccupied\n    ventilatorsOccupied\n    icuTotal\n    hduTotal\n    generalTotal\n    ventilatorsTotal\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '29955eb61b755b8d25401c20e072fa69';
+(node/*: any*/).hash = '1222a61992a7608824c4478af7ce5f32';
 
 module.exports = node;

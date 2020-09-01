@@ -5,7 +5,7 @@ import SearchHospitalContext from '../contexts/SearchHospital'
 
 let SearchIcon = ({className}) => <MaterialSearchIcon className={className} />
 
-const StyledSearchContainer = styled.div`
+const SearchContainer = styled.div`
   width: 60%;
   box-shadow: 7px 15px 25px 0px rgba(0,0,0,0.1);
   margin: 60px auto 0;
@@ -70,7 +70,7 @@ function SearchBar() {
   let [focused, setFocus] = useState(false)
 
   return (
-    <StyledSearchContainer>
+    <SearchContainer>
       <StyledSearchIcon focused={focused}/>
       <StyledInput 
         type="text"
@@ -79,7 +79,7 @@ function SearchBar() {
         placeholder="Search for a hospital..."
         onFocus={() => { setFocus(true) }} onBlur={() => { setFocus(false) }} 
        />
-    </StyledSearchContainer>
+    </SearchContainer>
   )
 }
 

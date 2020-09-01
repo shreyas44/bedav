@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import DropdownItem from './dropdownItem'
+import DropdownItem from './DropdownItem'
 import useDictState from '../../hooks/useDictState'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
