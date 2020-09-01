@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import PhoneIcon from '@material-ui/icons/Phone'
 import PublicIcon from '@material-ui/icons/Public'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
-import HospitalMap from './map'
-import ContactInfo from './contactInfo'
-import HospitalHeading from './hospitalHeading'
+import HospitalMap from './Map'
+import ContactCard from './ContactCard'
+import HospitalHeading from './HospitalHeading'
 
-const StyledDiv = styled.div`
+const HospitalInfoContainer = styled.div`
   //height: 90vh;
   padding: 0 5px; /*So that the box shadow of contact is visible*/
   box-sizing: border-box;
@@ -18,11 +18,11 @@ const StyledDiv = styled.div`
   }
 `
 
-const ContactContainer = styled.div`
+const ContactsContainer = styled.div`
   margin-top: 20px;
 `
 
-const StyledHeading = styled(HospitalHeading)`
+const StyledHospitalHeading = styled(HospitalHeading)`
   display: none;
 
   @media only screen and (max-width: 600px) {
@@ -30,7 +30,7 @@ const StyledHeading = styled(HospitalHeading)`
   }
 `
 
-function ContactInfoContainer(props) {
+function HospitalInfoSection(props) {
   const {hospital} = props
   const mapsURL = `https://www.google.com/maps/dir/?api=1&destination_place_id=${hospital.placeId}&destination=${hospital.latitude},${hospital.longitude}`
 
@@ -57,17 +57,17 @@ function ContactInfoContainer(props) {
     })
   }
 
-  const contactItems = contact.map((item, index) => item.value ? <ContactInfo key={index} icon={item.icon}>{item.value}</ContactInfo> : null)
+  const contactItems = contact.map((item, index) => item.value ? <ContactCard key={index} icon={item.icon}>{item.value}</ContactCard> : null)
 
   return (
-    <StyledDiv>
-      <StyledHeading hospital={hospital} />
+    <HospitalInfoContainer>
+      <StyledHospitalHeading hospital={hospital} />
       <HospitalMap lat={hospital.latitude} lon={hospital.longitude} name={hospital.name} url={mapsURL || null}/>
-      <ContactContainer>
+      <ContactsContainer>
         {contactItems}
-      </ContactContainer>
-    </StyledDiv>
+      </ContactsContainer>
+    </HospitalInfoContainer>
   )
 }
 
-export default ContactInfoContainer 
+export default HospitalInfoSection

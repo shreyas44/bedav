@@ -41,7 +41,7 @@ const StyledText = styled.div`
 
 `
 
-function ContactInfo(props) {
+function ContactCard(props) {
   const ref = useRef()
 
   const StyledIcon = styled(props.icon)`
@@ -63,4 +63,4 @@ function ContactInfo(props) {
   )
 }
 
-export default ContactInfo
+export default ContactCard

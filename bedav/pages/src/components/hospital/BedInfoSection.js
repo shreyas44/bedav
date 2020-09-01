@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import EquipmentSection from './equipmentSection'
-import HospitalHeading from './hospitalHeading'
+import BedTypeSection from './BedTypeSection'
+import HospitalHeading from './HospitalHeading'
 
-const StyledDiv = styled.div`
+const BedInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   order: 1;
@@ -13,7 +13,7 @@ const StyledDiv = styled.div`
   }
 `
 
-const StyledHeading = styled(HospitalHeading)`
+const StyledHospitalHeading = styled(HospitalHeading)`
   display: none;
 
   @media only screen and (min-width: 600px) {
@@ -78,13 +78,13 @@ function BedInfo(props) {
     }
   }
  
-  const sections = Object.keys(values).map((value, index) => <EquipmentSection key={index} sectionName={value} values={values[value]} /> )
+  const sections = Object.keys(values).map((value, index) => <BedTypeSection key={index} sectionName={value} values={values[value]} /> )
 
   return (
-    <StyledDiv>
-      <StyledHeading hospital={props.hospital}/> 
+    <BedInfoContainer>
+      <StyledHospitalHeading hospital={props.hospital}/> 
       {sections}
-    </StyledDiv>
+    </BedInfoContainer>
   )
 }
 

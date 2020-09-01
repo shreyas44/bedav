@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import AmountCard from './amountCard'
+import AmountCard from './AmountCard'
 
-const SectionContainer = styled.div`
+const BedTypeSectionContainer = styled.div`
   margin-bottom: 30px;
 
   @media only screen and (max-width: 600px) {
@@ -10,13 +10,13 @@ const SectionContainer = styled.div`
   }
 `
 
-const SectionHeader = styled.h2`
+const BedTypeSectionHeader = styled.h2`
   margin: 0;
   font-size: 18px;
   color: #333;
 `
 
-const CardsContainer = styled.div`
+const BedTypeCardsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 10px 0 0;
@@ -52,20 +52,20 @@ const CardsContainer = styled.div`
   }
 `
 
-function EquipmentSection(props) {
+function BedTypeSection(props) {
   const {sectionName, values} = props
 
   const cards = Object.keys(values).map((name, index) => <AmountCard key={index} name={name}>{values[name]}</AmountCard>)
   return (
-    <SectionContainer>
-      <SectionHeader>
+    <BedTypeSectionContainer>
+      <BedTypeSectionHeader>
         {sectionName}
-      </SectionHeader>
-      <CardsContainer>
+      </BedTypeSectionHeader>
+      <BedTypeCardsContainer>
         {cards}
-      </CardsContainer>
-    </SectionContainer>
+      </BedTypeCardsContainer>
+    </BedTypeSectionContainer>
   )
 }
 
-export default EquipmentSection
+export default BedTypeSection

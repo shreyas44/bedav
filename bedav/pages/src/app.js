@@ -5,9 +5,9 @@ import {BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-
 import NotLiveRoute from 'react-live-route'
 
 const LiveRoute = withRouter(NotLiveRoute)
-const Home = lazy(() => import('./components/home/home'))
-const About = lazy(() => import('./components/about/about'))
-const Hospital = lazy(() => import('./components/hospital/hospital'))
+const HomePage = lazy(() => import('./components/home/home'))
+const AboutPage = lazy(() => import('./components/about/about'))
+const HospitalPage = lazy(() => import('./components/hospital'))
 const FilterScreenProvider = lazy(() => import('./components/contexts/FilterScreenProvider'))
 
 const ContentWrapper = styled.div`
@@ -32,10 +32,10 @@ return (
         <ContentWrapper>
           <Switch>
             <Route exact path="/about/">
-              <About />
+              <AboutPage />
             </Route>
             <Route exact path="/hospital/:hospitalId/">
-              <Hospital />
+              <HospitalPage />
             </Route>
           </Switch>
           <LiveRoute exact
@@ -43,7 +43,7 @@ return (
             alwaysLive={true}
             render={props => (
               <FilterScreenProvider>
-                <Home {...props}/>  
+                <HomePage {...props}/>  
               </FilterScreenProvider>
             )}
           />

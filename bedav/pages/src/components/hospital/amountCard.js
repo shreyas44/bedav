@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Container = styled.div`
+const CardContainer = styled.div`
   color: ${({color}) => color};
 `
 
@@ -59,14 +59,14 @@ function AmountCard(props) {
   }
 
   return (
-    <Container color={color}>
+    <CardContainer color={color}>
       <CardTitle>
         {capitalizeString(props.name)}
       </CardTitle>
       <CardText>
         {props.children}
       </CardText>
-    </Container>
+    </CardContainer>
   )
 }
 

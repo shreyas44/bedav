@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { QueryRenderer, graphql } from 'react-relay'
 import { useParams } from 'react-router-dom'
 import environment from '../../Environment'
-import HospitalInfo from './info'
-import EquipmentInfo from './bedInfo'
+import HospitalInfoSection from './HospitalInfoSection'
+import BedInfoSection from './BedInfoSection'
 
-const StyledDiv = styled.div`
+const MainContainer = styled.div`
   width: 100%;
   overflow-y: scroll;
   max-width: 1500px;
@@ -83,10 +83,10 @@ function Hospital(props) {
 
         if(props) {
           return (
-            <StyledDiv>
-              <EquipmentInfo hospital={props.hospital}/>
-              <HospitalInfo hospital={props.hospital}/>
-            </StyledDiv>
+            <MainContainer>
+              <BedInfoSection hospital={props.hospital}/>
+              <HospitalInfoSection hospital={props.hospital}/>
+            </MainContainer>
           )
         }
       }}
