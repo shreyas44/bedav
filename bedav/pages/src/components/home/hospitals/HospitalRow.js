@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react'
+import React, { useContext, useRef } from 'react'
 import styled from 'styled-components'
 import {graphql, createFragmentContainer} from 'react-relay'
 import { Link } from 'react-router-dom'
@@ -121,25 +121,9 @@ function HospitalName({name, counter, id}) {
 
 function HospitalRow(props) {
   let {counter, hospital} = props
-  const [visible, setVisible] = useState(true)
   const {dataToShow} = useContext(DataToShowContext)
   const [width, _] = useWindowSize()
   
-  function handleIntersection(entries) {
-    const row = entries[0]
-    const num = entries[1]
-
-    if (visible && num && !num.isIntersecting) {
-      setVisible(false)
-      numRef.current = null
-    }
-
-    if(!visible && row.isIntersecting) {
-      setVisible(true)
-    }
-  }
-
-
   const colorTheme = dataToShow == "available" ? "green" : dataToShow == "total" ? "blue" : dataToShow == "occupied" ? "red" : null  
   const fieldDataToShow = dataToShow[0].toUpperCase() + dataToShow.slice(1)
   let fields = ['general', 'hdu', 'icu', 'ventilators']
@@ -148,18 +132,14 @@ function HospitalRow(props) {
   const renderedFields = fields.map((item, index) => <StyledNumber colorTheme={colorTheme} key={index} counter={counter}>{item.total ? item.value : "N.A." }</StyledNumber>)
 
   return (
-    <StyledRow counter={counter} visible={visible} >
-      { visible ?
-        <>
-          <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>
+    <StyledRow counter={counter}>
+      <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>
 
-          <StyledNumber style={{color: '#004266'}} counter={counter}>{width <= 600 ? mobileCategories[hospitalTypes[hospital.category]] : hospitalTypes[hospital.category]}</StyledNumber>
+      <StyledNumber style={{color: '#004266'}} counter={counter}>{width <= 600 ? mobileCategories[hospitalTypes[hospital.category]] : hospitalTypes[hospital.category]}</StyledNumber>
 
-          <StyledNumber style={{color: '#004266'}} counter={counter} >{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
-          
-          {renderedFields}
-        </> : null
-      }
+      <StyledNumber style={{color: '#004266'}} counter={counter} >{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
+      
+      {renderedFields}
     </StyledRow>
   )
 }
