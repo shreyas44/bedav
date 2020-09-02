@@ -111,7 +111,7 @@ function HospitalGridHeader(props) {
     )
   }
 
-  const items = {GENERAL: "General", HDU: "HDU", ICU: "ICU", VENTILATORS: "Ventilators"}
+  const items = {GENERAL: "General Ward", HDU: "HDU", ICU: "ICU", VENTILATORS: "Ventilators"}
 
   const headings = Object.keys(items).map((key, index) => 
     renderHeading(

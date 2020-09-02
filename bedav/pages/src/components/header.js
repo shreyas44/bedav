@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import NavBar from './Navbar'
+import Navbar from './Navbar'
 import Heading from './Heading'
 
 const HeaderContainer = styled.div`
@@ -27,7 +27,7 @@ function Header() {
   return (
     <HeaderContainer>
       <Heading />
-      <NavBar />
+      <Navbar />
     </HeaderContainer>
   )
 }
