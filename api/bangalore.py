@@ -115,7 +115,7 @@ def add_bangalore_hospitals(data):
           hospital["address"] = item.loc["address"]
 
         def hospital_exists(name, place_id=None):
-            obj = Hospital.objects.filter(name=name).first()
+            obj = Hospital.objects.filter(name=name, city__icontains="Bengaluru").first()
 
             if obj is None:
                 return False

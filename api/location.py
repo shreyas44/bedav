@@ -5,7 +5,7 @@ KEY = "AIzaSyDMJnJXbyp-pH4xaWY8_S1RI-mUEV1EzB0"
 
 def get_location_info(name=None, city='', state='', country='India', address=None):
     ret_data = {}
-    
+
     if address is None:
       url_address =  f'{name}, {city}, {state}, {country}'
     else:
@@ -38,7 +38,7 @@ def get_location_info(name=None, city='', state='', country='India', address=Non
         try:
             _type = component['types'][0]
             value = component['long_name']
-            
+
             if _type == 'postal_code':
                 field = 'postal_code'
 
@@ -54,7 +54,7 @@ def get_location_info(name=None, city='', state='', country='India', address=Non
                 field = 'city'
             else:
                 continue
-            
+
             ret_data[field] = value
         except IndexError:
             pass
