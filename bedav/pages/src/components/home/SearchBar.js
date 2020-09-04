@@ -6,9 +6,9 @@ import SearchHospitalContext from '../contexts/SearchHospital'
 let SearchIcon = ({className}) => <MaterialSearchIcon className={className} />
 
 const SearchContainer = styled.div`
-  width: 60%;
+  width: 100%;
   box-shadow: 7px 15px 25px 0px rgba(0,0,0,0.1);
-  margin: 60px auto 0;
+  margin: 10px 0 0;
   height: 60px;
   border: 1px solid #FEFEFE;
   display: flex;

@@ -2,13 +2,18 @@ import time
 import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
-from .models import Hospital, Beds, ICU, Ventilators, Equipment
+from .models import Hospital, Equipment, Locality
 from math import radians, sin, cos, asin, sqrt
 from django.contrib.gis.db.models.functions import GeometryDistance
 from django.contrib.gis.geos import Point
 from django.db.models import F
 from django.db import connection
 from collections import namedtuple
+
+def namedtuplefetch(cursor, name):
+      desc = cursor.description
+      nt_result = namedtuple(name, [col[0] for col in desc])
+      return [nt_result(*row) for row in cursor.fetchall()]
 
 class HospitalSortField(graphene.Enum):
   NAME = "name"
@@ -76,6 +81,25 @@ class HospitalConnection(relay.Connection):
   class Meta:
     node = HospitalType
 
+class LocalityType(DjangoObjectType):
+  total = graphene.Int()
+  available = graphene.Int()
+  occupied = graphene.Int()
+  last_updated = graphene.Float()
+  hospitals = relay.ConnectionField(HospitalConnection)
+
+  def resolve_hospitals(locality, info):
+    pass
+
+  class Meta:
+    model = Locality
+    name = "Locality"
+    interfaces = (relay.Node, )
+
+class LocalityConnection(relay.Connection):
+  class Meta:
+    node = LocalityType
+
 class Query(graphene.ObjectType):
   hospitals = relay.ConnectionField(HospitalConnection,
     order_by=graphene.Argument(HospitalSortField,
@@ -89,15 +113,13 @@ class Query(graphene.ObjectType):
 
   hospital = graphene.Field(HospitalType, id=graphene.NonNull(graphene.ID), lat=graphene.Float(default_value=0), lon=graphene.Float(default_value=0))
 
+  localities = relay.ConnectionField(LocalityConnection)
+
   def resolve_hospitals(parent, info, order_by, descending, category_filters, lat, lon, search_query, **kwargs):
     info.context.coords = {"lat": lat, "lon": lon}
     coords = Point(lon, lat, srid=4326)
 
-    def namedtuplefetch(cursor):
-      desc = cursor.description
-      nt_result = namedtuple('Hospital', [col[0] for col in desc])
-      return [nt_result(*row) for row in cursor.fetchall()]
-
+   
     def get_hospitals(order):
       joins = '''
         FULL OUTER JOIN (
@@ -153,7 +175,7 @@ class Query(graphene.ObjectType):
       '''
 
       cursor.execute(query, escaped_strings)
-      return namedtuplefetch(cursor)
+      return namedtuplefetch(cursor, "Hospital")
 
     o = order_by
 
@@ -222,6 +244,29 @@ class Query(graphene.ObjectType):
 
     return hospital
 
+  def resolve_localities(parent, info, **kwargs):
+    localities = Locality.objects.raw("""
+        SELECT "Locality".*, MAX(c.time) as last_updated, SUM(c.total) total, SUM(c.available) available, SUM(c.occupied) occupied FROM "Locality"
+        INNER JOIN (
+          SELECT hos.id, hos.name, hos.locality_id, SUM(available) available, SUM(total) total, SUM(total - available) occupied, a.time
+          FROM "Hospitals" as hos
+          INNER JOIN (
+            SELECT MAX(time) as time, branch_id 
+            FROM "Equipment"
+            GROUP BY branch_id
+          ) AS a ON a.branch_id = hos.id
+          INNER JOIN (
+            SELECT available, total, category, branch_id, time
+            FROM "Equipment"
+          ) AS b on b.branch_id = hos.id AND b.time = a.time
+          GROUP BY hos.id, a.time
+          ORDER BY hos.name
+        ) c on "Locality".id = c.locality_id
+        GROUP BY "Locality".id
+    """)
+
+    return localities
+
 # Mutaions
 
 class NewHospitalInput(graphene.InputObjectType):
@@ -286,7 +331,7 @@ class UploadData(graphene.Mutation):
     # elif input.category == "beds":
     #   save_object(Beds)
 
-    return UploatData(status=True)
+    return UploadData(status=True)
 
 class Mutations(graphene.ObjectType):
   # new_hospital = NewHospitalMutation()
