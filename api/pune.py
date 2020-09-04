@@ -123,6 +123,7 @@ def add_pune_hospitals(data):
       hospital["phone"] = item.loc["phone"]
 
     hospital["district"] = "Pune"
+    hospital["locality_id"] = 2
 
     obj = Hospital(**hospital)
     obj.save()

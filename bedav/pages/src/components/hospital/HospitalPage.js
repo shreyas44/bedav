@@ -73,7 +73,7 @@ function HospitalPage(props) {
       `}
 
       variables={{
-        hospitalID: hospitalId
+        hospitalID: decodeURI(hospitalId)
       }}
 
       render={({error, props}) => {

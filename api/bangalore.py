@@ -106,6 +106,7 @@ def add_bangalore_hospitals(data):
         hospital = {
             "name": item.loc['name'],
             "category": item.loc['category'],
+            "locality_id": 1
         }
 
         if not pd.isna(item.loc["phone"]):

@@ -25,7 +25,7 @@ urlpatterns = [
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
     path('', main_view),
     path('about/', main_view),
-    path('hospital/<int:hospitalID>/', main_view)
+    path('hospital/<str:hospitalID>/', main_view)
 ]
 
 # if settings.DEBUG:

@@ -99,7 +99,7 @@ function HospitalName({name, counter, id}) {
 
     return (
       <StyledName counter={counter} onClick={handleClick} ref={parentRef}>
-        <StyledLink to={`/hospital/${id}`} ref={linkRef}>
+        <StyledLink to={`/hospital/${decodeURI(id)}`} ref={linkRef}>
           {newName}
         </StyledLink>
         { newName != name ?
@@ -111,7 +111,7 @@ function HospitalName({name, counter, id}) {
   } else {
     return (
       <StyledName counter={counter} onClick={handleClick} ref={parentRef}>
-        <StyledLink to={`/hospital/${id}`} ref={linkRef}>
+        <StyledLink to={`/hospital/${decodeURI(id)}`} ref={linkRef}>
           {name}
         </StyledLink>
       </StyledName>

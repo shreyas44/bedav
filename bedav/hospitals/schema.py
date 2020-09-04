@@ -1,4 +1,4 @@
-import time
+import time, base64
 import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
@@ -14,6 +14,15 @@ def namedtuplefetch(cursor, name):
       desc = cursor.description
       nt_result = namedtuple(name, [col[0] for col in desc])
       return [nt_result(*row) for row in cursor.fetchall()]
+
+def get_id(encoded_id, is_int=True):
+  id = base64.b64decode(encoded_id).decode("utf-8")
+  id = id.split(":")[1]
+
+  if is_int:
+    return int(id)
+
+  return id
 
 class HospitalSortField(graphene.Enum):
   NAME = "name"
@@ -86,10 +95,89 @@ class LocalityType(DjangoObjectType):
   available = graphene.Int()
   occupied = graphene.Int()
   last_updated = graphene.Float()
-  hospitals = relay.ConnectionField(HospitalConnection)
+  hospitals = relay.ConnectionField(HospitalConnection,
+    order_by=graphene.Argument(HospitalSortField,
+    required=False, default_value="distance"),
+    descending=graphene.Boolean(default_value=False, required=False),
+    category_filters=graphene.List(graphene.String, required=False, default_value=[]),
+    lat=graphene.Float(required=False, default_value=0),
+    lon=graphene.Float(required=False, default_value=0),
+    search_query=graphene.String(required=False, default_value='')
+  )
 
-  def resolve_hospitals(locality, info):
-    pass
+  def resolve_hospitals(locality, info, order_by, descending, category_filters, lat, lon, search_query, **kwargs):
+    info.context.coords = {"lat": lat, "lon": lon}
+    coords = Point(lon, lat, srid=4326)
+
+
+    def get_hospitals(order):
+      joins = '''
+        FULL OUTER JOIN (
+          SELECT DISTINCT ON (branch_id)
+          branch_id, available general_available, total general_total, (total - available) general_occupied
+          FROM "Equipment" WHERE category = 'gen' ORDER BY branch_id, time DESC
+        ) AS eq_gen ON eq_gen.branch_id = hos.id
+        FULL OUTER JOIN (
+          SELECT DISTINCT ON (branch_id)
+          branch_id, available icu_available, total icu_total, (total - available) icu_occupied
+          FROM "Equipment" WHERE category = 'ICU' ORDER BY branch_id, time DESC
+        ) AS eq_ICU ON eq_ICU.branch_id = hos.id
+        FULL OUTER JOIN (
+          SELECT DISTINCT ON (branch_id)
+          branch_id, available hdu_available, total hdu_total, (total - available) hdu_occupied
+          FROM "Equipment" WHERE category = 'HDU' ORDER BY branch_id, time DESC
+        ) AS eq_HDU ON eq_HDU.branch_id = hos.id
+        FULL OUTER JOIN (
+          SELECT DISTINCT ON (branch_id)
+          branch_id, available ventilators_available, total ventilators_total, (total - available) ventilators_occupied
+          FROM "Equipment" WHERE category = 'vent' ORDER BY branch_id, time DESC
+        ) AS eq_vent ON eq_vent.branch_id = hos.id
+      '''
+
+      selections = '''
+        eq_HDU.hdu_available, eq_HDU.hdu_total, eq_HDU.hdu_occupied,
+        eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
+        eq_ICU.icu_available, eq_ICU.icu_total, eq_ICU.icu_occupied,
+        eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
+        hos.name, hos.website, hos.phone, hos.location, hos.city, hos.district, hos.state, hos.country, hos.postal_code, hos.place_id, hos.address, hos.category, hos.locality_id,
+        encode(('Hospital:' || hos.id)::bytea, 'base64') id,
+        ST_X(hos.location::geometry) as longitude, ST_Y(hos.location::geometry) as latitude,
+        ((hos."location" <-> %s::geometry) / 1000) AS distance
+      '''
+
+      cursor = connection.cursor()
+
+      if len(category_filters) > 0:
+        where_claus = 'WHERE hos.name ILIKE %s AND hos.category IN %s'
+        escaped_strings = [str(coords), '%' + search_query + '%', tuple(category_filters)]
+      else:
+        where_claus = 'WHERE hos.name ILIKE %s'
+        escaped_strings = [str(coords), '%' + search_query + '%']
+
+      query = f'''
+        SELECT * FROM (
+          SELECT 
+          {selections}
+          FROM "Hospitals" AS hos
+          {joins}
+          {where_claus}
+        ) data
+        WHERE data.locality_id = {locality.id}
+        ORDER BY COALESCE({order}, {"''" if order == 'name' else 0}) {'DESC' if descending else 'ASC'}
+      '''
+
+      cursor.execute(query, escaped_strings)
+      return namedtuplefetch(cursor, "Hospital")
+
+    o = order_by
+
+    if o not in ("distance", "name"):
+      o = o.split("_")[::-1]
+      o = '_'.join(o)
+
+    hospitals = get_hospitals(o)
+
+    return hospitals
 
   class Meta:
     model = Locality
@@ -149,7 +237,8 @@ class Query(graphene.ObjectType):
         eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
         eq_ICU.icu_available, eq_ICU.icu_total, eq_ICU.icu_occupied,
         eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
-        hos.*,
+        hos.name, hos.website, hos.phone, hos.location, hos.city, hos.district, hos.state, hos.country, hos.postal_code, hos.place_id, hos.address, hos.category, hos.locality_id,
+        encode(('Hospital:' || hos.id)::bytea, 'base64') id,
         ST_X(hos.location::geometry) as longitude, ST_Y(hos.location::geometry) as latitude,
         ((hos."location" <-> %s::geometry) / 1000) AS distance
       '''
@@ -237,7 +326,7 @@ class Query(graphene.ObjectType):
 
     cursor = connection.cursor()
 
-    cursor.execute(query, [str(coords), id])
+    cursor.execute(query, [str(coords), get_id(id)])
     hospital = namedtuplefetch(cursor)[0]
 
     print(hospital)
