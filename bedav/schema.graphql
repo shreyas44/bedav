@@ -59,6 +59,28 @@ enum HospitalSortField {
   TOTAL_VENTILATORS
 }
 
+type Locality implements Node {
+  id: ID!
+  name: String!
+  state: String!
+  country: String!
+  total: Int
+  available: Int
+  occupied: Int
+  lastUpdated: Float
+  hospitals(orderBy: HospitalSortField = DISTANCE, descending: Boolean = false, categoryFilters: [String] = [], lat: Float = 0.0, lon: Float = 0.0, searchQuery: String = "", before: String, after: String, first: Int, last: Int): HospitalConnection
+}
+
+type LocalityConnection {
+  pageInfo: PageInfo!
+  edges: [LocalityEdge]!
+}
+
+type LocalityEdge {
+  node: Locality
+  cursor: String!
+}
+
 interface Node {
   id: ID!
 }
@@ -71,7 +93,7 @@ type PageInfo {
 }
 
 type Query {
-  hospitals(orderBy: HospitalSortField = DISTANCE, descending: Boolean = false, categoryFilters: [String] = [], lat: Float = 0.0, lon: Float = 0.0, searchQuery: String = "", before: String, after: String, first: Int, last: Int): HospitalConnection
-  hospital(id: ID!, lat: Float = 0.0, lon: Float = 0.0): Hospital
+  hospitals(orderBy: HospitalSortField = DISTANCE, descending: Boolean = false, categoryFilters: [String] = [], lat: Float = 0.0, lon: Float = 0.0, searchQuery: String = "", before: String, after: String, first: Int, last: Int): HospitalConnection hospital(id: ID!, lat: Float = 0.0, lon: Float = 0.0): Hospital
+  localities(before: String, after: String, first: Int, last: Int): LocalityConnection
   node(id: ID!): Node
 }

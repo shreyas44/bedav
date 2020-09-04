@@ -3,17 +3,16 @@ import styled from 'styled-components'
 
 const HeadingContainer = styled.div`
   font-family: "Quicksand", sans-serif;
-  text-align: left;
   color: #415c8a
 `
 
-const CityH = styled.h1`
-  font-size: 23px;
+export const CityH = styled.h1`
+  font-size: 26px;
   font-family: "Quicksand", sans-serif;
   margin: 0;
 `
 
-const LastUpdated = styled.p`
+export const LastUpdated = styled.p`
   font-size: 14px;
   margin: 0px 0;
 `

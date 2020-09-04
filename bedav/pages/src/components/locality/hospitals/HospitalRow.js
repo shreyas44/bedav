@@ -16,7 +16,6 @@ export const StyledRow = styled.div`
 
 export const StyledNumber = styled(GridCell)`
   text-align: center;
-  color: ${({colorTheme, children}) => children == "N.A." ? "#ddd" : colorTheme == "green" ? "#008033" : colorTheme === "red" ? "#C3423F" : colorTheme === "blue" ? "rgb(0, 66, 102)": null};
   justify-content: center;
 `
 

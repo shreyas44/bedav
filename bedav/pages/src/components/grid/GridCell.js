@@ -8,6 +8,7 @@ const GridCell = styled.div`
   align-items: center;
   position: relative;
   background-color: ${({counter}) => counter % 2 == 0 ? "#f8f8f8" : "white"};
+  color: ${({colorTheme, children}) => children == "N.A." ? "#ddd" : colorTheme == "green" ? "#008033" : colorTheme === "red" ? "#C3423F" : colorTheme === "blue" ? "rgb(0, 66, 102)": null};
 
 
   @media only screen and (max-width: 600px) {

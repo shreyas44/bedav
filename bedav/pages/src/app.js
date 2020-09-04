@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-
 import NotLiveRoute from 'react-live-route'
 
 const LiveRoute = withRouter(NotLiveRoute)
+const HomePage = lazy(() => import('./components/home'))
 const LocalityPage = lazy(() => import('./components/locality'))
 const AboutPage = lazy(() => import('./components/about'))
 const HospitalPage = lazy(() => import('./components/hospital'))
@@ -41,7 +42,7 @@ return (
             path="/"
             alwaysLive={true}
             render={props => (
-              <LocalityPage {...props}/>  
+              <HomePage {...props}/>
             )}
           />
         </ContentWrapper>
