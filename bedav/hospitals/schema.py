@@ -202,6 +202,7 @@ class Query(graphene.ObjectType):
   hospital = graphene.Field(HospitalType, id=graphene.NonNull(graphene.ID), lat=graphene.Float(default_value=0), lon=graphene.Float(default_value=0))
 
   localities = relay.ConnectionField(LocalityConnection)
+  locality = graphene.Field(LocalityType, name=graphene.String())
 
   def resolve_hospitals(parent, info, order_by, descending, category_filters, lat, lon, search_query, **kwargs):
     info.context.coords = {"lat": lat, "lon": lon}
@@ -355,6 +356,32 @@ class Query(graphene.ObjectType):
     """)
 
     return localities
+
+  def resolve_locality(parent, info, name, **kwargs):
+    name = ' '.join(name.split('-'))
+    print(name)
+    locality = Locality.objects.raw("""
+        SELECT "Locality".*, MAX(c.time) as last_updated, SUM(c.total) total, SUM(c.available) available, SUM(c.occupied) occupied FROM "Locality"
+        INNER JOIN (
+          SELECT hos.id, hos.name, hos.locality_id, SUM(available) available, SUM(total) total, SUM(total - available) occupied, a.time
+          FROM "Hospitals" as hos
+          INNER JOIN (
+            SELECT MAX(time) as time, branch_id
+            FROM "Equipment"
+            GROUP BY branch_id
+          ) AS a ON a.branch_id = hos.id
+          INNER JOIN (
+            SELECT available, total, category, branch_id, time
+            FROM "Equipment"
+          ) AS b on b.branch_id = hos.id AND b.time = a.time
+          GROUP BY hos.id, a.time
+          ORDER BY hos.name
+        ) c on "Locality".id = c.locality_id
+        WHERE ("Locality".name || ' ' || "Locality".state ILIKE %s)
+        GROUP BY "Locality".id
+    """, [name])[0]
+
+    return locality
 
 # Mutaions
 

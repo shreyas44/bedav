@@ -10,9 +10,9 @@
 import type { ReaderFragment } from 'relay-runtime';
 type HospitalRow_hospital$ref = any;
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type HospitalList_hospitalList$ref: FragmentReference;
-declare export opaque type HospitalList_hospitalList$fragmentType: HospitalList_hospitalList$ref;
-export type HospitalList_hospitalList = {|
+declare export opaque type HospitalList_locality$ref: FragmentReference;
+declare export opaque type HospitalList_locality$fragmentType: HospitalList_locality$ref;
+export type HospitalList_locality = {|
   +hospitals: ?{|
     +edges: $ReadOnlyArray<?{|
       +node: ?{|
@@ -25,12 +25,12 @@ export type HospitalList_hospitalList = {|
       +hasNextPage: boolean,
     |},
   |},
-  +$refType: HospitalList_hospitalList$ref,
+  +$refType: HospitalList_locality$ref,
 |};
-export type HospitalList_hospitalList$data = HospitalList_hospitalList;
-export type HospitalList_hospitalList$key = {
-  +$data?: HospitalList_hospitalList$data,
-  +$fragmentRefs: HospitalList_hospitalList$ref,
+export type HospitalList_locality$data = HospitalList_locality;
+export type HospitalList_locality$key = {
+  +$data?: HospitalList_locality$data,
+  +$fragmentRefs: HospitalList_locality$ref,
   ...
 };
 */
@@ -92,7 +92,7 @@ const node/*: ReaderFragment*/ = {
       }
     ]
   },
-  "name": "HospitalList_hospitalList",
+  "name": "HospitalList_locality",
   "selections": [
     {
       "alias": "hospitals",
@@ -210,10 +210,10 @@ const node/*: ReaderFragment*/ = {
       "storageKey": null
     }
   ],
-  "type": "Query",
+  "type": "Locality",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '0afcd18e195e72698c26c171d3a5205c';
+(node/*: any*/).hash = '291e372ec6317be00c99a959c1b1a9da';
 
 module.exports = node;

@@ -6,6 +6,7 @@ import { GridContainer } from '../grid'
 import LocalityList from './LocalityList'
 import LocalityHeader from './LocalityHeader'
 import Header from './Header'
+import Summary from './Summary'
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -17,10 +18,10 @@ function HomePage(props) {
   return (
     <StyledContainer>
       <Header />
+      <Summary />
       <GridContainer
         columnTemplate="repeat(4, auto)"
         mobileColumnTemplate="repeat(4, auto)"
-        style={{top: 100}}
       >
         <LocalityHeader />
         <QueryRenderer 

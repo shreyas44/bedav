@@ -18,13 +18,36 @@ export const LastUpdated = styled.p`
 `
 
 function CityHeading(props) {
+  const getTime = obj => {
+    const minutes = obj.getMinutes()
+    let hours = obj.getHours()
+    let ap = hours < 12 ? "AM" : "PM"
+
+    if(hours > 12) {
+      hours -= 12
+    } else if (hours == 0) {
+      hours = 12
+    }
+
+    return `${hours}:${minutes} ${ap}`
+  }
+
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ]
+
+  const timestamp = new Date(props.lastUpdated * 1000)
+  const date = timestamp.getDate()
+  const month = months[timestamp.getMonth()]
+  const time = getTime(timestamp)
+  
   return (
     <HeadingContainer>
       <CityH>
-        Bengaluru
+        {props.children} 
       </CityH>
       <LastUpdated>
-        Last Updated on 3 Sep, 4:00 AM
+        Last Updated on {date} {month}, {time}
       </LastUpdated>
     </HeadingContainer>
   )

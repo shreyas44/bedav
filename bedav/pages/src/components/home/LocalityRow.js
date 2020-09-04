@@ -5,6 +5,10 @@ import { GridCell, GridColumnHeader } from '../grid'
 
 const Row = styled.div`
   display: contents;
+
+  & > div {
+    background-color: ${({counter}) => counter % 2 == 0 ? "white" : "#f8f8f8"}
+  }
 `
 
 const StyledCell = styled(GridCell)`
@@ -16,7 +20,7 @@ function LocalityRow(props) {
   const {locality} = props
 
   return (
-    <Row>
+    <Row counter={props.counter}>
       <GridColumnHeader>
         {locality.name}, {locality.state}
       </GridColumnHeader>

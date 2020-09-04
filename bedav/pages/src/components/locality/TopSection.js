@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { createFragmentContainer, graphql } from 'react-relay'
 import SearchBar from './SearchBar'
 import CityHeading from './CityHeading'
 import ViewAllButton from './ViewAllButton'
@@ -21,12 +22,12 @@ const CityContainer = styled.div`
   justify-content: space-between;
 `
 
-function TopSection() {
+function TopSection({locality}) {
   return (
     <TopContainer>
       <CityContainer>
-        <CityHeading>
-          Bangalore
+        <CityHeading lastUpdated={locality.lastUpdated}>
+          {locality.name}
         </CityHeading>
         <ViewAllButton />
       </CityContainer>
@@ -35,4 +36,18 @@ function TopSection() {
   )
 }
 
-export default TopSection
+export default createFragmentContainer(
+  TopSection,
+  {
+    locality: graphql`
+      fragment TopSection_locality on Locality {
+        id
+        name
+        total
+        occupied
+        available
+        lastUpdated
+      }
+    `
+  }
+)
