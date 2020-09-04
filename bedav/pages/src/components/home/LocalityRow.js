@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { createFragmentContainer, graphql } from 'react-relay'
+import { Link } from 'react-router-dom'
 import { GridCell, GridColumnHeader } from '../grid'
 
 const Row = styled.div`
@@ -16,16 +17,27 @@ const StyledCell = styled(GridCell)`
   justify-content: center;
 `
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &:visited {
+    color: inherit;
+  }
+`
+
 function LocalityRow(props) {
   const {locality} = props
 
   return (
     <Row counter={props.counter}>
       <GridColumnHeader>
-        {locality.name}, {locality.state}
+        <StyledLink to={`/${locality.name.toLowerCase()}-${locality.state.toLowerCase()}/`}>
+          {locality.name}, {locality.state}
+        </StyledLink>
       </GridColumnHeader>
       <StyledCell colorTheme="green">
-        {locality.available}
+          {locality.available}
       </StyledCell>
       <StyledCell colorTheme="red">
         {locality.available}

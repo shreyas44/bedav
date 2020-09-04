@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { QueryRenderer, graphql } from 'react-relay'
 import Environment from '../../Environment'
@@ -15,6 +15,9 @@ const StyledContainer = styled.div`
 `
 
 function HomePage(props) {
+  //useEffect(() => {
+    //props.ensureDidMount()
+  //}, [])
   return (
     <StyledContainer>
       <Header />

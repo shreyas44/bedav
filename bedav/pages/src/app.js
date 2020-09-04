@@ -38,22 +38,17 @@ return (
             <Route exact path="/hospital/:hospitalId/">
               <HospitalPage />
             </Route>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
           </Switch>
-          <LiveRoute exact
-            path="/"
-            alwaysLive={true}
-            render={props => (
-              <HomePage {...props}/>
-            )}
-          />
-          <LiveRoute exact
+          <LiveRoute exact alwaysLive={true}
             path="/:localityName/"
-            alwaysLive={true}
             render={props => (
               <SelectedFiltersProvider>
                 <SearchHospitalProvider>
                   <SortProvider>
-                    <LocalityPage {...props}/>}
+                    <LocalityPage {...props}/>
                   </SortProvider>
                 </SearchHospitalProvider>
               </SelectedFiltersProvider>

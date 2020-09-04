@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useRef } from 'react'
 import { QueryRenderer, graphql } from 'react-relay'
 import Environment from '../../Environment'
 import { useDictState } from '../hooks'
@@ -9,12 +9,10 @@ import FilterSection from './filter'
 import TopSection from './TopSection'
 import HospitalGrid from './hospitals/HospitalGrid'
 
-function useParams(props) {
-  return props.match.params
-} 
-
 function LocalityPage(props) {
-  const {localityName}= useParams(props)
+  const localityRef = useRef(props.match ? props.match.params.localityName : null)
+  let localityName = localityRef.current
+
   const {searchQuery} = useContext(SearchHospitalContext)
   const {filters} = useContext(SelectedFitlersContext)
   const {sortValue, setSortValue} = useContext(SortContext)
@@ -22,6 +20,7 @@ function LocalityPage(props) {
   const [state, setState] = useDictState({
     geolocation: false,
     getData: false,
+    updates: 0,
   })
 
   useEffect(() => {
@@ -31,6 +30,17 @@ function LocalityPage(props) {
   useEffect(() => {
     props.ensureDidMount()
   }, [])
+
+  useEffect(() => {
+    const currentName = props.match ? props.match.params.localityName : null
+    
+    if (currentName && currentName != localityRef.current) {
+      localityRef.current = currentName
+      setState({
+        updates: state.updates + 1
+      })
+    }
+  })
 
   function setCoords(position) {
     setSortValue({
