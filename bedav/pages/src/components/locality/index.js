@@ -1,1 +1,1 @@
-export {default as default} from './HomePage'
+export {default as default} from './LocalityPage'

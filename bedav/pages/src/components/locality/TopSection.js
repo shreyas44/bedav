@@ -7,6 +7,12 @@ import ViewAllButton from './ViewAllButton'
 const TopContainer = styled.div`
   margin: 100px auto 0;
   width: 60%;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 5px;
+  }
 `
 
 const CityContainer = styled.div`

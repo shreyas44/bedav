@@ -1,13 +1,14 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
-import { StyledRow, StyledName, StyledNumber } from './HospitalRow'
+import { GridCell, GridColumnHeader } from '../../grid'
+import { StyledRow, StyledNumber } from './HospitalRow'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import SortContext from '../../contexts/Sort'
 import Tooltip from '../../Tooltip'
 import DataToShowContext from '../../contexts/DataToShow'
 
-const StyledHeadingName = styled(StyledName)`
+const StyledHeadingName = styled(GridColumnHeader)`
   padding: 15px;
   display: flex;
   text-align: left;
@@ -25,7 +26,6 @@ const StyledHeadingName = styled(StyledName)`
 const StyledHeading = styled(StyledNumber)`
   font-weight: bold;
   padding: 15px;
-  justify-content: center;
   background-color: #f8f8f8;
   ${({sortable}) => sortable ? "cursor: pointer; &:hover {background-color: #eee;}" : null}
 

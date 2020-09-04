@@ -8,53 +8,14 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import DataToShowContext from '../../contexts/DataToShow'
 import { useWindowSize } from '../../hooks'
 import { mobileCategories } from '../../extra/categories'
+import { GridCell, GridColumnHeader } from '../../grid'
 
 export const StyledRow = styled.div`
   display: contents;
 `
 
-export const StyledCell = styled.div`
-  border-radius: 5px;
-  padding: 15px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  position: relative;
-
-  @media only screen and (max-width: 600px) {
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    font-family: "Quicksand", sans-serif;
-  }
-`
-
-export const StyledName = styled(StyledCell)`
-  font-weight: bold;
-  background: #f8f8f8;
-  color: #0275b3;
-  transition: all 0.1s;
-  cursor: pointer;
-  text-decoration: none;
-  position: sticky;
-  left: 0;
-  z-index: 2;
-
-  &:hover {
-    color: #004266;
-    background-color: #eee;
-  }
-
-  @media only screen and (max-width: 600px) {
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-  }
-`
-
-export const StyledNumber = styled(StyledCell)`
+export const StyledNumber = styled(GridCell)`
   text-align: center;
-  background: ${({counter}) => counter % 2 == 0 ? "#f8f8f8" : "white"};
   color: ${({colorTheme, children}) => children == "N.A." ? "#ddd" : colorTheme == "green" ? "#008033" : colorTheme === "red" ? "#C3423F" : colorTheme === "blue" ? "rgb(0, 66, 102)": null};
   justify-content: center;
 `
@@ -98,7 +59,7 @@ function HospitalName({name, counter, id}) {
     }
 
     return (
-      <StyledName counter={counter} onClick={handleClick} ref={parentRef}>
+      <GridColumnHeader counter={counter} onClick={handleClick} ref={parentRef}>
         <StyledLink to={`/hospital/${decodeURI(id)}`} ref={linkRef}>
           {newName}
         </StyledLink>
@@ -106,15 +67,15 @@ function HospitalName({name, counter, id}) {
         <Tooltip text={name} innerRef={tooltipRef} onClick={true}> 
           <StyledInfoIcon />          
         </Tooltip> : null}
-      </StyledName>
+      </GridColumnHeader>
     ) 
   } else {
     return (
-      <StyledName counter={counter} onClick={handleClick} ref={parentRef}>
+      <GridColumnHeader counter={counter} onClick={handleClick} ref={parentRef}>
         <StyledLink to={`/hospital/${decodeURI(id)}`} ref={linkRef}>
           {name}
         </StyledLink>
-      </StyledName>
+      </GridColumnHeader>
     )
   }
 }

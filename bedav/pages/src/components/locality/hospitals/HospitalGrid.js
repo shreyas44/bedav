@@ -12,21 +12,7 @@ import HospitalGridHeader from './HospitalGridHeader'
 import HospitalList from './HospitalList'
 import AbbreviationsInfo from './AbbreviationsInfo'
 import HospitalDataDropdown from './HospitalDataDropdown'
-
-const GridContainer = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: minmax(250px, 300px) minmax(150px, 225px) repeat(5, auto);
-  grid-gap: 5px;
-  font-size: 16px;
-  position: relative;
-
-  @media only screen and (max-width: 600px) {
-    grid-template-columns: minmax(150px, 175px) repeat(6, auto);
-    overflow-x: scroll;
-    grid-gap: 3px;
-  }
-`
+import { GridContainer } from '../../grid'
 
 const OptionsContainer = styled.div`
   height: fit-content;
@@ -137,7 +123,10 @@ function HospitalGrid(props) {
           <AbbreviationsInfo />
           <HospitalDataDropdown />
         </OptionsContainer>
-        <GridContainer>
+        <GridContainer
+          columnTemplate="minmax(250px, 300px) minmax(150px, 225px) repeat(5, auto)"
+          mobileColumnTemplate="minmax(150px, 175px) repeat(6, auto)"
+        >
           <HospitalGridHeader geolocation={state.geolocation}/>
           { state.getData ? 
             <QueryRenderer 

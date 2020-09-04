@@ -6,7 +6,7 @@ import FilterSection from './filter'
 import HospitalsTable from './HospitalsTable'
 import TopSection from './TopSection'
 
-function HomePage(props) {
+function LocalityPage(props) {
   useEffect(() => {
     document.title = "Bedav - Home"
   }, [])
@@ -28,4 +28,4 @@ function HomePage(props) {
   )
 }
 
-export default HomePage
+export default LocalityPage

@@ -24,7 +24,6 @@ const SearchContainer = styled.div`
 
   @media only screen and (max-width: 600px) {
     margin-top: 40px;
-    width: calc(100% - 20px);
     box-shadow: 2.5px 7.5px 12.5px 0 rgba(0,0,0,0.3);
 
     &:focus-within {
