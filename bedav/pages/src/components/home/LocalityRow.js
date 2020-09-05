@@ -40,7 +40,7 @@ function LocalityRow(props) {
           {locality.available}
       </StyledCell>
       <StyledCell colorTheme="red">
-        {locality.available}
+        {locality.occupied}
       </StyledCell>
        <StyledCell colorTheme="total">
         {locality.total}

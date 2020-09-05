@@ -34,7 +34,7 @@ class HospitalSortField(graphene.Enum):
   OCCUPIED_GENERAL = "occupied_general"
   OCCUPIED_HDU = "occupied_HDU"
   OCCUPIED_ICU = "occupied_ICU"
-  USED_VENTILATORS = "used_ventilators"
+  OCCUPIED_VENTILATORS = "occupied_ventilators"
   TOTAL_GENERAL = "total_general"
   TOTAL_ICU = "total_ICU"
   TOTAL_HDU = "total_HDU"

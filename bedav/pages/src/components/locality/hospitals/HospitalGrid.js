@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { DataToShowProvider } from '../../contexts/DataToShow'
 import HospitalGridHeader from './HospitalGridHeader'
@@ -25,8 +25,6 @@ const SectionContainer = styled.div`
 `
 
 function HospitalGrid(props) {
-  console.log(props)
- 
   return (
     <DataToShowProvider>
       <SectionContainer>

@@ -3,9 +3,6 @@ import styled, { createGlobalStyle } from 'styled-components'
 import Header from './components/header'
 import {BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom'
 import NotLiveRoute from 'react-live-route'
-import { SelectedFiltersProvider } from './components/contexts/SelectedFilters'
-import { SearchHospitalProvider } from './components/contexts/SearchHospital'
-import { SortProvider } from './components/contexts/Sort'
 
 const LiveRoute = withRouter(NotLiveRoute)
 const HomePage = lazy(() => import('./components/home'))
@@ -45,13 +42,7 @@ return (
           <LiveRoute exact alwaysLive={true}
             path="/:localityName/"
             render={props => (
-              <SelectedFiltersProvider>
-                <SearchHospitalProvider>
-                  <SortProvider>
-                    <LocalityPage {...props}/>
-                  </SortProvider>
-                </SearchHospitalProvider>
-              </SelectedFiltersProvider>
+              <LocalityPage {...props}/>
             )}
           />
         </ContentWrapper>

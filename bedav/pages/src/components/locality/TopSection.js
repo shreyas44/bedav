@@ -37,17 +37,17 @@ function TopSection({locality}) {
 }
 
 export default createFragmentContainer(
-  TopSection,
-  {
-    locality: graphql`
-      fragment TopSection_locality on Locality {
-        id
-        name
-        total
-        occupied
-        available
-        lastUpdated
-      }
-    `
-  }
-)
+    TopSection,
+    {
+      locality: graphql`
+        fragment TopSection_locality on Locality {
+          id
+          name
+          total
+          occupied
+          available
+          lastUpdated
+        }
+      `
+    }
+  )

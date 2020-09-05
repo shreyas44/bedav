@@ -1,26 +1,23 @@
-import React, { useEffect, useContext, useRef } from 'react'
-import { QueryRenderer, graphql } from 'react-relay'
-import Environment from '../../Environment'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDictState } from '../hooks'
-import SearchHospitalContext from '../contexts/SearchHospital'
-import SelectedFitlersContext from '../contexts/SelectedFilters'
-import SortContext from '../contexts/Sort'
+import { QueryRenderer, graphql } from 'react-relay'
+import Swal from 'sweetalert2'
+import Environment from '../../Environment'
 import FilterSection from './filter'
 import TopSection from './TopSection'
 import HospitalGrid from './hospitals/HospitalGrid'
+import { SelectedFiltersProvider } from '../contexts/SelectedFilters'
+import { SearchHospitalProvider } from '../contexts/SearchHospital'
+import { SortProvider } from '../contexts/Sort'
 
 function LocalityPage(props) {
   const localityRef = useRef(props.match ? props.match.params.localityName : null)
   let localityName = localityRef.current
-
-  const {searchQuery} = useContext(SearchHospitalContext)
-  const {filters} = useContext(SelectedFitlersContext)
-  const {sortValue, setSortValue} = useContext(SortContext)
+  const [updates, setUpdates] = useState(0)
 
   const [state, setState] = useDictState({
     geolocation: false,
     getData: false,
-    updates: 0,
   })
 
   useEffect(() => {
@@ -36,19 +33,11 @@ function LocalityPage(props) {
     
     if (currentName && currentName != localityRef.current) {
       localityRef.current = currentName
-      setState({
-        updates: state.updates + 1
-      })
+      setUpdates(updates + 1)
     }
   })
 
   function setCoords(position) {
-    setSortValue({
-      ...sortValue,
-      field: 'DISTANCE',
-      descending: false
-    })
-
     setState({
       geolocation: true,
       lat: position.coords.latitude,
@@ -120,47 +109,52 @@ function LocalityPage(props) {
 
   return (
     <div>
-      <QueryRenderer 
-        environment={Environment}
-        query={graphql`
-          query LocalityPageQuery($localityName: String, $lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
-            locality(name: $localityName) {
-              ...TopSection_locality
-              ...HospitalList_locality @arguments(count: 500, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+      <SelectedFiltersProvider>
+        { state.getData ?
+        <QueryRenderer 
+          environment={Environment}
+          query={graphql`
+            query LocalityPageQuery($localityName: String, $lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
+              locality(name: $localityName) {
+                name
+                lastUpdated
+                ...TopSection_locality
+                ...HospitalList_locality @arguments(count: 500, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+              }
             }
-          }
-        `}
-        variables={{
-          lat: state.lat, 
-          lon: state.lon,
-          searchQuery: searchQuery,
-          categoryFilters: filters,
-          orderBy: sortValue.field,
-          descending: sortValue.descending,
-          localityName: localityName
-        }}
-        render={localProps => {
-          const {error} = localProps
-          const queryProps = localProps.props
-          if (error) {
-            console.log(error)
-          }
+          `}
+          variables={{
+            lat: state.lat, 
+            lon: state.lon,
+            searchQuery: '',
+            categoryFilters: [],
+            orderBy: "AVAILABLE_GENERAL",
+            descending: true,
+            localityName: localityName
+          }}
+          render={localProps => {
+            const {error} = localProps
+            const queryProps = localProps.props
+            if (error) {
+              console.log(error)
+            }
 
-          if (!queryProps) {
-            return <div>Loading...</div>
-          }
+            if (!queryProps) {
+              return <div>Loading...</div>
+            }
 
-          console.log(queryProps)
-
-          return (
-            <>
-              <TopSection locality={queryProps.locality}/>
-              <HospitalGrid getData={state.getData} geolocation={state.geolocation} locality={queryProps.locality} />
-            </>
-          )
-        }}
-      />
-      <FilterSection />
+            return (
+              <SearchHospitalProvider>
+                <SortProvider>
+                  <TopSection locality={queryProps.locality}/>
+                  <HospitalGrid getData={state.getData} geolocation={state.geolocation} locality={queryProps.locality} />
+                </SortProvider>
+              </SearchHospitalProvider>
+            )
+          }}
+        /> : null }
+        <FilterSection />
+      </SelectedFiltersProvider>
     </div>
   )
 }
