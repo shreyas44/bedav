@@ -19,7 +19,7 @@ const MainContainer = styled.div`
   }
 
   @media only screen and (max-width: 600px) {
-    margin-top: 120px;
+    margin-top: 95px;
   }
 `
 
