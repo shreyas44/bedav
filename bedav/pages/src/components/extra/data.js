@@ -27,7 +27,7 @@ const data = {
       mobileCategories: {
         "Dedicated Covid Hospital": "DCH",
         "Dedicated Covid Health Centre": "DCHC",
-        "Covid Care Cetnre": "CCC"
+        "Covid Care Centre": "CCC"
       }
     }  
   },

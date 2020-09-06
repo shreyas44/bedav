@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { mobileCategories } from '../../extra/categories'
 import InfoIcon from '@material-ui/icons/Info'
-import abbreviations from '../../extra/abbreviations'
-import { useWindowSize } from '../../hooks'
+import { useWindowSize, useMobileCategories } from '../../hooks'
+import data from '../../extra'
 
 const StyledDiv = styled.div`
   font-size: 15px;
@@ -21,8 +20,10 @@ const StyledInfoIcon = styled(InfoIcon)`
 function AbbreivationsInfo() {
   const [visible, setVisible] = useState(false)
   const [width, _] = useWindowSize()
-
-  const typeItems = Object.keys(abbreviations).map((item, index) => <div key={index}>{abbreviations[item]} - {item}</div>)
+  
+  const {abbreviations} = data
+  const mobileCategories = useMobileCategories()
+  const typeItems = Object.keys(abbreviations).map((item, index) => <div key={index}>{item} - {abbreviations[item]}</div>)
   const categoryTtems = Object.keys(mobileCategories).map((item, index) => <div key={index}>{mobileCategories[item]} - {item}</div>)
 
   return (

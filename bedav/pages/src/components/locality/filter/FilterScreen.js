@@ -1,8 +1,8 @@
 import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
+import { useCategories, useMobileCategories } from '../../hooks'
 import FilterField from './FilterField'
 import FilterTypeSection from './FilterTypeSection'
-import fields, { mobileCategories } from '../../extra/categories'
 
 const FilterSectionContainer = styled.div`
   max-height: 50%;
@@ -16,7 +16,7 @@ const FilterSectionContainer = styled.div`
   background: white;
   opacity: ${({filterScreen}) => filterScreen ? 1 : 0};
   transition: opacity 0.2s;
-  z-index: ${({filterScreen}) => filterScreen ? 0 : -3};; 
+  z-index: ${({filterScreen}) => filterScreen ? 3 : -3};; 
   box-shadow: 0 10px 20px rgba(0,0,0,0.6);
   border-radius: 20px;
   overflow-y: scroll;
@@ -45,8 +45,9 @@ function FilterScreen(props) {
       document.removeEventListener('click', handleClick)  
     }
   }, [])
-
-  let CategoryFilterFields = Object.keys(fields).map(key => <FilterField key={key} value={key}>{fields[key]} ({mobileCategories[fields[key]]})</FilterField>)
+  
+  const [categories, mobileCategories] = [useCategories(), useMobileCategories()]
+  let CategoryFilterFields = Object.keys(categories).map(key => <FilterField key={key} value={key}>{categories[key]} ({mobileCategories[categories[key]]})</FilterField>)
 
   return (
     <FilterSectionContainer filterScreen={filterScreen} ref={div => ref.current = div}>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDictState } from '../hooks'
 import { QueryRenderer, graphql } from 'react-relay'
 import Swal from 'sweetalert2'
+import Spinner from '../Spinner'
 import Environment from '../../Environment'
 import FilterSection from './filter'
 import TopSection from './TopSection'
@@ -9,6 +10,7 @@ import HospitalGrid from './hospitals/HospitalGrid'
 import { SelectedFiltersProvider } from '../contexts/SelectedFilters'
 import { SearchHospitalProvider } from '../contexts/SearchHospital'
 import { SortProvider } from '../contexts/Sort'
+import { LocalityProvider } from '../contexts/Locality'
 
 function LocalityPage(props) {
   const localityRef = useRef(props.match ? props.match.params.localityName : null)
@@ -128,8 +130,8 @@ function LocalityPage(props) {
             lon: state.lon,
             searchQuery: '',
             categoryFilters: [],
-            orderBy: "AVAILABLE_GENERAL",
-            descending: true,
+            orderBy: state.geolocation ? "DISTANCE" : "AVAILABLE_GENERAL",
+            descending: state.geolocation ? false : true,
             localityName: localityName
           }}
           render={localProps => {
@@ -140,19 +142,24 @@ function LocalityPage(props) {
             }
 
             if (!queryProps) {
-              return <div>Loading...</div>
+              return <Spinner />
             }
 
             return (
               <SearchHospitalProvider>
-                <SortProvider>
-                  <TopSection locality={queryProps.locality}/>
-                  <HospitalGrid getData={state.getData} geolocation={state.geolocation} locality={queryProps.locality} />
+                <SortProvider initial={{
+                  field: state.geolocation ? "DISTANCE" : "AVAILABLE_GENERAL",
+                  descending: state.geolocation ? false : true
+                }}>
+                  <LocalityProvider initial={localityName}>
+                    <TopSection locality={queryProps.locality}/>
+                    <HospitalGrid getData={state.getData} geolocation={state.geolocation} locality={queryProps.locality} />
+                  </LocalityProvider>
                 </SortProvider>
               </SearchHospitalProvider>
             )
           }}
-        /> : null }
+        /> : <Spinner />}
         <FilterSection />
       </SelectedFiltersProvider>
     </div>

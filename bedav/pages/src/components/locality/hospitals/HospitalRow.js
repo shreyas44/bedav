@@ -6,7 +6,8 @@ import hospitalTypes from '../../extra/categories'
 import Tooltip from '../../Tooltip'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import DataToShowContext from '../../contexts/DataToShow'
-import { useWindowSize } from '../../hooks'
+import { useWindowSize, useCategories, useMobileCategories } from '../../hooks'
+import data from '../../extra/data'
 import { mobileCategories } from '../../extra/categories'
 import { GridCell, GridColumnHeader } from '../../grid'
 
@@ -87,19 +88,21 @@ function HospitalRow(props) {
   let {counter, hospital} = props
   const {dataToShow} = useContext(DataToShowContext)
   const [width, _] = useWindowSize()
-  
+  const categories = useCategories()
+  const mobileCategories = useMobileCategories()
+
   const colorTheme = dataToShow == "available" ? "green" : dataToShow == "total" ? "blue" : dataToShow == "occupied" ? "red" : null  
   const fieldDataToShow = dataToShow[0].toUpperCase() + dataToShow.slice(1)
   let fields = ['general', 'hdu', 'icu', 'ventilators']
   fields = fields.map((item) => {return {total: hospital[item+'Total'], value: hospital[item+fieldDataToShow] } })
-
   const renderedFields = fields.map((item, index) => <StyledNumber colorTheme={colorTheme} key={index} counter={counter}>{item.total ? item.value : "N.A." }</StyledNumber>)
+
 
   return (
     <StyledRow counter={counter}>
       <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>
 
-      <StyledNumber style={{color: '#004266'}} counter={counter}>{width <= 600 ? mobileCategories[hospitalTypes[hospital.category]] : hospitalTypes[hospital.category]}</StyledNumber>
+      <StyledNumber style={{color: '#004266'}} counter={counter}>{width <= 600 ? mobileCategories[categories[hospital.category]] : categories[hospital.category]}</StyledNumber>
 
       <StyledNumber style={{color: '#004266'}} counter={counter} >{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
       
