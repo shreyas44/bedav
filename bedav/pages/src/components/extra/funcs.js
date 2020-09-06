@@ -1,6 +1,5 @@
 export function addCommas(num) {
   const number = num.toString().split('').reverse().join('')
-  console.log(number)
   let i = 0
   let finalNum = ''
 

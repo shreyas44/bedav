@@ -38,7 +38,6 @@ function HomePage(props) {
           variables={{}}
           render={({error, props}) => {
             if(error) {
-              console.log(error)
               return <div>Error</div>
             }
 
