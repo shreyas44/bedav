@@ -340,8 +340,6 @@ class Query(graphene.ObjectType):
     cursor.execute(query, [str(coords), get_id(id)])
     hospital = namedtuplefetch(cursor)[0]
 
-    print(hospital)
-
     return hospital
 
   def resolve_localities(parent, info, **kwargs):

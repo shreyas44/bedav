@@ -1,4 +1,8 @@
 export function addCommas(num) {
+  if (num == "N.A.") {
+    return num
+  }
+
   const number = num.toString().split('').reverse().join('')
   let i = 0
   let finalNum = ''
