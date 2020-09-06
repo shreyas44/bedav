@@ -1,26 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
 import AmountCard from '../hospital/AmountCard'
+import { addCommas } from '../extra/funcs'
 
 const SummaryContainer = styled.div`
   display: flex;
   justify-content: space-between;
   max-width: 700px;
-  margin: 20px auto 50px;
+  margin: 20px auto 0;
   position: relative;
 `
 
-function Summary(props) {
+function Summary({country}) {
   return (
     <SummaryContainer>
       <AmountCard name="Available">
-        30000
+        {country.available}
       </AmountCard>
       <AmountCard name="Occupied">
-        30000
+        {country.occupied}
       </AmountCard>
       <AmountCard name="Total">
-        30000
+        {country.total}
       </AmountCard>
     </SummaryContainer>
   )

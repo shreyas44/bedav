@@ -8,9 +8,13 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+type Header_country$ref = any;
 type LocalityRow_locality$ref = any;
 export type HomePageQueryVariables = {||};
 export type HomePageQueryResponse = {|
+  +country: ?{|
+    +$fragmentRefs: Header_country$ref
+  |},
   +localities: ?{|
     +edges: $ReadOnlyArray<?{|
       +node: ?{|
@@ -18,7 +22,7 @@ export type HomePageQueryResponse = {|
         +$fragmentRefs: LocalityRow_locality$ref,
       |}
     |}>
-  |}
+  |},
 |};
 export type HomePageQuery = {|
   variables: HomePageQueryVariables,
@@ -29,6 +33,9 @@ export type HomePageQuery = {|
 
 /*
 query HomePageQuery {
+  country {
+    ...Header_country
+  }
   localities(first: 100) {
     edges {
       node {
@@ -37,6 +44,13 @@ query HomePageQuery {
       }
     }
   }
+}
+
+fragment Header_country on Country {
+  total
+  available
+  occupied
+  lastUpdated
 }
 
 fragment LocalityRow_locality on Locality {
@@ -63,6 +77,27 @@ v1 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "total",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "available",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "occupied",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -71,6 +106,22 @@ return {
     "metadata": null,
     "name": "HomePageQuery",
     "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Country",
+        "kind": "LinkedField",
+        "name": "country",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "Header_country"
+          }
+        ],
+        "storageKey": null
+      },
       {
         "alias": null,
         "args": (v0/*: any*/),
@@ -122,6 +173,27 @@ return {
     "selections": [
       {
         "alias": null,
+        "args": null,
+        "concreteType": "Country",
+        "kind": "LinkedField",
+        "name": "country",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "lastUpdated",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
         "args": (v0/*: any*/),
         "concreteType": "LocalityConnection",
         "kind": "LinkedField",
@@ -159,27 +231,9 @@ return {
                     "name": "state",
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "total",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "available",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "occupied",
-                    "storageKey": null
-                  }
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -192,16 +246,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1ff68d7d1930d21f55cc22ac7e9bd1d9",
+    "cacheID": "f2c2fff8ccb3196c3ec8af6f1335e64d",
     "id": null,
     "metadata": {},
     "name": "HomePageQuery",
     "operationKind": "query",
-    "text": "query HomePageQuery {\n  localities(first: 100) {\n    edges {\n      node {\n        id\n        ...LocalityRow_locality\n      }\n    }\n  }\n}\n\nfragment LocalityRow_locality on Locality {\n  id\n  name\n  state\n  total\n  available\n  occupied\n}\n"
+    "text": "query HomePageQuery {\n  country {\n    ...Header_country\n  }\n  localities(first: 100) {\n    edges {\n      node {\n        id\n        ...LocalityRow_locality\n      }\n    }\n  }\n}\n\nfragment Header_country on Country {\n  total\n  available\n  occupied\n  lastUpdated\n}\n\nfragment LocalityRow_locality on Locality {\n  id\n  name\n  state\n  total\n  available\n  occupied\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '6904ea151cd89399ab9f49cdb4262ed1';
+(node/*: any*/).hash = 'ceb0c96aaa3456a8a8abcef7c4061a72';
 
 module.exports = node;

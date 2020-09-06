@@ -1,20 +1,32 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CityH as Heading, LastUpdated } from '../locality/CityHeading'
+import { createFragmentContainer, graphql } from 'react-relay'
+import Heading from './Heading'
+import Summary from './Summary'
 
-const HeadingContainer = styled.div`
-  margin: 0 auto;
-  color: #415c8a;
-  text-align: center;
+const HeaderContainer = styled.div`
+  margin: 0 0 50px;
 `
 
 function Header(props) {
   return (
-    <HeadingContainer>
-      <Heading>India</Heading>
-      <LastUpdated>Last Updated on 3 Sep, 3:00 AM</LastUpdated>
-    </HeadingContainer>
+    <HeaderContainer>
+      <Heading country={props.country}/>
+      <Summary country={props.country}/>
+    </HeaderContainer>
   )
 }
 
-export default Header
+export default createFragmentContainer(
+  Header,
+  {
+    country: graphql`
+      fragment Header_country on Country {
+        total
+        available
+        occupied
+        lastUpdated
+      }
+    `
+  }
+)

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { getFormattedTimestamp } from '../extra/funcs'
 
 const HeadingContainer = styled.div`
   font-family: "Quicksand", sans-serif;
@@ -18,36 +19,14 @@ export const LastUpdated = styled.p`
 `
 
 function CityHeading(props) {
-  const getTime = obj => {
-    const minutes = obj.getMinutes()
-    let hours = obj.getHours()
-    let ap = hours < 12 ? "AM" : "PM"
-
-    if(hours > 12) {
-      hours -= 12
-    } else if (hours == 0) {
-      hours = 12
-    }
-
-    return `${hours}:${minutes} ${ap}`
-  }
-
-  const months = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-  ]
-
-  const timestamp = new Date(props.lastUpdated * 1000)
-  const date = timestamp.getDate()
-  const month = months[timestamp.getMonth()]
-  const time = getTime(timestamp)
-  
+ 
   return (
     <HeadingContainer>
       <CityH>
         {props.children} 
       </CityH>
       <LastUpdated>
-        Last Updated on {date} {month}, {time}
+        Last Updated on {getFormattedTimestamp(props.lastUpdated)}
       </LastUpdated>
     </HeadingContainer>
   )

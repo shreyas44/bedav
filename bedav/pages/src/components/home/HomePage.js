@@ -15,22 +15,16 @@ const StyledContainer = styled.div`
 `
 
 function HomePage(props) {
-  //useEffect(() => {
-    //props.ensureDidMount()
-  //}, [])
   return (
-    <StyledContainer>
-      <Header />
-      <Summary />
-      <GridContainer
-        columnTemplate="repeat(4, auto)"
-        mobileColumnTemplate="repeat(4, auto)"
-      >
-        <LocalityHeader />
+      
         <QueryRenderer 
           environment={Environment}
           query={graphql`
             query HomePageQuery {
+              country {
+                ...Header_country
+              }
+
               localities(first: 100) {
                 edges {
                   node {
@@ -52,11 +46,20 @@ function HomePage(props) {
               return <div>Loading...</div>
             }
 
-            return <LocalityList localities={props.localities} />          
+            return (
+              <StyledContainer>
+                <Header country={props.country}/>
+                <GridContainer
+                  columnTemplate="repeat(4, auto)"
+                  mobileColumnTemplate="repeat(4, auto)"
+                >
+                  <LocalityHeader />
+                  <LocalityList localities={props.localities} />          
+                </GridContainer>
+              </StyledContainer>
+            )
           }}
         />
-      </GridContainer>
-    </StyledContainer>
   )
 }
 

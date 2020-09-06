@@ -71,6 +71,13 @@ type Locality implements Node {
   hospitals(orderBy: HospitalSortField = DISTANCE, descending: Boolean = false, categoryFilters: [String] = [], lat: Float = 0.0, lon: Float = 0.0, searchQuery: String = "", before: String, after: String, first: Int, last: Int): HospitalConnection
 }
 
+type Country {
+  available: Int
+  occupied: Int
+  total: Int
+  lastUpdated: Float
+}
+
 type LocalityConnection {
   pageInfo: PageInfo!
   edges: [LocalityEdge]!
@@ -97,5 +104,6 @@ type Query {
   hospital(id: ID!, lat: Float = 0.0, lon: Float = 0.0): Hospital
   localities(before: String, after: String, first: Int, last: Int): LocalityConnection
   locality(name: String): Locality
+  country: Country
   node(id: ID!): Node
 }
