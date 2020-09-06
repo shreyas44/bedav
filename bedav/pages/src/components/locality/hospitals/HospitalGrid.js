@@ -19,9 +19,9 @@ const OptionsContainer = styled.div`
 const SectionContainer = styled.div`
   position: relative;
   width: 100%;
-  margin: 10vh auto;
   box-sizing: border-box;
   max-width: 1400px;
+  margin: 30px 0;
 `
 
 function HospitalGrid(props) {
