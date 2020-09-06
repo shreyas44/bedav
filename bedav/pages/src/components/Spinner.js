@@ -18,7 +18,7 @@ function Spinner() {
     <SpinnerContainer>
       <Loader 
         visible
-        type="Oval"
+        type="TailSpin"
         color="#415c8a"
         height={50}
         width={50}

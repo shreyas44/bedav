@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { createFragmentContainer, graphql } from 'react-relay'
 import { Link } from 'react-router-dom'
+import { addCommas } from '../extra/funcs'
 import { GridCell, GridColumnHeader } from '../grid'
 
 const Row = styled.div`
@@ -26,6 +27,14 @@ const StyledLink = styled(Link)`
   }
 `
 
+function NumberCell(props) {
+  return (
+    <StyledCell {...props}>
+      {addCommas(props.children)}
+    </StyledCell>
+  )
+}
+
 function LocalityRow(props) {
   const {locality} = props
   const ref = useRef()
@@ -37,15 +46,15 @@ function LocalityRow(props) {
           {locality.name}, {locality.state}
         </StyledLink>
       </GridColumnHeader>
-      <StyledCell colorTheme="green">
+      <NumberCell colorTheme="green">
         {locality.available}
-      </StyledCell>
-      <StyledCell colorTheme="red">
+      </NumberCell>
+      <NumberCell colorTheme="red">
         {locality.occupied}
-      </StyledCell>
-       <StyledCell colorTheme="total">
+      </NumberCell>
+       <NumberCell colorTheme="total">
         {locality.total}
-      </StyledCell>
+      </NumberCell>
     </Row>
   )
 }

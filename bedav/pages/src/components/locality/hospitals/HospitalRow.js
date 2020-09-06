@@ -2,13 +2,11 @@ import React, { useContext, useRef } from 'react'
 import styled from 'styled-components'
 import {graphql, createFragmentContainer} from 'react-relay'
 import { Link } from 'react-router-dom'
-import hospitalTypes from '../../extra/categories'
+import {addCommas} from '../../extra/funcs'
 import Tooltip from '../../Tooltip'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import DataToShowContext from '../../contexts/DataToShow'
 import { useWindowSize, useCategories, useMobileCategories } from '../../hooks'
-import data from '../../extra/data'
-import { mobileCategories } from '../../extra/categories'
 import { GridCell, GridColumnHeader } from '../../grid'
 
 export const StyledRow = styled.div`
@@ -84,6 +82,14 @@ function HospitalName({name, counter, id}) {
   }
 }
 
+function NumberCell(props) {
+  return (
+    <StyledNumber {...props}>
+      {addCommas(props.children)}
+    </StyledNumber>
+  )
+}
+
 function HospitalRow(props) {
   let {counter, hospital} = props
   const {dataToShow} = useContext(DataToShowContext)
@@ -95,7 +101,7 @@ function HospitalRow(props) {
   const fieldDataToShow = dataToShow[0].toUpperCase() + dataToShow.slice(1)
   let fields = ['general', 'hdu', 'icu', 'ventilators']
   fields = fields.map((item) => {return {total: hospital[item+'Total'], value: hospital[item+fieldDataToShow] } })
-  const renderedFields = fields.map((item, index) => <StyledNumber colorTheme={colorTheme} key={index} counter={counter}>{item.total ? item.value : "N.A." }</StyledNumber>)
+  const renderedFields = fields.map((item, index) => <NumberCell colorTheme={colorTheme} key={index} counter={counter}>{item.total ? item.value : "N.A." }</NumberCell>)
 
 
   return (
