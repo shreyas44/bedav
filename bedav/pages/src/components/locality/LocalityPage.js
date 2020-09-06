@@ -17,6 +17,7 @@ function LocalityPage(props) {
   let localityName = localityRef.current
   const [updates, setUpdates] = useState(0)
 
+
   const [state, setState] = useDictState({
     geolocation: false,
     getData: false,
@@ -38,7 +39,7 @@ function LocalityPage(props) {
       setUpdates(updates + 1)
     }
   })
-
+ 
   function setCoords(position) {
     setState({
       geolocation: true,
@@ -108,6 +109,11 @@ function LocalityPage(props) {
     }
   }, [])
 
+  if (props.match) {
+    if (props.match.params.localityName == "about") {
+      return null
+    }
+  }
 
   return (
     <div>

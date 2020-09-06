@@ -17,6 +17,10 @@ const MainContainer = styled.div`
   & a:hover {
     color: #003e5c;
   }
+
+  @media only screen and (max-width: 600px) {
+    margin-top: 120px;
+  }
 `
 
 const PageHeading = styled.h1`
@@ -25,7 +29,6 @@ const PageHeading = styled.h1`
 `
 
 function AboutPage() {
-
   useEffect(() => {
     document.title = "Bedav - About"
   }, [])
@@ -39,7 +42,7 @@ function AboutPage() {
       <b>Bengaluru</b>: <a href="https://apps.bbmpgov.in/covidbedstatus/">BBMP (Bruhat Bengaluru Mahanagara Palike)</a>
     `,
     "How often is the data updated?": "The data is fetched from the sources every few hours, but it is updated only when the data has changed.",
-    "Can I get access to the data?": "You can explore the current GraphQL API at <a href='bedav.org/graphql'>Bedav GraphQL API</a>. However, this is just meant for the website. I am currently working on an API that everyone can use to get access to all the data available.",
+    "Can I get access to the data?": "You can explore the current GraphQL API at <a href='/graphql'>Bedav GraphQL API</a>. However, this is just meant for the website. I am currently working on an API that everyone can use to get access to all the data available.",
     "Can I contribute?": "Yes, you can! Email me at <a href='mailto:shreyas.sreenivasa@gmail.com'>shreyas.sreenivasa@gmail.com</a>",
     "Is this only for Bengaluru?": "Currently yes it is only for Bengaluru. However, we are looking to expand to other cities quickly."
   }
