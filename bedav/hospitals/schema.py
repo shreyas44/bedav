@@ -115,8 +115,6 @@ class LocalityType(DjangoObjectType):
       joins = '''
         FULL OUTER JOIN (
           SELECT DISTINCT ON (branch_id)
-        FULL OUTER JOIN (
-          SELECT DISTINCT ON (branch_id)
           branch_id, available general_available, total general_total, (total - available) general_occupied
           FROM "Equipment" WHERE category = 'gen' ORDER BY branch_id, time DESC
         ) AS eq_gen ON eq_gen.branch_id = hos.id
