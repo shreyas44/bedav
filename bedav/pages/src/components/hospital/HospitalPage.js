@@ -68,6 +68,10 @@ function HospitalPage(props) {
             hduTotal
             generalTotal
             ventilatorsTotal
+            locality {
+              name
+              state
+            }
           }
         }
       `}

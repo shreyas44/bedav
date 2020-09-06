@@ -60,6 +60,7 @@ class HospitalType(graphene.ObjectType):
   hdu_occupied = graphene.Int()
   ventilators_occupied = graphene.Int()
   distance = graphene.Float()
+  locality = graphene.Field("hospitals.schema.LocalityType")
 
   id = graphene.NonNull(graphene.ID)
   name = graphene.String()
@@ -79,8 +80,8 @@ class HospitalType(graphene.ObjectType):
   def resolve_distance(hospital, info):
     return round(hospital.distance, 1)
 
-  # def resolve_latitude(hospital, info):
-  #   return hospital.coords.
+  def resolve_locality(hospital, info):
+    return Locality.objects.filter(id=hospital.locality_id).first()
 
   class Meta:
     interfaces = (relay.Node, )
@@ -112,6 +113,8 @@ class LocalityType(DjangoObjectType):
 
     def get_hospitals(order):
       joins = '''
+        FULL OUTER JOIN (
+          SELECT DISTINCT ON (branch_id)
         FULL OUTER JOIN (
           SELECT DISTINCT ON (branch_id)
           branch_id, available general_available, total general_total, (total - available) general_occupied
@@ -162,7 +165,7 @@ class LocalityType(DjangoObjectType):
           {joins}
           {where_claus}
         ) data
-        WHERE data.locality_id = {locality.id}
+        WHERE data.locality_id = {locality.id} AND distance IS NOT NULL
         ORDER BY COALESCE({order}, {"''" if order == 'name' else 0}) {'DESC' if descending else 'ASC'}
       '''
 
@@ -203,8 +206,6 @@ class Query(graphene.ObjectType):
     required=False, default_value="distance"),
     descending=graphene.Boolean(default_value=False, required=False),
     category_filters=graphene.List(graphene.String, required=False, default_value=[]),
-    lat=graphene.Float(required=False, default_value=0),
-    lon=graphene.Float(required=False, default_value=0),
     search_query=graphene.String(required=False, default_value='')
   )
 

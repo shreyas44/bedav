@@ -85,7 +85,7 @@ function HospitalName({name, counter, id}) {
 function NumberCell(props) {
   return (
     <StyledNumber {...props}>
-      {addCommas(props.children)}
+      {props.children == "N.A." ? "N.A." : addCommas(props.children)}
     </StyledNumber>
   )
 }

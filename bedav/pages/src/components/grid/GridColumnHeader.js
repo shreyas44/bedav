@@ -3,7 +3,7 @@ import GridCell from './GridCell'
 
 const GridColumnHeader = styled(GridCell)`
   font-weight: bold;
-  background: #f8f8f8;
+  background-color: #f8f8f8 !important;
   color: #0275b3;
   transition: all 0.1s;
   cursor: pointer;
@@ -14,7 +14,7 @@ const GridColumnHeader = styled(GridCell)`
 
   &:hover {
     color: #004266;
-    background-color: #eee;
+    background-color: #eee !important;
   }
 
   @media only screen and (max-width: 600px) {

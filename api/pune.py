@@ -158,8 +158,6 @@ def upadate_pune_data(data):
       obj = Equipment(**x)
       obj.save()
 
-
-
 data = get_pune_data()
 print(data)
 add_pune_hospitals(data)

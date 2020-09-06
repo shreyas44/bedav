@@ -30,6 +30,7 @@ type Hospital implements Node {
   category: String
   latitude: Float
   longitude: Float
+  locality: Locality
 }
 
 type HospitalConnection {
