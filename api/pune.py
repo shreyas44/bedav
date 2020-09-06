@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as bs
 from location import get_location_info, get_contact_info
 import os, sys, django, re, time
 from pathlib import Path
+from selenium.webdriver.chrome.options import Options
 
 bedav_dir = str(Path(os.getcwd()).parent) + '/bedav'
 sys.path.append(bedav_dir)
@@ -32,7 +33,9 @@ def get_pune_data():
 
     return (name, address, phone)
 
-  driver = webdriver.Chrome('./chromedriver')
+  options = Options()
+  options.headless = True
+  driver = webdriver.Chrome('./chromedriver', chrome_options=options)
   driver.get("https://www.divcommpunecovid.com/ccsbeddashboard/hsr")
 
   data = pd.DataFrame(columns=["name", "category", "gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied", "address", "phone"])
