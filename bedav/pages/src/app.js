@@ -40,7 +40,7 @@ return (
             </Route>
           </Switch>
           <LiveRoute exact alwaysLive={true}
-            path="/:localityName/"
+            path={"/:localityName/"}
             render={props => (
               <LocalityPage {...props}/>
             )}

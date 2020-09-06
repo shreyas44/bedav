@@ -34,7 +34,8 @@ function LocalityPage(props) {
   useEffect(() => {
     const currentName = props.match ? props.match.params.localityName : null
     
-    if (currentName && currentName != localityRef.current) {
+    console.log(currentName)
+    if (currentName && currentName != localityRef.current && /^\/(?!about).*\/$/.test(window.location.pathname)) {
       localityRef.current = currentName
       setUpdates(updates + 1)
     }
@@ -109,10 +110,8 @@ function LocalityPage(props) {
     }
   }, [])
 
-  if (props.match) {
-    if (props.match.params.localityName == "about") {
-      return null
-    }
+  if (!(/^\/(?!about).*\/$/.test(window.location.pathname))) {
+    return null
   }
 
   return (
