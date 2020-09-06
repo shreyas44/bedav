@@ -86,6 +86,7 @@ function HospitalPage(props) {
         }
 
         if(props) {
+          document.title = 'Bedav - ' + props.hospital.name
           return (
             <MainContainer>
               <BedInfoSection hospital={props.hospital}/>
@@ -99,3 +100,4 @@ function HospitalPage(props) {
 }
 
 export default HospitalPage
+

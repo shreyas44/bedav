@@ -15,51 +15,55 @@ const StyledContainer = styled.div`
 `
 
 function HomePage(props) {
+  useEffect(() => {
+    document.title = "Bedav - Home"
+  })
+
   return (
-      
-        <QueryRenderer 
-          environment={Environment}
-          query={graphql`
-            query HomePageQuery {
-              country {
-                ...Header_country
-              }
+    <QueryRenderer 
+      environment={Environment}
+      query={graphql`
+        query HomePageQuery {
+          country {
+            ...Header_country
+          }
 
-              localities(first: 100) {
-                edges {
-                  node {
-                    id
-                    ...LocalityRow_locality    
-                  }
-                }
+          localities(first: 100) {
+            edges {
+              node {
+                id
+                ...LocalityRow_locality    
               }
             }
-          `}
-          variables={{}}
-          render={({error, props}) => {
-            if(error) {
-              return <div>Error</div>
-            }
+          }
+        }
+      `}
+      variables={{}}
+      render={({error, props}) => {
+        if(error) {
+          return <div>Error</div>
+        }
 
-            if(!props) {
-              return <div>Loading...</div>
-            }
+        if(!props) {
+          return <div>Loading...</div>
+        }
 
-            return (
-              <StyledContainer>
-                <Header country={props.country}/>
-                <GridContainer
-                  columnTemplate="repeat(4, auto)"
-                  mobileColumnTemplate="repeat(4, auto)"
-                >
-                  <LocalityHeader />
-                  <LocalityList localities={props.localities} />          
-                </GridContainer>
-              </StyledContainer>
-            )
-          }}
-        />
+        return (
+          <StyledContainer>
+            <Header country={props.country}/>
+            <GridContainer
+              columnTemplate="repeat(4, auto)"
+              mobileColumnTemplate="repeat(4, auto)"
+            >
+              <LocalityHeader />
+              <LocalityList localities={props.localities} />          
+            </GridContainer>
+          </StyledContainer>
+        )
+      }}
+    />
   )
 }
 
 export default HomePage
+

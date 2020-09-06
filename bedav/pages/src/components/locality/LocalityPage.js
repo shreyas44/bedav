@@ -24,10 +24,6 @@ function LocalityPage(props) {
   })
 
   useEffect(() => {
-    document.title = "Bedav - Home"
-  }, [])
-
-  useEffect(() => {
     props.ensureDidMount()
   }, [])
 
@@ -151,6 +147,8 @@ function LocalityPage(props) {
                 return <Spinner />
               }
 
+              document.title = "Bedav - " + queryProps.locality.name
+
               return (
                 <SearchHospitalProvider>
                   <SortProvider initial={{
@@ -172,3 +170,4 @@ function LocalityPage(props) {
 }
 
 export default LocalityPage
+
