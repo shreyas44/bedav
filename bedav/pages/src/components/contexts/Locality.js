@@ -3,10 +3,8 @@ import React, { useState } from 'react'
 const LocalityContext = React.createContext()
 
 export function LocalityProvider(props) {
-  const [locality, setLocality] = useState(props.initial)
-
   return (
-    <LocalityContext.Provider value={{locality, setLocality}}>
+    <LocalityContext.Provider value={props.initial}>
       {props.children}
     </LocalityContext.Provider>
   )

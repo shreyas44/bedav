@@ -3,7 +3,7 @@ import data from '../extra'
 import LocalityContext from '../contexts/Locality'
 
 function useCategories() {
-  const {locality} = useContext(LocalityContext)
+  const locality = useContext(LocalityContext)
   return data.localities[locality].categories
 }
 

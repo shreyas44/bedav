@@ -188,6 +188,15 @@ class LocalityConnection(relay.Connection):
   class Meta:
     node = LocalityType
 
+class CountryType(graphene.ObjectType):
+  total = graphene.Int()
+  available = graphene.Int()
+  occupied = graphene.Int()
+  last_updated = graphene.Float()
+
+  class Meta:
+    name = "Country"
+
 class Query(graphene.ObjectType):
   hospitals = relay.ConnectionField(HospitalConnection,
     order_by=graphene.Argument(HospitalSortField,
@@ -203,6 +212,8 @@ class Query(graphene.ObjectType):
 
   localities = relay.ConnectionField(LocalityConnection)
   locality = graphene.Field(LocalityType, name=graphene.String())
+
+  country = graphene.Field(CountryType)
 
   def resolve_hospitals(parent, info, order_by, descending, category_filters, lat, lon, search_query, **kwargs):
     info.context.coords = {"lat": lat, "lon": lon}
@@ -359,29 +370,56 @@ class Query(graphene.ObjectType):
 
   def resolve_locality(parent, info, name, **kwargs):
     name = ' '.join(name.split('-'))
-    print(name)
     locality = Locality.objects.raw("""
-        SELECT "Locality".*, MAX(c.time) as last_updated, SUM(c.total) total, SUM(c.available) available, SUM(c.occupied) occupied FROM "Locality"
+      SELECT "Locality".*, MAX(c.time) as last_updated, SUM(c.total) total, SUM(c.available) available, SUM(c.occupied) occupied FROM "Locality"
+      INNER JOIN (
+        SELECT hos.id, hos.name, hos.locality_id, SUM(available) available, SUM(total) total, SUM(total - available) occupied, a.time
+        FROM "Hospitals" as hos
         INNER JOIN (
-          SELECT hos.id, hos.name, hos.locality_id, SUM(available) available, SUM(total) total, SUM(total - available) occupied, a.time
-          FROM "Hospitals" as hos
-          INNER JOIN (
-            SELECT MAX(time) as time, branch_id
-            FROM "Equipment"
-            GROUP BY branch_id
-          ) AS a ON a.branch_id = hos.id
-          INNER JOIN (
-            SELECT available, total, category, branch_id, time
-            FROM "Equipment"
-          ) AS b on b.branch_id = hos.id AND b.time = a.time
-          GROUP BY hos.id, a.time
-          ORDER BY hos.name
-        ) c on "Locality".id = c.locality_id
-        WHERE ("Locality".name || ' ' || "Locality".state ILIKE %s)
-        GROUP BY "Locality".id
+          SELECT MAX(time) as time, branch_id
+          FROM "Equipment"
+          GROUP BY branch_id
+        ) AS a ON a.branch_id = hos.id
+        INNER JOIN (
+          SELECT available, total, category, branch_id, time
+          FROM "Equipment"
+        ) AS b on b.branch_id = hos.id AND b.time = a.time
+        GROUP BY hos.id, a.time
+        ORDER BY hos.name
+      ) c on "Locality".id = c.locality_id
+      WHERE ("Locality".name || ' ' || "Locality".state ILIKE %s)
+      GROUP BY "Locality".id
     """, [name])[0]
 
     return locality
+
+  def resolve_country(parent, info, **kwargs):
+      query = """
+        SELECT SUM(total) total, SUM(available) available, SUM(occupied) occupied, MAX(last_updated) last_updated
+        FROM (
+          SELECT "Locality".*, MAX(c.time) as last_updated, SUM(c.total) total, SUM(c.available) available, SUM(c.occupied) occupied FROM "Locality"
+          INNER JOIN (
+            SELECT hos.id, hos.name, hos.locality_id, SUM(available) available, SUM(total) total, SUM(total - available) occupied, a.time
+            FROM "Hospitals" as hos
+            INNER JOIN (
+              SELECT MAX(time) as time, branch_id
+              FROM "Equipment"
+              GROUP BY branch_id
+            ) AS a ON a.branch_id = hos.id
+            INNER JOIN (
+              SELECT available, total, category, branch_id, time
+              FROM "Equipment"
+            ) AS b on b.branch_id = hos.id AND b.time = a.time
+            GROUP BY hos.id, a.time
+            ORDER BY hos.name
+          ) c on "Locality".id = c.locality_id
+          GROUP BY "Locality".id
+          ) d
+      """
+      cursor = connection.cursor()
+      cursor.execute(query)
+
+      return namedtuplefetch(cursor, "Country")[0]
 
 # Mutaions
 

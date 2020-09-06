@@ -112,55 +112,55 @@ function LocalityPage(props) {
   return (
     <div>
       <SelectedFiltersProvider>
-        { state.getData ?
-        <QueryRenderer 
-          environment={Environment}
-          query={graphql`
-            query LocalityPageQuery($localityName: String, $lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
-              locality(name: $localityName) {
-                name
-                lastUpdated
-                ...TopSection_locality
-                ...HospitalList_locality @arguments(count: 500, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+        <LocalityProvider initial={localityName}>
+          { state.getData ?
+          <QueryRenderer 
+            environment={Environment}
+            query={graphql`
+              query LocalityPageQuery($localityName: String, $lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
+                locality(name: $localityName) {
+                  name
+                  lastUpdated
+                  ...TopSection_locality
+                  ...HospitalList_locality @arguments(count: 500, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+                }
               }
-            }
-          `}
-          variables={{
-            lat: state.lat, 
-            lon: state.lon,
-            searchQuery: '',
-            categoryFilters: [],
-            orderBy: state.geolocation ? "DISTANCE" : "AVAILABLE_GENERAL",
-            descending: state.geolocation ? false : true,
-            localityName: localityName
-          }}
-          render={localProps => {
-            const {error} = localProps
-            const queryProps = localProps.props
-            if (error) {
-              console.log(error)
-            }
+            `}
+            variables={{
+              lat: state.lat, 
+              lon: state.lon,
+              searchQuery: '',
+              categoryFilters: [],
+              orderBy: state.geolocation ? "DISTANCE" : "AVAILABLE_GENERAL",
+              descending: state.geolocation ? false : true,
+              localityName: localityName
+            }}
+            render={localProps => {
+              const {error} = localProps
+              const queryProps = localProps.props
+              if (error) {
+                console.log(error)
+              }
 
-            if (!queryProps) {
-              return <Spinner />
-            }
+              if (!queryProps) {
+                return <Spinner />
+              }
 
-            return (
-              <SearchHospitalProvider>
-                <SortProvider initial={{
-                  field: state.geolocation ? "DISTANCE" : "AVAILABLE_GENERAL",
-                  descending: state.geolocation ? false : true
-                }}>
-                  <LocalityProvider initial={localityName}>
-                    <TopSection locality={queryProps.locality}/>
-                    <HospitalGrid getData={state.getData} geolocation={state.geolocation} locality={queryProps.locality} />
-                  </LocalityProvider>
-                </SortProvider>
-              </SearchHospitalProvider>
-            )
-          }}
-        /> : <Spinner />}
-        <FilterSection />
+              return (
+                <SearchHospitalProvider>
+                  <SortProvider initial={{
+                    field: state.geolocation ? "DISTANCE" : "AVAILABLE_GENERAL",
+                    descending: state.geolocation ? false : true
+                  }}>
+                      <TopSection locality={queryProps.locality}/>
+                      <HospitalGrid getData={state.getData} geolocation={state.geolocation} locality={queryProps.locality} />
+                  </SortProvider>
+                </SearchHospitalProvider>
+              )
+            }}
+          /> : <Spinner />}
+          <FilterSection />
+        </LocalityProvider>
       </SelectedFiltersProvider>
     </div>
   )

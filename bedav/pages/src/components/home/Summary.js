@@ -14,13 +14,13 @@ function Summary(props) {
   return (
     <SummaryContainer>
       <AmountCard name="Available">
-        30,000
+        30000
       </AmountCard>
       <AmountCard name="Occupied">
-        30,000
+        30000
       </AmountCard>
       <AmountCard name="Total">
-        30,000
+        30000
       </AmountCard>
     </SummaryContainer>
   )

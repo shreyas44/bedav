@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { addCommas } from '../extra/funcs'
 
 const CardContainer = styled.div`
   color: ${({color}) => color};
@@ -87,7 +88,7 @@ function AmountCard(props) {
         {capitalizeString(props.name)}
       </CardTitle>
       <CardText>
-        {props.children}
+        {addCommas(props.children)}
       </CardText>
     </CardContainer>
   )
