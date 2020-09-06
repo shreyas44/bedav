@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { createFragmentContainer, graphql } from 'react-relay'
 import { Link } from 'react-router-dom'
@@ -28,16 +28,17 @@ const StyledLink = styled(Link)`
 
 function LocalityRow(props) {
   const {locality} = props
+  const ref = useRef()
 
   return (
     <Row counter={props.counter}>
-      <GridColumnHeader>
-        <StyledLink to={`/${locality.name.toLowerCase()}-${locality.state.toLowerCase()}/`}>
+      <GridColumnHeader onClick={() => ref.current.click()}>
+        <StyledLink ref={ref} onClick={event => event.stopPropagation()} to={`/${locality.name.toLowerCase()}-${locality.state.toLowerCase()}/`}>
           {locality.name}, {locality.state}
         </StyledLink>
       </GridColumnHeader>
       <StyledCell colorTheme="green">
-          {locality.available}
+        {locality.available}
       </StyledCell>
       <StyledCell colorTheme="red">
         {locality.occupied}

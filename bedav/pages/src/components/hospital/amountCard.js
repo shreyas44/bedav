@@ -16,7 +16,7 @@ const CardContainer = styled.div`
     margin-left: 0;
   }
 
-  &::last-child {
+  &:last-child {
     margin-right: 0;
   }
 

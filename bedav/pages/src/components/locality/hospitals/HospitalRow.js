@@ -46,8 +46,12 @@ function HospitalName({name, counter, id}) {
         return
       }
     }
-
+    
     linkRef.current.click()
+  }
+
+  function handleLinkClick(event) {
+    event.stopPropagation()
   }
   
   let newName = name
@@ -59,7 +63,7 @@ function HospitalName({name, counter, id}) {
 
     return (
       <GridColumnHeader counter={counter} onClick={handleClick} ref={parentRef}>
-        <StyledLink to={`/hospital/${decodeURI(id)}`} ref={linkRef}>
+        <StyledLink to={`/hospital/${decodeURI(id)}`} onClick={handleLinkClick} ref={linkRef}>
           {newName}
         </StyledLink>
         { newName != name ?
@@ -71,7 +75,7 @@ function HospitalName({name, counter, id}) {
   } else {
     return (
       <GridColumnHeader counter={counter} onClick={handleClick} ref={parentRef}>
-        <StyledLink to={`/hospital/${decodeURI(id)}`} ref={linkRef}>
+        <StyledLink to={`/hospital/${decodeURI(id)}`} onClick={handleLinkClick} ref={linkRef}>
           {name}
         </StyledLink>
       </GridColumnHeader>

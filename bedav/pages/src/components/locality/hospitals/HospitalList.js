@@ -76,7 +76,6 @@ function HospitalList(props) {
   }
 
   function loadMore(count) {
-    console.log("hello")
     const hospitals = toBeRendered.current
     toBeRendered.current = getNewToBeRenderedItems(count, hospitals) 
     rendered.current = rendered.current.concat(getNewRenderedItems(count, hospitals))
