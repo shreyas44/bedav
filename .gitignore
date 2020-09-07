@@ -6,7 +6,7 @@ lib
 include
 .Python
 watch.py
-*/pages/static
+dist/
 */.ipynb_checkpoints/
 *.ipynb
 *.DS_Store

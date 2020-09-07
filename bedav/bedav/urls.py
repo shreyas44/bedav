@@ -15,23 +15,11 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
-from pages.views import main_view
+from django.urls import path, re_path, include
 from django.views.decorators.csrf import csrf_exempt
 from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
-    path('', main_view),
-    path('about/', main_view),
-    path('hospital/<str:hospitalID>/', main_view),
-    path('<str:localityName>/', main_view),
-    path('locality/<str:localityName>/', main_view)
+    re_path(r'graphql[/]?', csrf_exempt(GraphQLView.as_view(graphiql=True))),
 ]
-
-# if settings.DEBUG:
-#     import debug_toolbar
-#     urlpatterns = [
-#         path('__debug__/', include(debug_toolbar.urls)),
-#     ] + urlpatterns

@@ -1,0 +1,17 @@
+{
+  "name": "Bedav",
+  "short_name": "Bedav",
+  "display": "standalone",
+  "background_color": "white",
+  "start_url": "/",
+  "theme_color": "#FFFFFF",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/pages/icons/download%20(3).png",
+      "type": "image/png",
+      "sizes": "144x144"
+    }
+  ]
+}
+

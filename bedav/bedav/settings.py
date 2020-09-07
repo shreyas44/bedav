@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'pwa',
     'hospitals',
-    'pages',
     'graphene_django',
 ]
 
@@ -127,9 +127,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILED_DIRS = [
+  os.path.join(BASE_DIR, '/static/pages/sw.js')
+]
 
 GRAPHENE = {
     "SCHEMA": "bedav.schema.schema"
 }
 
-APPEND_SLASH = True
+# APPEND_SLASH = True
+
+SW_PATH = os.path.join(BASE_DIR, 'pages/static/pages/', 'sw.js')
