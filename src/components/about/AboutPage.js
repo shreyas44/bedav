@@ -12,6 +12,7 @@ const MainContainer = styled.div`
 
   & a, & a:visited {
     color: #0071a6;
+    word-wrap: break-word;
   }
 
   & a:hover {

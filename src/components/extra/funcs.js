@@ -32,7 +32,7 @@ export function getFormattedTimestamp(time) {
       hours = 12
     }
 
-    return `${hours}:${minutes.length == 1 ? "0" + minutes.toString() : minutes} ${ap}`
+    return `${hours}:${minutes.toString().length == 1 ? "0" + minutes.toString() : minutes} ${ap}`
   }
 
   const months = [
