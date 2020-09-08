@@ -11,7 +11,7 @@
     "build-dev": "webpack --config webpack.dev.js",
     "build-prod": "webpack --config webpack.prod.js",
     "start": "webpack-dev-server --config webpack.dev.js --open",
-    "relay": "relay-compiler --src ./bedav/pages/src --schema ./bedav/schema.graphql"
+    "relay": "relay-compiler --src ./src --schema ./src/schema.graphql"
   },
   "keywords": [],
   "author": "",

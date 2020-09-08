@@ -11,6 +11,7 @@ import { SelectedFiltersProvider } from '../contexts/SelectedFilters'
 import { SearchHospitalProvider } from '../contexts/SearchHospital'
 import { SortProvider } from '../contexts/Sort'
 import { LocalityProvider } from '../contexts/Locality'
+import { HospitalsProvider } from '../contexts/Hospitals'
 
 function LocalityPage(props) {
   const localityRef = useRef(props.match ? props.match.params.localityName : null)
@@ -29,14 +30,14 @@ function LocalityPage(props) {
 
   useEffect(() => {
     const currentName = props.match ? props.match.params.localityName : null
-    
+
     console.log(currentName)
     if (currentName && currentName != localityRef.current && /^\/(?!about).*\/$/.test(window.location.pathname)) {
       localityRef.current = currentName
       setUpdates(updates + 1)
     }
   })
- 
+
   function setCoords(position) {
     setState({
       geolocation: true,
@@ -65,7 +66,7 @@ function LocalityPage(props) {
       if(result.isConfirmed === true) {
         setPosition()
       } else if (result.isConfirmed === false) {
-      	setState({
+        setState({
           getData: true
         })
       }
@@ -118,18 +119,16 @@ function LocalityPage(props) {
           <QueryRenderer 
             environment={Environment}
             query={graphql`
-              query LocalityPageQuery($localityName: String, $lat: Float, $lon: Float, $searchQuery: String, $categoryFilters: [String], $orderBy: HospitalSortField, $descending: Boolean, $cursor: String) {
+              query LocalityPageQuery($localityName: String)  {
                 locality(name: $localityName) {
                   name
                   lastUpdated
                   ...TopSection_locality
-                  ...HospitalList_locality @arguments(count: 500, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending, cursor: $cursor)
+                  ...Hospitals_locality
                 }
               }
             `}
             variables={{
-              lat: state.lat, 
-              lon: state.lon,
               searchQuery: '',
               categoryFilters: [],
               orderBy: state.geolocation ? "DISTANCE" : "AVAILABLE_GENERAL",
@@ -156,7 +155,9 @@ function LocalityPage(props) {
                     descending: state.geolocation ? false : true
                   }}>
                       <TopSection locality={queryProps.locality}/>
-                      <HospitalGrid getData={state.getData} geolocation={state.geolocation} locality={queryProps.locality} />
+                      <HospitalsProvider locality={queryProps.locality} latitude={state.lat} longitude={state.lon} geolocation={state.geolocation}>
+                        <HospitalGrid getData={state.getData} geolocation={state.geolocation} />
+                      </HospitalsProvider>
                   </SortProvider>
                 </SearchHospitalProvider>
               )

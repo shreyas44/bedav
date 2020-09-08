@@ -13,8 +13,6 @@ export type HospitalSortField = "AVAILABLE_GENERAL" | "AVAILABLE_HDU" | "AVAILAB
 export type HospitalListPaginationQueryVariables = {|
   localityName?: ?string,
   count?: ?number,
-  lat?: ?number,
-  lon?: ?number,
   searchQuery?: ?string,
   categoryFilters?: ?$ReadOnlyArray<?string>,
   orderBy?: ?HospitalSortField,
@@ -37,8 +35,6 @@ export type HospitalListPaginationQuery = {|
 query HospitalListPaginationQuery(
   $localityName: String
   $count: Int
-  $lat: Float
-  $lon: Float
   $searchQuery: String
   $categoryFilters: [String]
   $orderBy: HospitalSortField
@@ -46,16 +42,32 @@ query HospitalListPaginationQuery(
   $cursor: String
 ) {
   locality(name: $localityName) {
-    ...HospitalList_locality_2CSWMY
+    ...HospitalList_locality_1MaKSS
     id
   }
 }
 
-fragment HospitalList_locality_2CSWMY on Locality {
-  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
+fragment HospitalList_locality_1MaKSS on Locality {
+  hospitals(first: $count, after: $cursor, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {
     edges {
       node {
         id
+        name
+        latitude
+        longitude
+        generalOccupied
+        generalAvailable
+        hduOccupied
+        hduAvailable
+        icuOccupied
+        icuAvailable
+        ventilatorsOccupied
+        ventilatorsAvailable
+        generalTotal
+        ventilatorsTotal
+        icuTotal
+        hduTotal
+        category
         ...HospitalRow_hospital
         __typename
       }
@@ -70,9 +82,9 @@ fragment HospitalList_locality_2CSWMY on Locality {
 
 fragment HospitalRow_hospital on Hospital {
   id
-  category
   name
-  distance
+  latitude
+  longitude
   generalOccupied
   generalAvailable
   hduOccupied
@@ -85,6 +97,7 @@ fragment HospitalRow_hospital on Hospital {
   ventilatorsTotal
   icuTotal
   hduTotal
+  category
 }
 */
 
@@ -112,84 +125,62 @@ v3 = {
 v4 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "lat"
+  "name": "localityName"
 },
 v5 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "localityName"
+  "name": "orderBy"
 },
 v6 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "lon"
-},
-v7 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "orderBy"
-},
-v8 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
   "name": "searchQuery"
 },
-v9 = [
+v7 = [
   {
     "kind": "Variable",
     "name": "name",
     "variableName": "localityName"
   }
 ],
-v10 = {
+v8 = {
   "kind": "Variable",
   "name": "categoryFilters",
   "variableName": "categoryFilters"
 },
-v11 = {
+v9 = {
   "kind": "Variable",
   "name": "descending",
   "variableName": "descending"
 },
-v12 = {
-  "kind": "Variable",
-  "name": "lat",
-  "variableName": "lat"
-},
-v13 = {
-  "kind": "Variable",
-  "name": "lon",
-  "variableName": "lon"
-},
-v14 = {
+v10 = {
   "kind": "Variable",
   "name": "orderBy",
   "variableName": "orderBy"
 },
-v15 = {
+v11 = {
   "kind": "Variable",
   "name": "searchQuery",
   "variableName": "searchQuery"
 },
-v16 = [
+v12 = [
   {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
   },
-  (v10/*: any*/),
-  (v11/*: any*/),
+  (v8/*: any*/),
+  (v9/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   },
-  (v12/*: any*/),
-  (v13/*: any*/),
-  (v14/*: any*/),
-  (v15/*: any*/)
+  (v10/*: any*/),
+  (v11/*: any*/)
 ],
-v17 = {
+v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -205,9 +196,7 @@ return {
       (v3/*: any*/),
       (v4/*: any*/),
       (v5/*: any*/),
-      (v6/*: any*/),
-      (v7/*: any*/),
-      (v8/*: any*/)
+      (v6/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -215,7 +204,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v9/*: any*/),
+        "args": (v7/*: any*/),
         "concreteType": "Locality",
         "kind": "LinkedField",
         "name": "locality",
@@ -223,7 +212,7 @@ return {
         "selections": [
           {
             "args": [
-              (v10/*: any*/),
+              (v8/*: any*/),
               {
                 "kind": "Variable",
                 "name": "count",
@@ -234,11 +223,9 @@ return {
                 "name": "cursor",
                 "variableName": "cursor"
               },
-              (v11/*: any*/),
-              (v12/*: any*/),
-              (v13/*: any*/),
-              (v14/*: any*/),
-              (v15/*: any*/)
+              (v9/*: any*/),
+              (v10/*: any*/),
+              (v11/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "HospitalList_locality"
@@ -253,13 +240,11 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v5/*: any*/),
-      (v1/*: any*/),
       (v4/*: any*/),
+      (v1/*: any*/),
       (v6/*: any*/),
-      (v8/*: any*/),
       (v0/*: any*/),
-      (v7/*: any*/),
+      (v5/*: any*/),
       (v3/*: any*/),
       (v2/*: any*/)
     ],
@@ -268,7 +253,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v9/*: any*/),
+        "args": (v7/*: any*/),
         "concreteType": "Locality",
         "kind": "LinkedField",
         "name": "locality",
@@ -276,7 +261,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v16/*: any*/),
+            "args": (v12/*: any*/),
             "concreteType": "HospitalConnection",
             "kind": "LinkedField",
             "name": "hospitals",
@@ -298,14 +283,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v17/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "category",
-                        "storageKey": null
-                      },
+                      (v13/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -317,7 +295,14 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "distance",
+                        "name": "latitude",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "longitude",
                         "storageKey": null
                       },
                       {
@@ -408,6 +393,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "category",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       }
@@ -454,10 +446,8 @@ return {
           },
           {
             "alias": null,
-            "args": (v16/*: any*/),
+            "args": (v12/*: any*/),
             "filters": [
-              "lat",
-              "lon",
               "searchQuery",
               "categoryFilters",
               "orderBy",
@@ -468,23 +458,23 @@ return {
             "kind": "LinkedHandle",
             "name": "hospitals"
           },
-          (v17/*: any*/)
+          (v13/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "6c84c28fff63c59e451f6d349c9614c5",
+    "cacheID": "b19ba5ed83b1d572eea9a9b39c0535e4",
     "id": null,
     "metadata": {},
     "name": "HospitalListPaginationQuery",
     "operationKind": "query",
-    "text": "query HospitalListPaginationQuery(\n  $localityName: String\n  $count: Int\n  $lat: Float\n  $lon: Float\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  locality(name: $localityName) {\n    ...HospitalList_locality_2CSWMY\n    id\n  }\n}\n\nfragment HospitalList_locality_2CSWMY on Locality {\n  hospitals(first: $count, after: $cursor, lat: $lat, lon: $lon, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        ...HospitalRow_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment HospitalRow_hospital on Hospital {\n  id\n  category\n  name\n  distance\n  generalOccupied\n  generalAvailable\n  hduOccupied\n  hduAvailable\n  icuOccupied\n  icuAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  icuTotal\n  hduTotal\n}\n"
+    "text": "query HospitalListPaginationQuery(\n  $localityName: String\n  $count: Int\n  $searchQuery: String\n  $categoryFilters: [String]\n  $orderBy: HospitalSortField\n  $descending: Boolean\n  $cursor: String\n) {\n  locality(name: $localityName) {\n    ...HospitalList_locality_1MaKSS\n    id\n  }\n}\n\nfragment HospitalList_locality_1MaKSS on Locality {\n  hospitals(first: $count, after: $cursor, searchQuery: $searchQuery, categoryFilters: $categoryFilters, orderBy: $orderBy, descending: $descending) {\n    edges {\n      node {\n        id\n        name\n        latitude\n        longitude\n        generalOccupied\n        generalAvailable\n        hduOccupied\n        hduAvailable\n        icuOccupied\n        icuAvailable\n        ventilatorsOccupied\n        ventilatorsAvailable\n        generalTotal\n        ventilatorsTotal\n        icuTotal\n        hduTotal\n        category\n        ...HospitalRow_hospital\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment HospitalRow_hospital on Hospital {\n  id\n  name\n  latitude\n  longitude\n  generalOccupied\n  generalAvailable\n  hduOccupied\n  hduAvailable\n  icuOccupied\n  icuAvailable\n  ventilatorsOccupied\n  ventilatorsAvailable\n  generalTotal\n  ventilatorsTotal\n  icuTotal\n  hduTotal\n  category\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '60c7753cf362de797219c59a72aa229f';
+(node/*: any*/).hash = '2eafeddb85f449a45c19004c69012dc8';
 
 module.exports = node;

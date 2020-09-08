@@ -2,10 +2,11 @@ import React, { useContext, useRef } from 'react'
 import styled from 'styled-components'
 import {graphql, createFragmentContainer} from 'react-relay'
 import { Link } from 'react-router-dom'
-import {addCommas} from '../../extra/funcs'
+import { addCommas, getDistance } from '../../extra/funcs'
 import Tooltip from '../../Tooltip'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import DataToShowContext from '../../contexts/DataToShow'
+import HospitalsContext from '../../contexts/Hospitals'
 import { useWindowSize, useCategories, useMobileCategories } from '../../hooks'
 import { GridCell, GridColumnHeader } from '../../grid'
 
@@ -96,7 +97,7 @@ function HospitalRow(props) {
   const [width, _] = useWindowSize()
   const categories = useCategories()
   const mobileCategories = useMobileCategories()
-
+  
   const colorTheme = dataToShow == "available" ? "green" : dataToShow == "total" ? "blue" : dataToShow == "occupied" ? "red" : null  
   const fieldDataToShow = dataToShow[0].toUpperCase() + dataToShow.slice(1)
   let fields = ['general', 'hdu', 'icu', 'ventilators']
@@ -117,30 +118,4 @@ function HospitalRow(props) {
   )
 }
 
-export default createFragmentContainer(
-  HospitalRow,
-  {
-    hospital: graphql`
-      fragment HospitalRow_hospital on Hospital {
-        id
-        category
-        name
-        distance
-        generalOccupied
-        generalAvailable
-        hduOccupied
-        hduAvailable
-        icuOccupied
-        icuAvailable
-        ventilatorsOccupied
-        ventilatorsAvailable
-        generalTotal
-        ventilatorsTotal
-        icuTotal
-        hduTotal
-      }
-    `
-  }
-)
-
-// export default HospitalItem
+export default HospitalRow

@@ -36,9 +36,9 @@ function HospitalGrid(props) {
           columnTemplate="minmax(250px, 300px) minmax(150px, 225px) repeat(5, auto)"
           mobileColumnTemplate="minmax(150px, 175px) repeat(6, auto)"
         >
-          <HospitalGridHeader geolocation={props.geolocation}/>
-          { 
-            props.getData ? <HospitalList geolocation={props.geolocation} locality={props.locality} /> :
+          <HospitalGridHeader geolocation={props.geolocation} />
+          {
+            props.getData ? <HospitalList geolocation={props.geolocation} /> :
             <div>Loading...</div> 
           }
         </GridContainer>
@@ -48,3 +48,4 @@ function HospitalGrid(props) {
 }
 
 export default HospitalGrid
+

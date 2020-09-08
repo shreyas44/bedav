@@ -25,11 +25,7 @@ function App() {
   
   useEffect(() => {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').then((obj) => {
-        console.log('Registered!', obj)
-      }).catch(error => {
-        console.log("error", error)
-      })
+      navigator.serviceWorker.register('/sw.js')  
     }
   }, [])
 

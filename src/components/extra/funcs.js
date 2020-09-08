@@ -46,3 +46,26 @@ export function getFormattedTimestamp(time) {
   
   return `${date} ${month}, ${stamp}`
 }
+
+export function getDistance(lat1, lat2, lon1, lon2) {
+  function toRadians(deg) {
+    return deg * (Math.PI/180)
+  }
+
+  lat1 = toRadians(lat1)
+  lat2 = toRadians(lat2)
+  lon1 = toRadians(lon1)
+  lon2 = toRadians(lon2)
+
+  const dlon = lon2 - lon1
+  const dlat = lat2 - lat1
+
+  const a = Math.pow(Math.sin(dlat / 2), 2) + (Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2))
+  const c = 2 * Math.asin(Math.sqrt(a))
+
+  const r = 6371
+
+
+  return (c * r).toFixed(1)
+}
+

@@ -13,9 +13,9 @@ declare export opaque type HospitalRow_hospital$ref: FragmentReference;
 declare export opaque type HospitalRow_hospital$fragmentType: HospitalRow_hospital$ref;
 export type HospitalRow_hospital = {|
   +id: string,
-  +category: ?string,
   +name: ?string,
-  +distance: ?number,
+  +latitude: ?number,
+  +longitude: ?number,
   +generalOccupied: ?number,
   +generalAvailable: ?number,
   +hduOccupied: ?number,
@@ -28,6 +28,7 @@ export type HospitalRow_hospital = {|
   +ventilatorsTotal: ?number,
   +icuTotal: ?number,
   +hduTotal: ?number,
+  +category: ?string,
   +$refType: HospitalRow_hospital$ref,
 |};
 export type HospitalRow_hospital$data = HospitalRow_hospital;
@@ -56,13 +57,6 @@ const node/*: ReaderFragment*/ = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "category",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
       "name": "name",
       "storageKey": null
     },
@@ -70,7 +64,14 @@ const node/*: ReaderFragment*/ = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "distance",
+      "name": "latitude",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "longitude",
       "storageKey": null
     },
     {
@@ -156,12 +157,19 @@ const node/*: ReaderFragment*/ = {
       "kind": "ScalarField",
       "name": "hduTotal",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "category",
+      "storageKey": null
     }
   ],
   "type": "Hospital",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '505187c1a93084c3022779b0b5da79e3';
+(node/*: any*/).hash = 'fbeca906c47eac61f21eb27a3584050f';
 
 module.exports = node;
