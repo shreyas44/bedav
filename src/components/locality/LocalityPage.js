@@ -31,7 +31,6 @@ function LocalityPage(props) {
   useEffect(() => {
     const currentName = props.match ? props.match.params.localityName : null
 
-    console.log(currentName)
     if (currentName && currentName != localityRef.current && /^\/(?!about).*\/$/.test(window.location.pathname)) {
       localityRef.current = currentName
       setUpdates(updates + 1)
@@ -151,7 +150,7 @@ function LocalityPage(props) {
               return (
                 <SearchHospitalProvider>
                   <SortProvider initial={{
-                    field: state.geolocation ? "DISTANCE" : "AVAILABLE_GENERAL",
+                    field: state.geolocation ? "distance" : "generalAvailable",
                     descending: state.geolocation ? false : true
                   }}>
                       <TopSection locality={queryProps.locality}/>

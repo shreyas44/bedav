@@ -4,33 +4,30 @@ import HospitalsContext from '../../contexts/Hospitals'
 
 function HospitalList(props) {
   const hospitals = useContext(HospitalsContext)
-  const resetList = useRef(false)
-  const rendered = useRef(20)
   const [updates, setUpdates] = useState(0)
-  let counter = 1
+  const renderedHospitals = useRef([])
+  const toBeRenderedHospitals = useRef(hospitals)
+  const counter = useRef(0)
 
-  const virtualRendered = useRef(hospitals.map((hospital) => {
-    counter += 1
-    return <HospitalRow hospital={hospital} key={hospital.id} counter={counter} geolocation={props.geolocation}/>
-
-  }))
-
-  console.log(hospitals)
-
-  if (resetList.current) {
-    rendered.current = 20
-    
-    virtualRendered.current = hospitals.map((hospital) => {
-      counter += 1
-      return <HospitalRow hospital={hospital} key={hospital.id} counter={counter} geolocation={props.geolocation} />
+  function getNewRenderedHospitals(hospitalsList, count) {
+    let newRendered = hospitalsList.slice(0, count).map((hospital) => {
+      const component = <HospitalRow hospital={hospital} key={hospital.id} counter={counter.current + 1} geolocation={props.geolocation}/>
+      counter.current += 1
+      return component
     })
+    
+    return newRendered
+  }
 
-    loadMore(20)
-    resetList.current = false
+  function getNewToBeRenderedHospitals(hospitalsList, count) {
+    let newToBeRendered  = [...hospitalsList]
+    newToBeRendered.splice(0,count)
+    return newToBeRendered
   }
 
   function loadMore(count) {
-    rendered.current += count
+    renderedHospitals.current = renderedHospitals.current.concat(getNewRenderedHospitals(toBeRenderedHospitals.current, count))
+    toBeRenderedHospitals.current = getNewToBeRenderedHospitals(toBeRenderedHospitals.current, count)
     setUpdates(updates + 1)
   }
 
@@ -41,6 +38,13 @@ function HospitalList(props) {
   }
 
   useEffect(() => {
+    renderedHospitals.current = []
+    toBeRenderedHospitals.current = hospitals
+    counter.current = 0
+    loadMore(20)
+  }, [hospitals])
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll)
 
     return () => {
@@ -48,7 +52,7 @@ function HospitalList(props) {
     }
   })
 
-  return <>{virtualRendered.current.slice(0,rendered.current)}</>
+  return <>{renderedHospitals.current}</>
 }
 
  export default HospitalList

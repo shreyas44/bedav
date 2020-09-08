@@ -53,7 +53,7 @@ function TopSection({locality}) {
 }
 
 export default createFragmentContainer(
-    TopSection,
+    React.memo(TopSection),
     {
       locality: graphql`
         fragment TopSection_locality on Locality {

@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'pwa',
     'hospitals',
     'graphene_django',
+    'graphql_playground'
 ]
 
 MIDDLEWARE = [

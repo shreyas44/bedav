@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import styled from 'styled-components'
 import { GridCell, GridColumnHeader } from '../../grid'
 import { StyledRow, StyledNumber } from './HospitalRow'
@@ -99,26 +99,24 @@ function HospitalGridHeader(props) {
       <StyledHeading 
         colorTheme={colorTheme}
         key={index}
-        value={`${dataToShow.toUpperCase()}_${key}`}
+        value={key + dataToShow[0].toUpperCase() + dataToShow.slice(1)}
         onClick={handleClick}
         sortable
       >
         {text}
-        {/*<br/>
-            {dataToShow[0].toUpperCase() + dataToShow.slice(1)} */}
         <StyledOrderIcon active={active ? 1 : 0} descending={active ? descending ? 1 : 0 : 1}/>
       </StyledHeading>
     )
   }
 
-  const items = {GENERAL: "General Ward", HDU: "HDU", ICU: "ICU", VENTILATORS: "Ventilators"}
+  const items = {general: "General Ward", hdu: "HDU", icu: "ICU", ventilators: "Ventilators"}
 
   const headings = Object.keys(items).map((key, index) => 
     renderHeading(
       index,
       key,
       items[key],
-      sortValue.field == `${dataToShow.toUpperCase()}_${key}`,
+      sortValue.field == key + dataToShow[0].toUpperCase() + dataToShow.slice(1),
       sortValue.descending
     ))
 
@@ -130,7 +128,7 @@ function HospitalGridHeader(props) {
 
       <StyledHeading 
         style={{color: '#004266'}}
-        value="DISTANCE"
+        value="distance"
         onClick={props.geolocation ? handleClick : null}
         sortable={props.geolocation ? true : undefined}
        >
@@ -140,7 +138,7 @@ function HospitalGridHeader(props) {
             <StyledWarningIcon />
           </Tooltip> : null
         }
-        <StyledOrderIcon active={sortValue.field == "DISTANCE" ? 1 : 0} descending={sortValue.field == "DISTANCE" ? sortValue.descending ? 1 : 0 : 1}/>
+        <StyledOrderIcon active={sortValue.field == "distance" ? 1 : 0} descending={sortValue.field == "distance" ? sortValue.descending ? 1 : 0 : 1}/>
       </StyledHeading>
 
       {headings}
