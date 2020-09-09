@@ -35,7 +35,7 @@ def get_pune_data():
 
   options = Options()
   options.headless = True
-  driver = webdriver.Chrome('./chromedriver', chrome_options=options)
+  driver = webdriver.Chrome('./chromedriver', options=options)
   driver.get("https://www.divcommpunecovid.com/ccsbeddashboard/hsr")
 
   data = pd.DataFrame(columns=["name", "category", "gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied", "address", "phone"])
