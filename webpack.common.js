@@ -2,6 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -17,15 +18,19 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {from: "./src/manifest.json", to: "../manifest.json"},
-        {from: "./src/sw.js", to: "../sw.js"}
+        {from: "./icons/**", to: "../"}
       ]
+    }),
+    new ServiceWorkerWebpackPlugin({
+      entry: "./src/sw.js",
+      filename: "../sw.js",
     })
   ],
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /(node_modules)|(^sw[a-zA-Z0-9\.\-\_]{0,}\.js$])/,
+        exclude: /(node_modules|sw.js)/,
         use: {
           loader: "babel-loader"
           
