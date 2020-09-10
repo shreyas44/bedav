@@ -60,29 +60,31 @@ self.addEventListener('fetch', event => {
   const {request} = event
   const path = request.url.split('//')[1].split("/").slice(1).join("/")
   
-  if (request.url.startsWith("http") && !path.startsWith('graphql')) {
-    if (path.endsWith("/") || path.startsWith('hospital')) {
-      event.respondWith(
-        caches.match('/').then(response => {
-          return response || fetch(request)
-        })
-      )
-    } else {
-      event.respondWith(
-        caches.match(request).then(response => {
-          return response || fetch(request).then(response => {
-            if (request.url.startsWith("https://www.google-analytics.com/") || request.url.startsWith("https://maps.g")) {
-              return response
-            }
-
-            return caches.open(dynamicCacheName).then(cache => {
-              cache.put(request, response.clone())
-              limitCacheSize(dynamicCacheName, 20)
-              return response
-            })
-          })
-        })
-      )
-    }
+  if (path.startsWith("hospital")) {
+    event.respondWith(
+      caches.match('/').then(response => {
+        return response || fetch(request)
+      })
+    )
   }
+
+  event.respondWith(
+    caches.match(request).then(response => {
+      return response || fetch(request)
+    })
+  )
+  
+  //caches.match(request).then(response => {
+    //return response || fetch(request).then(response => {
+      //if (request.url.startsWith("https://www.google-analytics.com/") || request.url.startsWith("https://maps.g")) {
+        //return response
+      //}
+
+      //return caches.open(dynamicCacheName).then(cache => {
+        //cache.put(request, response.clone())
+        //limitCacheSize(dynamicCacheName, 20)
+        //return response
+      //})
+    //})
+  //})
 })
