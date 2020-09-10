@@ -8,9 +8,10 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icons/download%20(3).png",
+      "src": "/icons/maskable_icon.png",
       "type": "image/png",
-      "sizes": "144x144"
+      "sizes": "1024x1024",
+      "purpose": "any maskable"
     }
   ]
 }
