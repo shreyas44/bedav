@@ -37,7 +37,6 @@ function NumberCell(props) {
 
 function LocalityRow(props) {
   const {locality} = props
-  console.log(locality)
   const ref = useRef()
 
   return (
