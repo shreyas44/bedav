@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { QueryRenderer, graphql } from 'react-relay'
 import { useParams } from 'react-router-dom'
-import environment from '../../Environment'
+import { useQuery, gql } from '@apollo/client'
+import Spinner from '../Spinner'
+import HospitalInfoFragment from '../fragments/hospital'
 import HospitalInfoSection from './HospitalInfoSection'
 import BedInfoSection from './BedInfoSection'
 
@@ -41,61 +42,38 @@ const MainContainer = styled.div`
 function HospitalPage(props) {
   const {hospitalId} = useParams()
 
- return (
-    <QueryRenderer
-      environment={environment}
-      query={graphql`
-        query HospitalPageQuery($hospitalID: ID!) {
-          hospital(id: $hospitalID) {
-            id
-            name
-            phone
-            address
-            website
-            placeId
-            category
-            latitude
-            longitude
-            icuAvailable
-            hduAvailable
-            generalAvailable
-            ventilatorsAvailable
-            icuOccupied
-            hduOccupied
-            generalOccupied
-            ventilatorsOccupied
-            icuTotal
-            hduTotal
-            generalTotal
-            ventilatorsTotal
-            locality {
-              name
-              state
-            }
-          }
+  const { data, loading, errors } = useQuery(
+    gql`
+      query HospitalPageQuery($hospitalId: ID!) {
+        hospital(id: $hospitalId) {
+          ...HospitalInfoFragment
         }
-      `}
+      }
+      ${HospitalInfoFragment}
+    `,
+    {
+      variables: {
+        hospitalId: hospitalId
+      }
+    }
+  )
 
-      variables={{
-        hospitalID: decodeURI(hospitalId)
-      }}
+  if (errors) {
+    console.log(errors)
+    return null
+  }
 
-      render={({error, props}) => {
-        if(error) {
-          return
-        }
+  if (loading || !data) return <Spinner />
 
-        if(props) {
-          document.title = 'Bedav - ' + props.hospital.name
-          return (
-            <MainContainer>
-              <BedInfoSection hospital={props.hospital}/>
-              <HospitalInfoSection hospital={props.hospital}/>
-            </MainContainer>
-          )
-        }
-      }}
-    />
+  document.title = 'Bedav - ' + data.hospital.name
+
+  return (
+    <>
+      <MainContainer>
+      <BedInfoSection hospital={data.hospital}/>
+      <HospitalInfoSection hospital={data.hospital}/>
+      </MainContainer>
+    </>
   )
 }
 

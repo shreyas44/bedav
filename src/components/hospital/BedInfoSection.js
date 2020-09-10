@@ -82,7 +82,7 @@ function BedInfo(props) {
 
   return (
     <BedInfoContainer>
-      <StyledHospitalHeading hospital={props.hospital}/> 
+      <StyledHospitalHeading hospital={hospital}/> 
       {sections}
     </BedInfoContainer>
   )

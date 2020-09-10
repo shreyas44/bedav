@@ -37,6 +37,7 @@ function NumberCell(props) {
 
 function LocalityRow(props) {
   const {locality} = props
+  console.log(locality)
   const ref = useRef()
 
   return (
@@ -59,20 +60,5 @@ function LocalityRow(props) {
   )
 }
 
-export default createFragmentContainer(
-  LocalityRow, 
-  {
-    locality: graphql`
-      fragment LocalityRow_locality on Locality {
-        id
-        name
-        state
-        total
-        available
-        occupied
-      }
-    `
-  }
-)
-
+export default LocalityRow
 

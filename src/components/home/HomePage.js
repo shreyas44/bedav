@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { QueryRenderer, graphql } from 'react-relay'
-import Environment from '../../Environment'
+import { useQuery, gql } from '@apollo/client'
+import Spinner from '../Spinner'
 import { GridContainer } from '../grid'
+import LocalityInfoFragment from '../fragments/locality'
+import CountryFragment from '../fragments/country'
 import LocalityList from './LocalityList'
 import LocalityHeader from './LocalityHeader'
 import Header from './Header'
@@ -19,49 +21,44 @@ function HomePage(props) {
     document.title = "Bedav - Home"
   })
 
-  return (
-    <QueryRenderer 
-      environment={Environment}
-      query={graphql`
-        query HomePageQuery {
-          country {
-            ...Header_country
-          }
+  const { data, loading, errors } = useQuery(
+    gql`
+      query HomePageQuery {
+        country {
+          ...CountryFragment
+        }
 
-          localities(first: 100) {
-            edges {
-              node {
-                id
-                ...LocalityRow_locality    
-              }
+        localities(first: 100) {
+          edges {
+            node {
+              ...LocalityInfoFragment
             }
           }
         }
-      `}
-      variables={{}}
-      render={({error, props}) => {
-        if(error) {
-          return <div>Error</div>
-        }
+      }
+      ${CountryFragment}
+      ${LocalityInfoFragment}
+    `,
+  )
 
-        if(!props) {
-          return <div>Loading...</div>
-        }
+  if (errors) {
+    console.log(errors)
+    return null
+  }
 
-        return (
-          <StyledContainer>
-            <Header country={props.country}/>
-            <GridContainer
-              columnTemplate="repeat(4, auto)"
-              mobileColumnTemplate="repeat(4, auto)"
-            >
-              <LocalityHeader />
-              <LocalityList localities={props.localities} />          
-            </GridContainer>
-          </StyledContainer>
-        )
-      }}
-    />
+  if (loading || !data) return <Spinner />
+
+  return (
+    <StyledContainer>
+      <Header country={data.country}/>
+      <GridContainer
+        columnTemplate="repeat(4, auto)"
+        mobileColumnTemplate="repeat(4, auto)"
+      >
+        <LocalityHeader />
+        <LocalityList localities={data.localities.edges} />          
+      </GridContainer>
+    </StyledContainer>
   )
 }
 

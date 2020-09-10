@@ -3,6 +3,8 @@ import styled, { createGlobalStyle } from 'styled-components'
 import Header from './components/header'
 import {BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom'
 import NotLiveRoute from 'react-live-route'
+import { ApolloProvider } from '@apollo/client'
+import client from './client'
 
 const LiveRoute = withRouter(NotLiveRoute)
 const HomePage = lazy(() => import('./components/home'))
@@ -30,6 +32,7 @@ function App() {
   }, [])
 
   return (
+    <ApolloProvider client={client}>
       <Router>
         <GlobalStyle />    
         <Header />
@@ -55,7 +58,8 @@ function App() {
           </ContentWrapper>
         </Suspense>
       </Router>
-    )
-  }
+    </ApolloProvider>
+  )
+}
 
 export default App

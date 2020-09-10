@@ -52,8 +52,8 @@ self.addEventListener('fetch', event => {
   const {request} = event
   const path = request.url.split('//')[1].split("/").slice(1).join("/")
 
-  if (request.url.startsWith("http")) {
-    if ((path.endsWith("/") && !path.startsWith("graphql")) || path.startsWith('hospital')) {
+  if (request.url.startsWith("http") && !path.startsWith('graphql')) {
+    if (path.endsWith("/") || path.startsWith('hospital')) {
       event.respondWith(
         caches.match('/').then(response => {
           return response || fetch(request)

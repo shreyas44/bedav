@@ -17,16 +17,4 @@ function Header(props) {
   )
 }
 
-export default createFragmentContainer(
-  Header,
-  {
-    country: graphql`
-      fragment Header_country on Country {
-        total
-        available
-        occupied
-        lastUpdated
-      }
-    `
-  }
-)
+export default Header

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDictState } from '../hooks'
-import { QueryRenderer, graphql } from 'react-relay'
 import Swal from 'sweetalert2'
+import { useQuery, gql } from '@apollo/client'
+import HospitalInfoFragment from '../fragments/hospital'
+import LocalityInfoFragment from '../fragments/locality'
 import Spinner from '../Spinner'
-import Environment from '../../Environment'
 import FilterSection from './filter'
 import TopSection from './TopSection'
 import HospitalGrid from './hospitals/HospitalGrid'
@@ -22,6 +23,30 @@ function LocalityPage(props) {
   const [state, setState] = useDictState({
     geolocation: false,
     getData: false,
+  })
+
+  const { data, loading, error } = useQuery(gql`
+    query LocalityPageQuery($localityName: String) {
+      locality(name: $localityName) {
+        name
+        ...LocalityInfoFragment
+        hospitals(first: 2000) {
+          edges {
+            node {
+              ...HospitalInfoFragment
+            }
+          }
+        }
+      }
+    }
+
+    ${LocalityInfoFragment}
+    ${HospitalInfoFragment}
+  `, 
+  {
+    variables: {
+      localityName: localityName
+    }
   })
 
   useEffect(() => {
@@ -110,58 +135,29 @@ function LocalityPage(props) {
     return null
   }
 
+  if (error) {
+    console.log(error); return null
+  }
+
+  if (!state.getData || loading || !data) return <Spinner />
+  
+  document.title = "Bedav - " + data.locality.name
+
   return (
     <div>
       <SelectedFiltersProvider>
         <LocalityProvider initial={localityName}>
-          { state.getData ?
-          <QueryRenderer 
-            environment={Environment}
-            query={graphql`
-              query LocalityPageQuery($localityName: String)  {
-                locality(name: $localityName) {
-                  name
-                  lastUpdated
-                  ...TopSection_locality
-                  ...Hospitals_locality
-                }
-              }
-            `}
-            variables={{
-              searchQuery: '',
-              categoryFilters: [],
-              orderBy: state.geolocation ? "DISTANCE" : "AVAILABLE_GENERAL",
-              descending: state.geolocation ? false : true,
-              localityName: localityName
-            }}
-            render={localProps => {
-              const {error} = localProps
-              const queryProps = localProps.props
-              if (error) {
-                console.log(error)
-              }
-
-              if (!queryProps) {
-                return <Spinner />
-              }
-
-              document.title = "Bedav - " + queryProps.locality.name
-
-              return (
-                <SearchHospitalProvider>
-                  <SortProvider initial={{
-                    field: state.geolocation ? "distance" : "generalAvailable",
-                    descending: state.geolocation ? false : true
-                  }}>
-                      <TopSection locality={queryProps.locality}/>
-                      <HospitalsProvider locality={queryProps.locality} latitude={state.lat} longitude={state.lon} geolocation={state.geolocation}>
-                        <HospitalGrid getData={state.getData} geolocation={state.geolocation} />
-                      </HospitalsProvider>
-                  </SortProvider>
-                </SearchHospitalProvider>
-              )
-            }}
-          /> : <Spinner />}
+            <SearchHospitalProvider>
+              <SortProvider initial={{
+                field: state.geolocation ? "distance" : "generalAvailable",
+                descending: state.geolocation ? false : true
+              }}>
+                <TopSection locality={data.locality}/>
+                <HospitalsProvider hospitals={data.locality.hospitals.edges} latitude={state.lat} longitude={state.lon} geolocation={state.geolocation}>
+                  <HospitalGrid getData={state.getData} geolocation={state.geolocation} />
+                </HospitalsProvider>
+              </SortProvider>
+            </SearchHospitalProvider>
           <FilterSection />
         </LocalityProvider>
       </SelectedFiltersProvider>
