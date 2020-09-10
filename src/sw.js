@@ -35,13 +35,11 @@ const limitCacheSize = (name, size) => {
 
 self.addEventListener('install', event => {
   event.waitUntil(Promise.all([
-    caches.waitUntil(
-      caches.keys().then(keys => {
-        return Promise.all(
-          keys.filter(key => key !== staticCacheName).map(key => caches.delete(key))
-        )
-      })
-    ),
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== staticCacheName).map(key => caches.delete(key))
+      )
+    }),
     caches.open(bundleCacheName).then(cache => {
       cache.addAll(allAssets)
     }).catch(error => {
