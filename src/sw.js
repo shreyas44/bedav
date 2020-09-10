@@ -1,6 +1,5 @@
 const staticCacheName = "static"
 const dynamicCacheName = "dynamic"
-const queryCacheName = "queries"
 
 const static = [
   "https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap",
@@ -13,7 +12,16 @@ const { assets } = global.serviceWorkerOption
 let allAssets = assets.map((item) => `/bundles${item}`)
 allAssets = [...allAssets, '/']
 
-const bundleCacheName = assets[0].split('.')[1]
+let bundleCacheName
+
+for (asset of assets) {
+  if (asset.includes("main")) {
+    bundleCacheName = assets[0].split('.')[1]
+    break
+  }
+
+  bundleCacheName = "js"
+}
 
 const limitCacheSize = (name, size) => {
   caches.open(name).then(cache => {
@@ -51,7 +59,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const {request} = event
   const path = request.url.split('//')[1].split("/").slice(1).join("/")
-
+  
   if (request.url.startsWith("http") && !path.startsWith('graphql')) {
     if (path.endsWith("/") || path.startsWith('hospital')) {
       event.respondWith(
@@ -75,7 +83,6 @@ self.addEventListener('fetch', event => {
           })
         })
       )
-        
     }
   }
 })
