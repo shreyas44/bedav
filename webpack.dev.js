@@ -23,11 +23,6 @@ module.exports = merge(common, {
         context: ['/graphql/'],
         target: 'http://localhost:8000'
       },
-      {
-        context: ['bundles/**'],
-        target: 'http://localhost:8000',
-        changeOrigin: true
-      }
     ],
   },
 })

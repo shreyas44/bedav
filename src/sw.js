@@ -1,8 +1,12 @@
-const cacheName = "static"
+const staticCacheName = "static"
+const dynamicCacheName = "dynamic"
+const queryCacheName = "queries"
 
-const fonts = [
+const static = [
   "https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Quicksand:wght@100;400;700&display=swap",
+  "https://kit.fontawesome.com/bb3ad5143d.js",
+  "https://www.googletagmanager.com/gtag/js?id=UA-176069742-1"
 ]
 
 const { assets } = global.serviceWorkerOption
@@ -11,6 +15,16 @@ allAssets = [...allAssets, '/']
 
 const bundleCacheName = assets[0].split('.')[1]
 
+const limitCacheSize = (name, size) => {
+  caches.open(name).then(cache => {
+    cache.keys().then(keys => {
+      if (keys.length >= size) {
+        cache.delete(keys[0]).then(limitCacheSize(name, size))
+      }
+    })
+  })
+}
+
 self.addEventListener('install', event => {
   event.waitUntil(Promise.all([
     caches.open(bundleCacheName).then(cache => {
@@ -18,22 +32,50 @@ self.addEventListener('install', event => {
     }).catch(error => {
       console.log(error)
     }),
-    caches.open(cacheName).then(cache => {
-      cache.addAll(fonts)
+    caches.open(staticCacheName).then(cache => {
+      cache.addAll(static)
     })
   ]))
 })
 
 self.addEventListener('activate', event => {
-  // console.log("Activated", event)
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== bundleCacheName && key !== staticCacheName).map(key => caches.delete(key))
+      )
+    })
+  )
 })
 
 self.addEventListener('fetch', event => {
   const {request} = event
+  const path = request.url.split('//')[1].split("/").slice(1).join("/")
 
-  //event.respondWith(
-    //caches.match(request).then(response => {
-      //return response || fetch(request)
-    //})
-  //)
+  if (request.url.startsWith("http")) {
+    if ((path.endsWith("/") && !path.startsWith("graphql")) || path.startsWith('hospital')) {
+      event.respondWith(
+        caches.match('/').then(response => {
+          return response || fetch(request)
+        })
+      )
+    } else {
+      event.respondWith(
+        caches.match(request).then(response => {
+          return response || fetch(request).then(response => {
+            if (request.url.startsWith("https://www.google-analytics.com/") || request.url.startsWith("https://maps.g")) {
+              return response
+            }
+
+            return caches.open(dynamicCacheName).then(cache => {
+              cache.put(request, response.clone())
+              limitCacheSize(dynamicCacheName, 20)
+              return response
+            })
+          })
+        })
+      )
+        
+    }
+  }
 })
