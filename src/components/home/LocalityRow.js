@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
-import { createFragmentContainer, graphql } from 'react-relay'
 import { Link } from 'react-router-dom'
 import { addCommas } from '../extra/funcs'
 import { GridCell, GridColumnHeader } from '../grid'

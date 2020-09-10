@@ -1,6 +1,5 @@
 import React, { useContext, useRef } from 'react'
 import styled from 'styled-components'
-import {graphql, createFragmentContainer} from 'react-relay'
 import { Link } from 'react-router-dom'
 import { addCommas, getDistance } from '../../extra/funcs'
 import Tooltip from '../../Tooltip'

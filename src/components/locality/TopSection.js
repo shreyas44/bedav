@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { createFragmentContainer, graphql } from 'react-relay'
 import SearchBar from './SearchBar'
 import CityHeading from './CityHeading'
 import ViewAllButton from './ViewAllButton'
