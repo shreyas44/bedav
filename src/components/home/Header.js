@@ -4,6 +4,7 @@ import Heading from './Heading'
 import Summary from './Summary'
 
 const HeaderContainer = styled.div`
+  margin-bottom: 40px;
 `
 
 function Header(props) {
