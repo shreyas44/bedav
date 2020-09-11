@@ -144,17 +144,17 @@ function LocalityPage(props) {
   }
 
   if (error) {
-    if (data.locality === null) {
-      return (
-        <Suspense fallback="">
-          <NotFoundPage />
-        </Suspense>
-      )
-      
-    } else if (data.locality === undefined) {
+    if (data === undefined) {
       return (
         <Suspense fallback="">
           <NotFoundPage offline/>
+        </Suspense>
+      )
+      
+    } else if (data.locality === null) {
+      return (
+        <Suspense fallback="">
+          <NotFoundPage />
         </Suspense>
       )
     }
