@@ -14,25 +14,6 @@ import { SortProvider } from '../contexts/Sort'
 import { LocalityProvider } from '../contexts/Locality'
 import { HospitalsProvider } from '../contexts/Hospitals'
 
-const query = gql`
-  query LocalityPageQuery($localityName: String) {
-    locality(name: $localityName) {
-      name
-      ...LocalityInfoFragment
-      hospitals(first: 2000) {
-        edges {
-          node {
-            ...HospitalInfoFragment
-          }
-        }
-      }
-    }
-  }
-
-  ${LocalityInfoFragment}
-  ${HospitalInfoFragment}
-`
-
 function LocalityPage(props) {
   const localityRef = useRef(props.match ? props.match.params.localityName : null)
   let localityName = localityRef.current
@@ -45,7 +26,24 @@ function LocalityPage(props) {
   })
 
   const { data, loading, error } = useQuery(
-    query,
+    gql`
+      query LocalityPageQuery($localityName: String) {
+        locality(name: $localityName) {
+          name
+          ...LocalityInfoFragment
+          hospitals(first: 2000) {
+            edges {
+              node {
+                ...HospitalInfoFragment
+              }
+            }
+          }
+        }
+      }
+
+      ${LocalityInfoFragment}
+      ${HospitalInfoFragment}
+    `,
     {
       variables: {
         localityName
