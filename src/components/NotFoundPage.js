@@ -13,7 +13,7 @@ const NotFoundText = styled.div`
   font-size: 30px;
 
   & > span {
-    font-size: 23px;
+    font-size: 21px;
     display: block;
   }
 `
