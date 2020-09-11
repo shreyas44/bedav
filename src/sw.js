@@ -37,7 +37,7 @@ self.addEventListener('install', event => {
   event.waitUntil(Promise.all([
     caches.keys().then(keys => {
       return Promise.all(
-        keys.filter(key => key !== staticCacheName).map(key => caches.delete(key))
+        keys.filter(key => key !== staticCacheName && key !== bundleCacheName).map(key => caches.delete(key))
       )
     }),
     caches.open(bundleCacheName).then(cache => {
@@ -64,20 +64,35 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const {request} = event
   const path = request.url.split('//')[1].split("/").slice(1).join("/")
-  
-  if (path.startsWith("hospital")) {
+
+  if (request.method == "GET" && request.url.startsWith("http")) {
+    if (path.startsWith("hospital")) {
+      event.respondWith(
+        caches.match('/').then(response => {
+          return response || fetch(request)
+        })
+      )
+    }
+    
     event.respondWith(
-      caches.match('/').then(response => {
-        return response || fetch(request)
+      caches.match(request).then(response => {
+        return response || fetch(request).then(fetchResponse => {
+          if (/fonts.(googleapis|gstatic).com/.test(request.url)) {
+            return caches.open(staticCacheName).then(cache => {
+              cache.put(request, fetchResponse.clone())
+              return fetchResponse
+            })
+          } else if (!path.startsWith("bundle")) {
+            limitCacheSize(dynamicCacheName, 20)
+            return caches.open(dynamicCacheName).then(cache => {
+              cache.put(request, fetchResponse.clone())
+              return fetchResponse
+            })
+          }
+        })
       })
     )
   }
-
-  event.respondWith(
-    caches.match(request).then(response => {
-      return response || fetch(request)
-    })
-  )
   
   //caches.match(request).then(response => {
     //return response || fetch(request).then(response => {
