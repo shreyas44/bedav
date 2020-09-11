@@ -11,7 +11,6 @@ const static = [
 const { assets } = global.serviceWorkerOption
 let allAssets = assets.map((item) => `/bundles${item}`)
 allAssets = [...allAssets, '/']
-
 let bundleCacheName
 
 for (asset of assets) {
@@ -47,7 +46,7 @@ self.addEventListener('install', event => {
     }),
     caches.open(staticCacheName).then(cache => {
       cache.addAll(static)
-    })
+    }),
   ]))
 })
 
@@ -83,7 +82,7 @@ self.addEventListener('fetch', event => {
               return fetchResponse
             })
           } else if (!path.startsWith("bundle")) {
-            limitCacheSize(dynamicCacheName, 20)
+            limitCacheSize(dynamicCacheName, 100)
             return caches.open(dynamicCacheName).then(cache => {
               cache.put(request, fetchResponse.clone())
               return fetchResponse
