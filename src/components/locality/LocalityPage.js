@@ -143,7 +143,13 @@ function LocalityPage(props) {
     return null
   }
 
-  if ((error && data.locality === null) || !data) {
+  if (error && (data.locality === null || data.locality === undefined)) {
+    let errorMessage
+    error.graphQLErrors.map(({message}, i) => {
+      errorMessage = message
+    })
+
+    console.log(errorMessage)
     return (
       <Suspense fallback="">
         <NotFoundPage />
