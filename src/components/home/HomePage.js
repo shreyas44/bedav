@@ -21,7 +21,7 @@ function HomePage(props) {
     document.title = "Bedav - Home"
   })
 
-  const { data, loading, errors } = useQuery(
+  const { data, loading, error } = useQuery(
     gql`
       query HomePageQuery {
         country {
@@ -44,8 +44,7 @@ function HomePage(props) {
     }
   )
 
-  if (errors) {
-    console.log(errors)
+  if (error && !data) {
     return null
   }
 

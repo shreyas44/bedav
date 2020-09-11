@@ -138,8 +138,8 @@ function LocalityPage(props) {
     return null
   }
 
-  if (error) {
-    console.log(error); return null
+  if (error && !data) {
+    return null
   }
 
   if (!state.getData || !data) return <Spinner />
