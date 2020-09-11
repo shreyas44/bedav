@@ -32,21 +32,55 @@ const limitCacheSize = (name, size) => {
   })
 }
 
+const query = `
+  query {
+    localities(first: 1000) {
+      edges {
+        node {
+          name
+          state
+        }
+      }
+    }
+  }
+`
+
 self.addEventListener('install', event => {
   event.waitUntil(Promise.all([
+
     caches.keys().then(keys => {
       return Promise.all(
         keys.filter(key => key !== staticCacheName && key !== bundleCacheName).map(key => caches.delete(key))
       )
     }),
+
     caches.open(bundleCacheName).then(cache => {
       cache.addAll(allAssets)
     }).catch(error => {
       console.log(error)
     }),
+
     caches.open(staticCacheName).then(cache => {
       cache.addAll(static)
     }),
+    
+    fetch("/graphql/", {
+      method: "POST",
+      body: JSON.stringify({query: query}),
+      headers: {"Content-Type": "application/json"}
+    }).then(response => {
+      return response.json()
+    }).then(response => {
+      return response.data.localities.edges
+    }).then(edges => {
+      const localities = edges.map(edge => edge.node)
+      const urls = localities.map(locality => `/${locality.name.toLowerCase()}-${locality.state.toLowerCase()}/`)
+
+      return caches.open(bundleCacheName).then(cache => {
+        cache.addAll(urls)
+      }) 
+    })
+
   ]))
 })
 
