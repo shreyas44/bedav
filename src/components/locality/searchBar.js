@@ -1,7 +1,10 @@
-import React, {useState, useContext} from 'react'
-import styled from 'styled-components'
+import React, {useState, useContext, useRef} from 'react'
+import styled, { css } from 'styled-components'
 import MaterialSearchIcon from '@material-ui/icons/Search'
 import SearchHospitalContext from '../contexts/SearchHospital'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import CloseIcon from '@material-ui/icons/Close'
+import { useWindowSize } from '../hooks'
 
 let SearchIcon = ({className}) => <MaterialSearchIcon className={className} />
 
@@ -27,21 +30,46 @@ const SearchContainer = styled.div`
     box-shadow: 2.5px 7.5px 12.5px 0 rgba(0,0,0,0.3);
 
     &:focus-within {
-      transform: none;
-      box-shadow: 2.5px 7.5px 12.5px 0 rgba(0,0,0,0.4);
+      transform: translate(0, -118px);
+      box-shadow: 2.5px 7.5px 12.5px 0 rgba(0,0,0,0.1);
+      position: fixed;
+      left: 0;
+      z-index: 5;
+      height: 67px;
     }
   }
 `
 
-const StyledSearchIcon = styled(SearchIcon)`
+const StyledIcon = css`
   height: inherit !important;
   padding: 0 0 0 20px !important;
   font-size: 1.75rem !important;
   transition: color 0.1s !important;
   color: ${props => props.focused ? "#000" : "#777"};
+  background-color: white;
 
   @media only screen and (max-width: 600px) {
     padding: 0 0 0 13px !important;
+  }
+`
+
+const StyledSearchIcon = styled(SearchIcon)`
+  ${StyledIcon}
+`
+
+const StyledBackIcon = styled(ArrowBackIcon)`
+  ${StyledIcon}
+  cursor: pointer;
+`
+
+const StyledCloseIcon = styled(CloseIcon)`
+  ${StyledIcon}
+  cursor: pointer;
+  color: black;
+  padding: 0 20px 0 0 !important;
+
+  @media only screen and (max-width: 600px) {
+    padding: 0 13px 0 0 !important;
   }
 `
 
@@ -65,19 +93,40 @@ const StyledInput = styled.input`
 `
 
 function SearchBar() {
-  let {searchQuery, setSearchQuery} = useContext(SearchHospitalContext)
-  let [focused, setFocus] = useState(false)
+  const {searchQuery, setSearchQuery, focused, setFocus} = useContext(SearchHospitalContext)
+  const textRef = useRef()
+  const [width, _] = useWindowSize()
+
+  let icon = <StyledSearchIcon focused={focused ? 1 : 0}/>
+  if (focused && width <= 600) {
+    icon = 
+      <StyledBackIcon 
+        onClick={() => {
+          ref.blur()
+          setFocus(false)
+        }}
+        focused={focused ? 1 : 0}
+      />
+  }
 
   return (
     <SearchContainer>
-      <StyledSearchIcon focused={focused}/>
+      {icon}
       <StyledInput 
         type="text"
         value={searchQuery}
+        ref={textRef}
         onChange={event => { setSearchQuery(event.target.value) }}
         placeholder="Search for a hospital..."
-        onFocus={() => { setFocus(true) }} onBlur={() => { setFocus(false) }} 
+        onFocus={() => { setFocus(true) }}
+        onBlur={() => { setFocus(false) }} 
        />
+      {
+        searchQuery.length > 0 ? 
+          <StyledCloseIcon 
+            onClick={() => setSearchQuery('')} 
+          /> : null
+      }
     </SearchContainer>
   )
 }

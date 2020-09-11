@@ -5,6 +5,7 @@ import CityHeading from './CityHeading'
 import ViewAllButton from './ViewAllButton'
 import Summary from './Summary'
 import SearchContext from '../contexts/SearchHospital'
+import { useWindowSize } from '../hooks'
 
 const TopContainer = styled.div`
   margin: 100px auto 0;
@@ -21,6 +22,8 @@ const CityContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  ${({focused}) => focused ? "margin-top: -20px" : null}
 `
 
 const InfoContainer = styled.div`
@@ -33,19 +36,21 @@ const InfoContainer = styled.div`
 `
 
 function TopSection({locality}) {
-  const {searchQuery} = useContext(SearchContext)
+  const { focused } = useContext(SearchContext)
+  const [width, _] = useWindowSize()
+
   return (
     <TopContainer>
       <SearchBar />
       <InfoContainer>
-        <CityContainer>
+        <CityContainer focused={focused && width <= 600 ? 1 : 0}>
           <CityHeading lastUpdated={locality.lastUpdated}>
             {locality.name}
           </CityHeading>
           <ViewAllButton />
         </CityContainer>
-        { searchQuery.length == 0 ?
-          <Summary locality={locality}/> : null }
+        { width <= 600 ? !focused ?
+          <Summary locality={locality}/> : null : <Summary locality={locality}/> }
       </InfoContainer>
     </TopContainer>
   )
