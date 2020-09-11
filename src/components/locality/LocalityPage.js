@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { useDictState } from '../hooks'
 import Swal from 'sweetalert2'
 import { useQuery, gql } from '@apollo/client'
@@ -13,6 +13,8 @@ import { SearchHospitalProvider } from '../contexts/SearchHospital'
 import { SortProvider } from '../contexts/Sort'
 import { LocalityProvider } from '../contexts/Locality'
 import { HospitalsProvider } from '../contexts/Hospitals'
+
+const NotFoundPage = lazy(() => import("../NotFoundPage"))
 
 function LocalityPage(props) {
   const localityRef = useRef(props.match ? props.match.params.localityName : null)
@@ -48,7 +50,8 @@ function LocalityPage(props) {
       variables: {
         localityName
       },
-      fetchPolicy: "cache-and-network" 
+      fetchPolicy: "cache-and-network",
+      errorPolicy: "all"
     }
   )
 
@@ -134,15 +137,19 @@ function LocalityPage(props) {
     }
   }, [])
 
-  if (!(/^\/(?!about).*\/$/.test(window.location.pathname))) {
+  if (!(/^\/(?!about).*\/?$/.test(window.location.pathname)) || window.location.pathname == "/") {
     return null
   }
 
-  if (error && !data) {
-    return null
+  if ((error && data.locality === null) || !data) {
+    return (
+      <Suspense fallback="">
+        <NotFoundPage />
+      </Suspense>
+    )
   }
-
-  if (!state.getData || !data) return <Spinner />
+  
+  if (!state.getData || !data || (!data && loading)) return <Spinner />
   
   document.title = "Bedav - " + data.locality.name
 

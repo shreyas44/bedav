@@ -390,9 +390,12 @@ class Query(graphene.ObjectType):
       ) c on "Locality".id = c.locality_id
       WHERE ("Locality".name || ' ' || "Locality".state ILIKE %s)
       GROUP BY "Locality".id
-    """, [name])[0]
+    """, [name])
 
-    return locality
+    if len(locality) == 0:
+      raise KeyError("Invalid locality passed")
+
+    return locality[0]
 
   def resolve_country(parent, info, **kwargs):
       query = """

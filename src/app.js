@@ -11,6 +11,7 @@ const HomePage = lazy(() => import('./components/home'))
 const LocalityPage = lazy(() => import('./components/locality'))
 const AboutPage = lazy(() => import('./components/about'))
 const HospitalPage = lazy(() => import('./components/hospital'))
+const NotFoundPage = lazy(() => import('./components/NotFoundPage'))
 
 const ContentWrapper = styled.div`
   max-width: 1500px;
@@ -48,6 +49,8 @@ function App() {
               <Route exact path="/">
                 <HomePage />
               </Route>
+              <Route exact path="/:localityName/" />
+              <Route component={NotFoundPage} />
             </Switch>
             <LiveRoute exact alwaysLive={true}
               path="/:localityName/"
