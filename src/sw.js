@@ -14,7 +14,7 @@ let bundleCacheName
 
 for (asset of assets) {
   if (asset.includes("main")) {
-    bundleCacheName = assets[0].split('.')[1]
+    bundleCacheName = asset.split('.')[1]
     break
   }
 
