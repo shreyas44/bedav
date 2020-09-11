@@ -36,14 +36,23 @@ const NotFoundContainer = styled.div`
   margin-left: -10px;
 `
 
-function NotFoundPage() {
+function NotFoundPage(props) {
+  const offline = props.offline === undefined ? false : props.offline
   return (
     <NotFoundContainer>
       <NotFoundWrapper>
         <StyledIcon />
         <NotFoundText>
-          404 Page Not Found! 
-          <span>Make sure the URL you entered is correct.</span>
+          {!offline ? 
+            <>
+              404 Page Not Found!
+              <span>Make sure the URL you entered is correct.</span>
+            </> :
+            <>
+              Looks like you are offline!
+              <span>Check your internet connection and try again.</span>
+            </> 
+          }
         </NotFoundText>
       </NotFoundWrapper>
     </NotFoundContainer>

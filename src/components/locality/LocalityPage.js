@@ -143,18 +143,21 @@ function LocalityPage(props) {
     return null
   }
 
-  if (error && (data.locality === null || data.locality === undefined)) {
-    let errorMessage
-    error.graphQLErrors.map(({message}, i) => {
-      errorMessage = message
-    })
-
-    console.log(errorMessage)
-    return (
-      <Suspense fallback="">
-        <NotFoundPage />
-      </Suspense>
-    )
+  if (error)
+    if (data.locality === null) {
+      return (
+        <Suspense fallback="">
+          <NotFoundPage />
+        </Suspense>
+      )
+      
+    } else if (data.locality === undefined) {
+      return (
+        <Suspense fallback="">
+          <NotFoundPage offline/>
+        </Suspense>
+      )
+    }
   }
   
   if (!state.getData || !data || (!data && loading)) return <Spinner />
