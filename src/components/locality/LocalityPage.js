@@ -160,29 +160,34 @@ function LocalityPage(props) {
   
   if (!state.getData || !data || (!data && loading)) return <Spinner />
   
-  document.title = "Bedav - " + data.locality.name
+  if (data.locality) {
+    document.title = "Bedav - " + data.locality.name
 
-  return (
-    <div>
-      <SelectedFiltersProvider>
-        <LocalityProvider initial={localityName}>
-            <SearchHospitalProvider>
-              <SortProvider initial={{
-                field: state.geolocation ? "distance" : "generalAvailable",
-                descending: state.geolocation ? false : true
-              }}>
-                <TopSection locality={data.locality}/>
-                <HospitalsProvider hospitals={data.locality.hospitals.edges} latitude={state.lat} longitude={state.lon} geolocation={state.geolocation}>
-                  <HospitalGrid getData={state.getData} geolocation={state.geolocation} />
-                </HospitalsProvider>
-              </SortProvider>
-            </SearchHospitalProvider>
-          <FilterSection />
-        </LocalityProvider>
-      </SelectedFiltersProvider>
-    </div>
-  )
+    return (
+      <div>
+        <SelectedFiltersProvider>
+          <LocalityProvider initial={localityName}>
+              <SearchHospitalProvider>
+                <SortProvider initial={{
+                  field: state.geolocation ? "distance" : "generalAvailable",
+                  descending: state.geolocation ? false : true
+                }}>
+                  <TopSection locality={data.locality}/>
+                  <HospitalsProvider hospitals={data.locality.hospitals.edges} latitude={state.lat} longitude={state.lon} geolocation={state.geolocation}>
+                    <HospitalGrid getData={state.getData} geolocation={state.geolocation} />
+                  </HospitalsProvider>
+                </SortProvider>
+              </SearchHospitalProvider>
+            <FilterSection />
+          </LocalityProvider>
+        </SelectedFiltersProvider>
+      </div>
+    )
+  }
+
+  return null
 }
 
 export default LocalityPage
+
 
