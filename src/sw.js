@@ -117,15 +117,17 @@ self.addEventListener('fetch', event => {
               cache.put(request, fetchResponse.clone())
               return fetchResponse
             })
-          } else if (!path.startsWith("bundle")) {
-            limitCacheSize(dynamicCacheName, 100)
+          } else if (!path.startsWith("bundle") && !/maps.(googleapis|gstatic).com/.test(request.url)) {
+            limitCacheSize(dynamicCacheName, 20)
             return caches.open(dynamicCacheName).then(cache => {
               cache.put(request, fetchResponse.clone())
               return fetchResponse
             })
           }
-        }) || caches.match('/').then(mainResponse => {
-          return mainResponse
+        }).catch(error => {
+          return caches.match('/').then(response => {
+            return response
+          })
         })
       })
     )
