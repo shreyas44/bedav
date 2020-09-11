@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
-import { useQuery, gql } from '@apollo/client'
+import { useLazyQuery, gql } from '@apollo/client'
 import Spinner from '../Spinner'
+import client from '../../client'
 import HospitalInfoFragment from '../fragments/hospital'
 import HospitalInfoSection from './HospitalInfoSection'
 import BedInfoSection from './BedInfoSection'
@@ -39,18 +40,27 @@ const MainContainer = styled.div`
   }
 `
 
-function HospitalPage(props) {
-  const {hospitalId} = useParams()
-
-  const { data, loading, errors } = useQuery(
-    gql`
-      query HospitalPageQuery($hospitalId: ID!) {
-        hospital(id: $hospitalId) {
-          ...HospitalInfoFragment
-        }
+const PageQuery =  gql`
+    query HospitalPageQuery($hospitalId: ID!) {
+      hospital(id: $hospitalId) {
+        ...HospitalInfoFragment
       }
-      ${HospitalInfoFragment}
-    `,
+    }
+    ${HospitalInfoFragment}
+  ` 
+
+function HospitalPage(props) {
+  let {hospitalId} = useParams()
+  hospitalId = decodeURIComponent(hospitalId)
+
+  let cachedHospital = client.readFragment({
+    id: `Hospital:${hospitalId}`,
+    fragment: HospitalInfoFragment
+  })
+
+  const [hospital, setHospital] = useState(cachedHospital)
+  const [ getHospital, {data, loading} ] = useLazyQuery(
+    PageQuery,
     {
       variables: {
         hospitalId: hospitalId
@@ -58,20 +68,31 @@ function HospitalPage(props) {
     }
   )
 
-  if (errors) {
-    console.log(errors)
-    return null
+  if (data && data.hospital && !hospital) {
+    setHospital(data.hospital)
   }
 
-  if (loading || !data) return <Spinner />
+  if (hospital) {
+    document.title = 'Bedav - ' + hospital.name
+  } else if (loading) {
+    return <Spinner />
+  } else if (hospital === null) {
+    getHospital({
+      variables: {
+        hospitalId
+      }
+    })
 
-  document.title = 'Bedav - ' + data.hospital.name
+    return <Spinner />
+  }
+
+
 
   return (
     <>
       <MainContainer>
-      <BedInfoSection hospital={data.hospital}/>
-      <HospitalInfoSection hospital={data.hospital}/>
+      <BedInfoSection hospital={hospital}/>
+      <HospitalInfoSection hospital={hospital}/>
       </MainContainer>
     </>
   )

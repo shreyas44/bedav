@@ -74,7 +74,7 @@ function HospitalName({name, counter, id}) {
   } else {
     return (
       <GridColumnHeader counter={counter} onClick={handleClick} ref={parentRef}>
-        <StyledLink to={`/hospital/${decodeURI(id)}`} onClick={handleLinkClick} ref={linkRef}>
+        <StyledLink to={`/hospital/${encodeURIComponent(id)}`} onClick={handleLinkClick} ref={linkRef}>
           {name}
         </StyledLink>
       </GridColumnHeader>

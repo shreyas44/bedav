@@ -324,7 +324,8 @@ class Query(graphene.ObjectType):
       eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
       eq_ICU.icu_available, eq_ICU.icu_total, eq_ICU.icu_occupied,
       eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
-      hos.*,
+      hos.name, hos.website, hos.phone, hos.location, hos.city, hos.district, hos.state, hos.country, hos.postal_code, hos.place_id, hos.address, hos.category, hos.locality_id,
+      encode(('Hospital:' || hos.id)::bytea, 'base64') id,
       ST_X(hos.location::geometry) as longitude, ST_Y(hos.location::geometry) as latitude,
       ((hos."location" <-> %s::geometry) / 1000) AS distance
     '''
@@ -490,5 +491,5 @@ class UploadData(graphene.Mutation):
 class Mutations(graphene.ObjectType):
   # new_hospital = NewHospitalMutation()
   # upload_data = UploadData()
-  
+
   pass

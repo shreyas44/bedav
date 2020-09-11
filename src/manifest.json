@@ -1,6 +1,6 @@
 {
-  "name": "Bedav",
-  "short_name": "Bedav",
+  "name": "bedav",
+  "short_name": "bedav",
   "display": "standalone",
   "background_color": "white",
   "start_url": "/",
