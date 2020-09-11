@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import { useLazyQuery, gql } from '@apollo/client'
@@ -53,6 +53,11 @@ function HospitalPage(props) {
   let {hospitalId} = useParams()
   hospitalId = decodeURIComponent(hospitalId)
 
+  useEffect(() => {
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+  })
+
   let cachedHospital = client.readFragment({
     id: `Hospital:${hospitalId}`,
     fragment: HospitalInfoFragment
@@ -68,6 +73,7 @@ function HospitalPage(props) {
     }
   )
 
+ 
   if (data && data.hospital && !hospital) {
     setHospital(data.hospital)
   }
@@ -85,9 +91,7 @@ function HospitalPage(props) {
 
     return <Spinner />
   }
-
-
-
+ 
   return (
     <>
       <MainContainer>
@@ -99,4 +103,5 @@ function HospitalPage(props) {
 }
 
 export default HospitalPage
+
 
