@@ -100,7 +100,7 @@ self.addEventListener('fetch', event => {
   const {request} = event
   const path = request.url.split('//')[1].split("/").slice(1).join("/")
 
-  if (request.method == "GET" && request.url.startsWith("http")) {
+  if (request.method == "GET" && request.url.startsWith("http") && !/maps.(googleapis|gstatic).com/.test(request.url)) {
     if (path.startsWith("hospital")) {
       event.respondWith(
         caches.match('/').then(response => {
@@ -117,7 +117,8 @@ self.addEventListener('fetch', event => {
               cache.put(request, fetchResponse.clone())
               return fetchResponse
             })
-          } else if (!path.startsWith("bundle") && !/maps.(googleapis|gstatic).com/.test(request.url)) {
+            
+          } else if (!path.startsWith("bundle") ) {
             limitCacheSize(dynamicCacheName, 20)
             return caches.open(dynamicCacheName).then(cache => {
               cache.put(request, fetchResponse.clone())
@@ -147,3 +148,4 @@ self.addEventListener('fetch', event => {
     //})
   //})
 })
+
