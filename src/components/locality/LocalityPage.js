@@ -143,7 +143,7 @@ function LocalityPage(props) {
     return null
   }
 
-  if (error)
+  if (error) {
     if (data.locality === null) {
       return (
         <Suspense fallback="">
