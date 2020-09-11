@@ -39,6 +39,9 @@ function HomePage(props) {
       ${CountryFragment}
       ${LocalityInfoFragment}
     `,
+    {
+      fetchPolicy: "cache-and-network"
+    }
   )
 
   if (errors) {
