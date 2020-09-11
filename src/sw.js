@@ -124,6 +124,8 @@ self.addEventListener('fetch', event => {
               return fetchResponse
             })
           }
+        }) || caches.match('/').then(mainResponse => {
+          return mainResponse
         })
       })
     )
