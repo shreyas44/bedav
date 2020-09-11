@@ -137,6 +137,8 @@ function LocalityPage(props) {
     }
   }, [])
 
+  console.log(data, error)
+
   if (!(/^\/(?!about).*\/?$/.test(window.location.pathname)) || window.location.pathname == "/") {
     return null
   }
