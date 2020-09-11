@@ -49,7 +49,7 @@ function HomePage(props) {
     return null
   }
 
-  if (loading || !data) return <Spinner />
+  if (!data) return <Spinner />
 
   return (
     <StyledContainer>

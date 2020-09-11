@@ -142,7 +142,7 @@ function LocalityPage(props) {
     console.log(error); return null
   }
 
-  if (!state.getData || loading || !data) return <Spinner />
+  if (!state.getData || !data) return <Spinner />
   
   document.title = "Bedav - " + data.locality.name
 
