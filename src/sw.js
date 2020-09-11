@@ -10,7 +10,6 @@ const static = [
 
 const { assets } = global.serviceWorkerOption
 let allAssets = assets.map((item) => `/bundles${item}`)
-allAssets = [...allAssets, '/']
 let bundleCacheName
 
 for (asset of assets) {
@@ -47,13 +46,6 @@ const query = `
 
 self.addEventListener('install', event => {
   event.waitUntil(Promise.all([
-
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.filter(key => key !== staticCacheName && key !== bundleCacheName).map(key => caches.delete(key))
-      )
-    }),
-
     caches.open(bundleCacheName).then(cache => {
       cache.addAll(allAssets)
     }).catch(error => {
@@ -85,13 +77,23 @@ self.addEventListener('install', event => {
 })
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
+  event.waitUntil(Promise.all([
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== staticCacheName && key !== bundleCacheName).map(key => caches.delete(key))
+      )
+    }),
+    
+    caches.open(bundleCacheName).then(cache => {
+      cache.add('/')
+    }),
+
     caches.keys().then(keys => {
       return Promise.all(
         keys.filter(key => key !== bundleCacheName && key !== staticCacheName).map(key => caches.delete(key))
       )
     })
-  )
+  ]))
 })
 
 self.addEventListener('fetch', event => {
