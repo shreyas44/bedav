@@ -35,4 +35,9 @@ const data = {
   }
 }
 
+data.localities["solapur-maharashtra"] = data.localities["pune-maharashtra"]
+data.localities["satara-maharashtra"] = data.localities["pune-maharashtra"]
+data.localities["sangli-maharashtra"] = data.localities["pune-maharashtra"]
+data.localities["kohlapur-maharashtra"] = data.localities["pune-maharashtra"]
+
 export default data
