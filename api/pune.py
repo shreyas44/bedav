@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 import pandas as pd
 from bs4 import BeautifulSoup as bs
 from location import get_location_info, get_contact_info
@@ -13,7 +14,7 @@ django.setup()
 
 from hospitals.models import Hospital, Equipment
 
-def get_pune_data():
+def get_pune_data(driver):
   def get_nap(string):
     """Get name, address phone"""
 
@@ -32,11 +33,6 @@ def get_pune_data():
       phone = phone.split(',')[0].strip()
 
     return (name, address, phone)
-
-  options = Options()
-  options.headless = True
-  driver = webdriver.Chrome('./chromedriver', options=options)
-  driver.get("https://www.divcommpunecovid.com/ccsbeddashboard/hsr")
 
   data = pd.DataFrame(columns=["name", "category", "gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied", "address", "phone"])
 
@@ -63,6 +59,9 @@ def get_pune_data():
 
       print(name, address, phone)
 
+      phone = re.sub(r'[ ]+', ' ', phone)
+      phone = phone.split(" ")[0]
+
       hospital = {
         "name": name,
         "category": columns[3],
@@ -78,14 +77,17 @@ def get_pune_data():
 
       data = data.append(hospital, ignore_index=True)
 
-    next_button = driver.find_element_by_class_name('pagelink')
-    next_button = next_button.find_elements_by_tag_name("a")[-1]
-    
-    print(next_button.text)
-    if next_button.text.strip().lower() == "last":
-      break
+    try:
+      next_button = driver.find_element_by_class_name('pagelink')
+      next_button = next_button.find_elements_by_tag_name("a")[-1]
 
-    next_button.click()
+      print(next_button.text)
+      if next_button.text.strip().lower() == "last":
+        break
+
+      next_button.click()
+    except NoSuchElementException:
+      break
 
   data[["gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied"]] = data[["gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied"]].applymap(lambda value: re.sub(',', '', str(value))).apply(pd.to_numeric, errors="coerce")
   data["address"] = data.address.str.replace(r' +', ' ', regex=True)
@@ -93,7 +95,7 @@ def get_pune_data():
 
   return data
 
-def add_pune_hospitals(data):
+def add_pune_hospitals(data, locality_id):
   for index, item in data[['name', 'category', 'phone', 'address']].iterrows():
     print(index)
     hospital = item.to_dict()
@@ -126,7 +128,7 @@ def add_pune_hospitals(data):
       hospital["phone"] = item.loc["phone"]
 
     hospital["district"] = "Pune"
-    hospital["locality_id"] = 2
+    hospital["locality_id"] = locality_id
 
     obj = Hospital(**hospital)
     obj.save()
@@ -161,7 +163,28 @@ def upadate_pune_data(data):
       obj = Equipment(**x)
       obj.save()
 
-data = get_pune_data()
-print(data)
-add_pune_hospitals(data)
-upadate_pune_data(data)
+def get_all():
+  options = Options()
+  options.headless = True
+  driver = webdriver.Chrome('./chromedriver', options=options)
+  driver.get("https://www.divcommpunecovid.com/ccsbeddashboard/hsr")
+  ids = {
+    1: 2,
+    2: 6,
+    3: 5,
+    4: 4,
+    5: 3,
+  }
+
+  for i in range(1,6):
+    input_value = f'phc_center_{i}'
+    driver.execute_script(f'document.getElementById("phc_center_1").value = "{input_value}"')
+    btn = driver.find_element_by_id("employee_0")
+    btn.click()
+    time.sleep(2)
+    data = get_pune_data(driver)
+    print(data)
+    add_pune_hospitals(data, ids[i])
+    upadate_pune_data(data)
+
+get_all()
