@@ -101,7 +101,7 @@ def add_pune_hospitals(data, locality_id):
     hospital = item.to_dict()
 
     def hospital_exists(name):
-      obj = Hospital.objects.filter(name=name, district__icontains="Pune").first()
+      obj = Hospital.objects.filter(name=name, locality_id=locality_id).first()
 
       if obj is None:
         return False
@@ -133,7 +133,7 @@ def add_pune_hospitals(data, locality_id):
     obj = Hospital(**hospital)
     obj.save()
 
-def upadate_pune_data(data):
+def upadate_pune_data(data, locality_id):
   current_time = time.time()
   for index, item in data.iterrows():
     equipment = []
@@ -141,7 +141,7 @@ def upadate_pune_data(data):
     item = item.to_dict()
 
     name = item["name"]
-    hospital = Hospital.objects.filter(name=name, district__icontains="Pune").first()
+    hospital = Hospital.objects.filter(name=name, locality_id=locality_id).first()
     print(name, hospital)
 
     available = {
@@ -185,6 +185,6 @@ def get_all():
     data = get_pune_data(driver)
     print(data)
     add_pune_hospitals(data, ids[i])
-    upadate_pune_data(data)
+    upadate_pune_data(data, ids[i])
 
 get_all()
