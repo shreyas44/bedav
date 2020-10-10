@@ -34,7 +34,7 @@ def get_pune_data(driver):
 
     return (name, address, phone)
 
-  data = pd.DataFrame(columns=["name", "category", "gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied", "address", "phone"])
+  data = pd.DataFrame(columns=["name", "category", "gen_total",  "oxy_total", "ICU_total", "vent_total", "gen_occupied", "oxy_occupied", "ICU_occupied", "vent_occupied", "address", "phone"])
 
   while True:
     page_source = driver.page_source
@@ -69,6 +69,8 @@ def get_pune_data(driver):
         "phone": phone,
         "gen_total": gen_total,
         "gen_occupied": gen_total - (int(columns[10]) + int(columns[12])),
+        "oxy_total": int(columns[11]),
+        "oxy_occupied": int(columns[11]) - int(columns[12]),
         "ICU_total": int(columns[13]),
         "ICU_occupied": int(columns[13]) - int(columns[14]),
         "vent_total": int(columns[15]),
@@ -89,7 +91,7 @@ def get_pune_data(driver):
     except NoSuchElementException:
       break
 
-  data[["gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied"]] = data[["gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied"]].applymap(lambda value: re.sub(',', '', str(value))).apply(pd.to_numeric, errors="coerce")
+  data[["gen_total", "oxy_total", "ICU_total", "vent_total", "gen_occupied", "oxy_occupied", "ICU_occupied", "vent_occupied"]] = data[["gen_total", "oxy_total", "ICU_total", "vent_total", "gen_occupied", "oxy_occupied", "ICU_occupied", "vent_occupied"]].applymap(lambda value: re.sub(',', '', str(value))).apply(pd.to_numeric, errors="coerce")
   data["address"] = data.address.str.replace(r' +', ' ', regex=True)
   data['name'] = data.name.str.replace(r' +', ' ', regex=True)
 
@@ -148,6 +150,7 @@ def upadate_pune_data(data, locality_id):
       "gen": item['gen_total'] - item['gen_occupied'],
       "ICU": item['ICU_total'] - item['ICU_occupied'],
       "vent": item['vent_total'] - item['vent_occupied'],
+      "oxy": item['oxy_total'] - item['oxy_occupied']
     }
 
     for category, value in available.items():

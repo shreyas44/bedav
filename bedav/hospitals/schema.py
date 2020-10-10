@@ -48,14 +48,17 @@ class DataCategory(graphene.Enum):
 
 class HospitalType(graphene.ObjectType):
   general_available = graphene.Int()
+  oxygen_available = graphene.Int()
   icu_available = graphene.Int()
   ventilators_available = graphene.Int()
   hdu_available = graphene.Int()
   general_total = graphene.Int()
+  oxygen_total = graphene.Int()
   icu_total = graphene.Int()
   ventilators_total = graphene.Int()
   hdu_total = graphene.Int()
   general_occupied = graphene.Int()
+  oxygen_occupied = graphene.Int()
   icu_occupied = graphene.Int()
   hdu_occupied = graphene.Int()
   ventilators_occupied = graphene.Int()
@@ -133,11 +136,17 @@ class LocalityType(DjangoObjectType):
           branch_id, available ventilators_available, total ventilators_total, (total - available) ventilators_occupied
           FROM "Equipment" WHERE category = 'vent' ORDER BY branch_id, time DESC
         ) AS eq_vent ON eq_vent.branch_id = hos.id
+        FULL OUTER JOIN (
+          SELECT DISTINCT ON (branch_id)
+          branch_id, available oxygen_available, total oxygen_total, (total - available) oxygen_occupied
+          FROM "Equipment" WHERE category = 'oxy' ORDER BY branch_id, time DESC
+        ) AS eq_oxy ON eq_oxy.branch_id = hos.id
       '''
 
       selections = '''
         eq_HDU.hdu_available, eq_HDU.hdu_total, eq_HDU.hdu_occupied,
         eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
+        eq_oxy.oxygen_available, eq_oxy.oxygen_total, eq_oxy.oxygen_occupied,
         eq_ICU.icu_available, eq_ICU.icu_total, eq_ICU.icu_occupied,
         eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
         hos.name, hos.website, hos.phone, hos.location, hos.city, hos.district, hos.state, hos.country, hos.postal_code, hos.place_id, hos.address, hos.category, hos.locality_id,
@@ -317,13 +326,19 @@ class Query(graphene.ObjectType):
         branch_id, available ventilators_available, total ventilators_total, (total - available) ventilators_occupied
         FROM "Equipment" WHERE category = 'vent' ORDER BY branch_id, time DESC
       ) AS eq_vent ON eq_vent.branch_id = hos.id
+      FULL OUTER JOIN (
+        SELECT DISTINCT ON (branch_id)
+        branch_id, available oxygen_available, total oxygen_total, (total - available) oxygen_occupied
+        FROM "Equipment" WHERE category = 'oxy' ORDER BY branch_id, time DESC
+      ) AS eq_oxy ON eq_oxy.branch_id = hos.id
     '''
 
     selections = '''
       eq_HDU.hdu_available, eq_HDU.hdu_total, eq_HDU.hdu_occupied,
       eq_gen.general_available, eq_gen.general_total, eq_gen.general_occupied,
-      eq_ICU.icu_available, eq_ICU.icu_total, eq_ICU.icu_occupied,
+      eq_oxy.oxygen_available, eq_oxy.oxygen_total, eq_oxy.oxygen_occupied,
       eq_vent.ventilators_available, eq_vent.ventilators_total, eq_vent.ventilators_occupied,
+      eq_ICU.icu_available, eq_ICU.icu_total, eq_ICU.icu_occupied,
       hos.name, hos.website, hos.phone, hos.location, hos.city, hos.district, hos.state, hos.country, hos.postal_code, hos.place_id, hos.address, hos.category, hos.locality_id,
       encode(('Hospital:' || hos.id)::bytea, 'base64') id,
       ST_X(hos.location::geometry) as longitude, ST_Y(hos.location::geometry) as latitude,

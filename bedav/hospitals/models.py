@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 
 class Locality(models.Model):
+  id = models.IntegerField(primary_key=True)
   name = models.CharField(max_length=200)
   state = models.CharField(max_length=200)
   country = models.CharField(max_length=200, default="India")
@@ -20,7 +21,7 @@ class Hospital(models.Model):
   postal_code = models.IntegerField(null=True)
   place_id = models.CharField(max_length=1000, null=True)
   address = models.CharField(max_length=1000, null=True)
-  category = models.CharField(max_length=200) #gov hos, gov med, pri hos, pri med, covid
+  category = models.CharField(max_length=200, null=True) #gov hos, gov med, pri hos, pri med, covid
   locality = models.ForeignKey(Locality, on_delete=models.DO_NOTHING, null=True)
 
   class Meta:

@@ -103,12 +103,12 @@ function HospitalRow(props) {
   fields = fields.map((item) => {return {total: hospital[item+'Total'], value: hospital[item+fieldDataToShow] } })
   const renderedFields = fields.map((item, index) => <NumberCell colorTheme={colorTheme} key={index} counter={counter}>{item.total ? item.value : "N.A." }</NumberCell>)
 
-
+  console.log(hospital.category)
   return (
     <StyledRow counter={counter}>
       <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>
 
-      <StyledNumber style={{color: '#004266'}} counter={counter}>{width <= 600 ? mobileCategories[categories[hospital.category]] : categories[hospital.category]}</StyledNumber>
+      <StyledNumber style={{color: '#004266'}} counter={counter}>{hospital.category !== "" && hospital.category !== null ? width <= 600 ? mobileCategories[categories[hospital.category]] : categories[hospital.category] : "N.A."}</StyledNumber>
 
       <StyledNumber style={{color: '#004266'}} counter={counter} >{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
       
