@@ -103,7 +103,6 @@ function HospitalRow(props) {
   const fields = columns.map((item) => {return {total: hospital[item+'Total'], value: hospital[item+fieldDataToShow] } })
   const renderedFields = fields.map((item, index) => <NumberCell colorTheme={colorTheme} key={index} counter={counter}>{item.total ? item.value : "N.A." }</NumberCell>)
 
-  console.log(hospital.category)
   return (
     <StyledRow counter={counter}>
       <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>

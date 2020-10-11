@@ -73,7 +73,7 @@ function HospitalMap(props) {
         <GoogleMap
           mapContainerStyle={{height: "100%", width: "100%"}}
           center={center}
-          zoom={18}
+          zoom={16}
         >
           <Marker 
             position={center}

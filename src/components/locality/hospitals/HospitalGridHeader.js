@@ -71,8 +71,6 @@ function HospitalGridHeader(props) {
   const {dataToShow} = useContext(DataToShowContext)
   const columns = useColumns()
 
-  console.log(columns)
-
   let colorTheme;
 
   if(dataToShow === "occupied") {
