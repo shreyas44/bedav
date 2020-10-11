@@ -6,7 +6,7 @@ import Tooltip from '../../Tooltip'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import DataToShowContext from '../../contexts/DataToShow'
 import HospitalsContext from '../../contexts/Hospitals'
-import { useWindowSize, useCategories, useMobileCategories } from '../../hooks'
+import { useWindowSize, useCategories, useMobileCategories, useColumns } from '../../hooks'
 import { GridCell, GridColumnHeader } from '../../grid'
 
 export const StyledRow = styled.div`
@@ -96,11 +96,11 @@ function HospitalRow(props) {
   const [width, _] = useWindowSize()
   const categories = useCategories()
   const mobileCategories = useMobileCategories()
+  const columns = useColumns()
   
   const colorTheme = dataToShow == "available" ? "green" : dataToShow == "total" ? "blue" : dataToShow == "occupied" ? "red" : null  
   const fieldDataToShow = dataToShow[0].toUpperCase() + dataToShow.slice(1)
-  let fields = ['general', 'hdu', 'icu', 'ventilators']
-  fields = fields.map((item) => {return {total: hospital[item+'Total'], value: hospital[item+fieldDataToShow] } })
+  const fields = columns.map((item) => {return {total: hospital[item+'Total'], value: hospital[item+fieldDataToShow] } })
   const renderedFields = fields.map((item, index) => <NumberCell colorTheme={colorTheme} key={index} counter={counter}>{item.total ? item.value : "N.A." }</NumberCell>)
 
   console.log(hospital.category)

@@ -4,6 +4,8 @@ import { GridCell, GridColumnHeader } from '../../grid'
 import { StyledRow, StyledNumber } from './HospitalRow'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import FilterListIcon from '@material-ui/icons/FilterList'
+import { useColumns } from '../../hooks'
+import data from '../../extra/data'
 import SortContext from '../../contexts/Sort'
 import Tooltip from '../../Tooltip'
 import DataToShowContext from '../../contexts/DataToShow'
@@ -67,6 +69,9 @@ const StyledOrderIcon = styled(FilterListIcon)`
 function HospitalGridHeader(props) {
   const {sortValue, setSortValue} = useContext(SortContext)
   const {dataToShow} = useContext(DataToShowContext)
+  const columns = useColumns()
+
+  console.log(columns)
 
   let colorTheme;
 
@@ -108,8 +113,12 @@ function HospitalGridHeader(props) {
       </StyledHeading>
     )
   }
+  
+  const items = {}
 
-  const items = {general: "General Ward", hdu: "HDU", icu: "ICU", ventilators: "Ventilators"}
+  for (const column of columns) {
+    items[column] = data.columnAbbreviations[column]
+  }
 
   const headings = Object.keys(items).map((key, index) => 
     renderHeading(

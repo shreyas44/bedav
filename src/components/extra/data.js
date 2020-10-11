@@ -47,7 +47,14 @@ const data = {
   abbreviations: {
     "HDU": "High Dependency Unit",
     "ICU": "Intensive Care Unit"
-  }
+  },
+  columnAbbreviations: {
+    general: "General",
+    oxygen: "General with O2",
+    icu: "ICU",
+    hdu: "HDU",
+    ventilator: "Ventilator"
+  },
 }
 
 data.localities["solapur-maharashtra"] = data.localities["pune-maharashtra"]
@@ -60,7 +67,7 @@ data.columns["satara-maharashtra"] = data.localities["pune-maharashtra"]
 data.columns["sangli-maharashtra"] = data.localities["pune-maharashtra"]
 data.columns["kohlapur-maharashtra"] = data.localities["pune-maharashtra"]
 
-data.columns["anatapur-andhra pradesh"] = data.columns["pune-maharashtra"]
+data.columns["anantapur-andhra pradesh"] = data.columns["pune-maharashtra"]
 data.columns["chittoor-andhra pradesh"] = data.columns["pune-maharashtra"]
 data.columns["east godavari-andhra pradesh"] = data.columns["pune-maharashtra"]
 data.columns["guntur-andhra pradesh"] = data.columns["pune-maharashtra"]

@@ -8,6 +8,8 @@ const HospitalInfo = gql`
     longitude
     generalOccupied
     generalAvailable
+    oxygenOccupied
+    oxygenAvailable
     hduOccupied
     hduAvailable
     icuOccupied
@@ -15,6 +17,7 @@ const HospitalInfo = gql`
     ventilatorsOccupied
     ventilatorsAvailable
     generalTotal
+    oxygenTotal
     ventilatorsTotal
     icuTotal
     hduTotal
