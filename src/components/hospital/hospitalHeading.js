@@ -22,11 +22,12 @@ const StyledSubHeading = styled.h2`
 function HospitalHeading(props) {
   const {hospital} = props
   const {locality} = hospital
-  const categories = data.localities[`${locality.name.toLowerCase()}-${locality.state.toLowerCase()}`].categories
+  const key = `${locality.name.toLowerCase()}-${locality.state.toLowerCase()}`
+  const categories = data.localities[key] ? data.localities[key].categories : null
   return (
     <HeadingContainer className={props.className}>
       <StyledHeading>{hospital.name}</StyledHeading>
-      <StyledSubHeading>{categories[hospital.category]}</StyledSubHeading>
+      <StyledSubHeading>{categories ? categories[hospital.category] : null}</StyledSubHeading>
     </HeadingContainer>   
   )
 }
