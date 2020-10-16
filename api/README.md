@@ -59,7 +59,7 @@ npm run build-dev
 ### 2. Run the webpack dev server
 
 ```
-npm run dev
+npm run start
 ```
 
 Go to `http://localhost:9000` to view the website!
