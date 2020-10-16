@@ -65,4 +65,4 @@ npm run dev
 Go to `http://localhost:9000` to view the website!
 
 
-Make your changes, commit, push to your fork and create a Pull Request!
+**Make your changes, commit, push to your fork and create a Pull Request!**
