@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'bedav.urls'
+ROOT_URLCONF = 'api.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'bedav.wsgi.application'
+WSGI_APPLICATION = 'api.wsgi.application'
 
 
 # Database
@@ -128,11 +128,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILED_DIRS = [
-  os.path.join(BASE_DIR, '/static/pages/sw.js')
+    os.path.join(BASE_DIR, '/static/pages/sw.js')
 ]
 
 GRAPHENE = {
-    "SCHEMA": "bedav.schema.schema"
+    "SCHEMA": "api.schema.schema"
 }
 
 # APPEND_SLASH = True
