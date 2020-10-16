@@ -4,13 +4,13 @@ The GraphQL Schema Definition can be accessed at `/api/schema.graphql`
 
 ## Contributing
 
-Go to your terminal and run the following commands.
-
 ## Prerequisites
 
 1. virtualenv - If you don't have it run `pip3 install virtualenv`
 2. Node & npm
 3. PostgreSQL
+
+#### Go to your terminal and run the following commands.
 
 ### 1. Clone the repository
 

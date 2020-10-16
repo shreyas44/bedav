@@ -8,7 +8,7 @@
 2. Node & npm
 3. PostgreSQL
 
-#### Go to your terminal and run the following commands.
+#### Go to your terminal and run the following commands
 
 ### 1. Clone the repository
 
