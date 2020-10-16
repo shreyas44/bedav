@@ -1,4 +1,6 @@
 import requests
+import base64
+import copy
 
 URL = "https://bedav.org/graphql"
 
@@ -12,6 +14,12 @@ def get_query(query, variables={}):
   print(req.status_code)
   raise BaseException("URL was unreachable")
 
+def get_id(string):
+  id = base64.b64decode(string).decode("utf-8")
+  id = id.split(":")[1]
+
+  return int(id)
+    
 def get_data():
   query = '''
       query {
@@ -26,6 +34,7 @@ def get_data():
             hospitals(first:100000){
               edges {
                 node {
+                  name
                   generalAvailable
                   oxygenAvailable
                   icuAvailable
@@ -55,13 +64,54 @@ def get_data():
     }
   '''
 
-  return get_query(query)
+  def format_data(data):
+    f_data = data["data"]
+    f_data = {
+      "localities": []
+    }
+
+    for locality in data["data"]["localities"]["edges"]:
+      locality = locality["node"]
+      hospitals = locality["hospitals"]["edges"]
+      f_hospitals = []
+
+      for hospital in hospitals:
+        f_hospitals.append(hospital["node"])
+
+      f_data["localities"].append({
+        **locality,
+        "hospitals": f_hospitals
+      })
+
+    return f_data
+
+  return format_data(get_query(query))
 
 def get_localities(data):
-  pass
+  localities = data["localities"]
+
+
+  for index, locality in enumerate(localities):
+    locality["id"] = get_id(locality["id"])
+    del locality["hospitals"]
+    localities[index] = locality
+
+  return localities
 
 def get_hospitals(data):
-  pass
+  localities = data["localities"]
+  hospitals = {}
+
+  for locality in localities:
+    id = get_id(locality["id"])
+    if locality["id"] not in hospitals.keys():
+      hospitals[id] = []
+    
+    for hospital in locality["hospitals"]:
+      hospitals[id].append(hospital)
+
+  return hospitals
+
 
 def add_localities(localities):
   pass
@@ -70,3 +120,10 @@ def add_hospitals(hospitals):
   pass
 
 data = get_data()
+localities = get_localities(copy.deepcopy(data))
+hospitals = get_hospitals(data)
+
+
+# import json
+# with open("data.json", 'w') as file:
+#   json.dump(hospitals, file, indent=2)
