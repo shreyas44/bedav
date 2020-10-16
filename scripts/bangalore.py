@@ -1,4 +1,8 @@
-import re, os, sys, django, time
+import re
+import os
+import sys
+import django
+import time
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -6,20 +10,20 @@ import requests
 from bs4 import BeautifulSoup as bs
 from location import get_location_info, get_contact_info
 
-bedav_dir = str(Path(os.getcwd()).parent) + '/bedav'
+bedav_dir = str(Path(os.getcwd()).parent) + '/api'
 sys.path.append(bedav_dir)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bedav.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.settings')
 django.setup()
 
 from hospitals.models import Hospital, Equipment
 
 def get_bangalore_data():
     def get_phone(string):
-      phone = string.strip()
-      phone = phone.split('/')
-      phone = [a.strip() for a in phone]
-      phone = f'+91 {phone[1]}'
-      return phone
+        phone = string.strip()
+        phone = phone.split('/')
+        phone = [a.strip() for a in phone]
+        phone = f'+91 {phone[1]}'
+        return phone
 
     # driver = webdriver.Chrome("/Users/shreyas/Documents/Summer-2020/Projects/bedav/api/chromedriver")
     # driver.get("https://bbmpproject.in/bbmp-reports/")
@@ -27,15 +31,15 @@ def get_bangalore_data():
     page_source = page.text
 
     def replace(source, rep_id):
-      local_page_source = source.rsplit("GovernmentMedical", 1)
-      return rep_id.join(local_page_source)
+        local_page_source = source.rsplit("GovernmentMedical", 1)
+        return rep_id.join(local_page_source)
 
     page_source = replace(page_source, "cccTable")
     page_source = replace(page_source, "privateMedicalHospitals")
     page_source = replace(page_source, "PrivateHospitals")
 
-
-    data = pd.DataFrame(columns=["name", "category", "gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied", "address", "phone", "hotel"])
+    data = pd.DataFrame(columns=["name", "category", "gen_total", "HDU_total", "ICU_total", "vent_total",
+                                 "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied", "address", "phone", "hotel"])
 
     ids = {
         "GovernmentHospitalsDetail": "gov hos",
@@ -54,10 +58,10 @@ def get_bangalore_data():
 
         for row in rows:
             columns = row.find_all("td")
-            columns = [column.text.strip() for column in columns] 
+            columns = [column.text.strip() for column in columns]
 
             if(columns[0] == ''):
-              break
+                break
 
             print(columns)
 
@@ -69,40 +73,42 @@ def get_bangalore_data():
                     "gen_occupied": columns[3]
                 }
             elif ids[id] == "pri covid":
-              hospital = {
-                  "name": f'{columns[1]} - {columns[2]}',
-                  "category": ids[id],
-                  "gen_total": columns[5],
-                  "gen_occupied": columns[6],
-                  "phone": get_phone(columns[3]),
-                  "address": f'{columns[2]}, {columns[4]}',
-                  "hotel": columns[2].strip()
-              }
+                hospital = {
+                    "name": f'{columns[1]} - {columns[2]}',
+                    "category": ids[id],
+                    "gen_total": columns[5],
+                    "gen_occupied": columns[6],
+                    "phone": get_phone(columns[3]),
+                    "address": f'{columns[2]}, {columns[4]}',
+                    "hotel": columns[2].strip()
+                }
             else:
-              hospital = {
-                  "name": columns[1],
-                  "category": ids[id],
-                  "gen_total": columns[2],
-                  "HDU_total": columns[3],
-                  "ICU_total": columns[4],
-                  "vent_total": columns[5],
-                  "gen_occupied": columns[7],
-                  "HDU_occupied": columns[8],
-                  "ICU_occupied": columns[9],
-                  "vent_occupied": columns[10]
-              }
+                hospital = {
+                    "name": columns[1],
+                    "category": ids[id],
+                    "gen_total": columns[2],
+                    "HDU_total": columns[3],
+                    "ICU_total": columns[4],
+                    "vent_total": columns[5],
+                    "gen_occupied": columns[7],
+                    "HDU_occupied": columns[8],
+                    "ICU_occupied": columns[9],
+                    "vent_occupied": columns[10]
+                }
 
             data = data.append(hospital, ignore_index=True)
 
-    data[["gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied"]] = data[["gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied"]].applymap(lambda value: re.sub(',', '', str(value))).apply(pd.to_numeric, errors="coerce")
+    data[["gen_total", "HDU_total", "ICU_total", "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied"]] = data[["gen_total", "HDU_total", "ICU_total",
+                                                                                                                                         "vent_total", "gen_occupied", "HDU_occupied", "ICU_occupied", "vent_occupied"]].applymap(lambda value: re.sub(',', '', str(value))).apply(pd.to_numeric, errors="coerce")
     data["address"] = data.address.str.strip()
     data["address"] = data.address.str.replace(r' +', ' ', regex=True)
     data['name'] = data.name.str.replace(r' +', ' ', regex=True)
 
     return data
 
+
 def add_bangalore_hospitals(data):
-    for index, item in data[['name','category', 'phone', 'address', "hotel"]].iterrows():
+    for index, item in data[['name', 'category', 'phone', 'address', "hotel"]].iterrows():
         hospital = {
             "name": item.loc['name'],
             "category": item.loc['category'],
@@ -110,13 +116,14 @@ def add_bangalore_hospitals(data):
         }
 
         if not pd.isna(item.loc["phone"]):
-          hospital["phone"] = item.loc["phone"]
+            hospital["phone"] = item.loc["phone"]
 
         if not pd.isna(item.loc["address"]):
-          hospital["address"] = item.loc["address"]
+            hospital["address"] = item.loc["address"]
 
         def hospital_exists(name, place_id=None):
-            obj = Hospital.objects.filter(name=name, city__icontains="Bengaluru").first()
+            obj = Hospital.objects.filter(
+                name=name, city__icontains="Bengaluru").first()
 
             if obj is None:
                 return False
@@ -127,13 +134,16 @@ def add_bangalore_hospitals(data):
             continue
 
         if pd.isna(item.loc["address"]):
-          location_info = get_location_info(item.loc['name'], "Bangalore", "Karnataka")
+            location_info = get_location_info(
+                item.loc['name'], "Bangalore", "Karnataka")
         else:
-          location_info = get_location_info(address=item.loc['address'], name=item.loc["hotel"], city="Bangalore", state="Karnataka")
+            location_info = get_location_info(
+                address=item.loc['address'], name=item.loc["hotel"], city="Bangalore", state="Karnataka")
 
-        hospital = { **hospital, **location_info}
+        hospital = {**hospital, **location_info}
 
-        contact_info = get_contact_info(hospital['place_id']) if 'place_id' in hospital.keys() else {}
+        contact_info = get_contact_info(
+            hospital['place_id']) if 'place_id' in hospital.keys() else {}
         hospital = {**contact_info, **hospital}
 
         obj = Hospital(**hospital)
@@ -141,10 +151,12 @@ def add_bangalore_hospitals(data):
 
         print(index, hospital)
 
+
 def refetch_info():
     hospitals = Hospital.objects.all()
     for hospital in hospitals:
-        location_info = get_location_info(hospital.name, "Bangalore", "Karnataka")
+        location_info = get_location_info(
+            hospital.name, "Bangalore", "Karnataka")
         if location_info != {}:
             hospital.location = location_info['location']
             hospital.address = location_info['address']
@@ -159,6 +171,7 @@ def refetch_info():
             hospital.website = contact_info['website']
 
             hospital.save()
+
 
 def update_bangalore_data(data):
     current_time = time.time()
@@ -194,12 +207,12 @@ def update_bangalore_data(data):
             obj = Equipment(**x)
             obj.save()
 
+
 data = get_bangalore_data()
 add_bangalore_hospitals(data)
 update_bangalore_data(data)
 
 # refetch_info()
-
 
 
 # save equipment

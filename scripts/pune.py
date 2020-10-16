@@ -7,9 +7,9 @@ import os, sys, django, re, time
 from pathlib import Path
 from selenium.webdriver.chrome.options import Options
 
-bedav_dir = str(Path(os.getcwd()).parent) + '/bedav'
+bedav_dir = str(Path(os.getcwd()).parent) + '/api'
 sys.path.append(bedav_dir)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bedav.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.settings')
 django.setup()
 
 from hospitals.models import Hospital, Equipment
