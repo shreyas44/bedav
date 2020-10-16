@@ -2,7 +2,7 @@
 
 ## Contributing
 
-## Prerequisites
+### Prerequisites
 
 1. virtualenv - If you don't have it run `pip3 install virtualenv`
 2. Node & npm
@@ -56,7 +56,7 @@ npm run build-dev
 npm run dev
 ```
 
-Go to 
+**Go to** 
 - `http://localhost:9000` to view the website!
 - `http://localhost:9000/playground` to play with the GraphQL APi
 
