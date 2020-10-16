@@ -29,7 +29,16 @@ source bin/activate && \
 pip install -r requirements.txt && \
 ```
 
-### 3. Run python api server
+### 3. Run scripts to get initial data
+
+```
+cd scripts && \
+python bangalore.py && \
+python pune.py && \
+cd ..
+```
+
+### 4. Run python api server
 
 ```
 cd api && \

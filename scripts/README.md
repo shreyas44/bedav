@@ -32,13 +32,14 @@ pip install -r requirements.txt && \
 ```
 cd scripts && \
 python bangalore.py && \
-python pune.py
+python pune.py && \
+cd ..
 ```
 
 ### 4. Run python api server
 
 ```
-cd scripts && \
+cd api && \
 python manage.py runserver
 ```
 

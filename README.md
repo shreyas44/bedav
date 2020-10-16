@@ -21,8 +21,8 @@ To learn more about the tech stack, checkout my [blog post on Medium](https://me
 
 You can contribute to the scripts that scrape the data, the API or the website itself.
 
-To know more about contributing to the scripts responsible for scraping the data headover to the */scripts* directory.
+To know more about contributing to the **Scripts** responsible for scraping the data headover to the [/scripts](/scripts)
 
-To know more about contributing to the **api** headover to the */api* directory.
+To know more about contributing to the **API** headover to the [/api](/api) directory.
 
-To know more about contributing to the website headover to the */web* directory.
+To know more about contributing to the **Website** headover to the [/web](/web) directory.
