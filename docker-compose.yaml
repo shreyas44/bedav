@@ -1,0 +1,55 @@
+version: "3.7"
+
+services:
+  bedav-api:
+    build:
+      context: ./
+      dockerfile: ./docker/api/Dockerfile
+    image: bedav-api
+    ports:
+      - 8000:80
+    volumes:
+      - ./api:/var/app/api
+    environment:
+      DB_USER: bedav
+      DB_PASS: abcd
+    restart: on-failure
+
+
+  bedav-scripts:
+    build:
+      context: ./
+      dockerfile: ./docker/scripts/Dockerfile
+    image: bedav-scripts
+    volumes:
+      - ./api:/var/app/api
+      - ./pull.py:/var/app/pull.py
+    environment:
+      DB_USER: bedav
+      DB_PASS: abcd
+    restart: on-failure
+  
+  bedav-web:
+    build:
+      context: ./
+      dockerfile: ./docker/web/Dockerfile
+    image: bedav-web
+    ports:
+      - 80:80
+    volumes:
+      - ./web:/var/app/web
+
+  bedav-db:
+    build:
+      context: ./
+      dockerfile: ./docker/db/Dockerfile
+    image: bedav-db
+    volumes: 
+      - bedav-data:/var/lib/postgresql/data
+    environment:         
+      POSTGRES_USER: bedav
+      POSTGRES_PASSWORD: abcd
+
+
+volumes:
+  bedav-data:

@@ -11,6 +11,8 @@ cryptography==3.0
 distro==1.5.0
 Django==3.1
 django-debug-toolbar==2.2
+django-graphql-playground==1.0
+django-progressive-web-app==0.1.1
 djangorestframework==3.11.1
 et-xmlfile==1.0.1
 graphene==2.1.8

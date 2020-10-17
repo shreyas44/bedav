@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import DataToShowContext from '../../contexts/DataToShow'
-import Dropdown from '../dropdown/dropdown'
+import Dropdown from '../dropdown/Dropdown'
 
 const StyledDropdown = styled(Dropdown)`
   width: 50%;

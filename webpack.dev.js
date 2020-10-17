@@ -14,14 +14,14 @@ module.exports = merge(common, {
       "*"
     ],
     host: '0.0.0.0',
-    port: 9000,
+    port: 80,
     contentBase: "./dist",
     compress: true,
     hot: true,
     historyApiFallback: true,
     proxy: [{
         context: ['/graphql/'],
-        target: 'http://localhost:8000'
+        target: 'http://bedav-api'
       },
     ],
   },
