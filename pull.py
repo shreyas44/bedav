@@ -1,6 +1,16 @@
 import requests
 import base64
 import copy
+import sys, os
+from pathlib import Path
+import django
+
+bedav_dir = str(Path(os.getcwd())) + '/api'
+sys.path.append(bedav_dir)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.settings')
+django.setup()
+
+from hospitals.models import Locality, Hospital, Equipment
 
 URL = "https://bedav.org/graphql"
 
@@ -94,6 +104,7 @@ def get_localities(data):
   for index, locality in enumerate(localities):
     locality["id"] = get_id(locality["id"])
     del locality["hospitals"]
+    del locality["lastUpdated"]
     localities[index] = locality
 
   return localities
@@ -112,18 +123,25 @@ def get_hospitals(data):
 
   return hospitals
 
-
 def add_localities(localities):
-  pass
+  for locality in localities:
+    obj = Locality.objects.filter(id=locality["id"]).first()
+
+    if obj is None:
+      obj = Locality(**locality)
+      obj.save()
 
 def add_hospitals(hospitals):
-  pass
+  def add_data(data):
+    pass
 
 data = get_data()
 localities = get_localities(copy.deepcopy(data))
 hospitals = get_hospitals(data)
+add_localities(localities)
+add_hospitals(hospitals)
 
 
-# import json
-# with open("data.json", 'w') as file:
-#   json.dump(hospitals, file, indent=2)
+import json
+with open("data.json", 'w') as file:
+  json.dump(localities, file, indent=2)
