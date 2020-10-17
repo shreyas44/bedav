@@ -31,8 +31,8 @@ The availability of Beds in ICU, HDU, General Ward, General Ward or Ventilators 
 - **category** - Availibility of which category. Value can be the following:
   * gen - General Ward
   * oxy - General Ward with Oxygen
-  * icu - Intensive Care Unit
-  * hdu - High Dependency Unit
+  * ICU - Intensive Care Unit
+  * HDU - High Dependency Unit
   * vent - Ventilators
 
 - **available** - No. of Units available

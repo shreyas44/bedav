@@ -4,6 +4,7 @@ import copy
 import sys, os
 from pathlib import Path
 import django
+from django.contrib.gis.geos import Point
 
 bedav_dir = str(Path(os.getcwd())) + '/api'
 sys.path.append(bedav_dir)
@@ -49,10 +50,12 @@ def get_data():
                   oxygenAvailable
                   icuAvailable
                   hduAvailable
+                  ventilatorsAvailable
                   generalTotal
                   oxygenTotal
                   icuTotal
                   hduTotal
+                  ventilatorsTotal
                   website
                   district
                   city
@@ -119,6 +122,7 @@ def get_hospitals(data):
       hospitals[id] = []
     
     for hospital in locality["hospitals"]:
+      hospital["time"] = locality["lastUpdated"]
       hospitals[id].append(hospital)
 
   return hospitals
@@ -132,8 +136,72 @@ def add_localities(localities):
       obj.save()
 
 def add_hospitals(hospitals):
-  def add_data(data):
-    pass
+
+  def add_data(hospital):
+    def add(data):
+      obj = Equipment(**data)
+      obj.save()
+
+    params = {
+      "branch_id": hospital["id"],
+      "category": "oxy",
+      "time": hospital["time"]
+    }
+
+    if hospital["oxygenTotal"] is not None:
+      params["category"] = "oxy"
+      params["available"] = hospital["oxygenAvailable"]
+      params["total"] = hospital["oxygenTotal"]
+      add(params)
+
+    if hospital["generalTotal"] is not None:
+      params["category"] = "gen"
+      params["available"] = hospital["generalAvailable"]
+      params["total"] = hospital["generalTotal"]
+      add(params)
+
+    if hospital["hduTotal"] is not None:
+      params["category"] = "HDU"
+      params["available"] = hospital["hduAvailable"]
+      params["total"] = hospital["hduTotal"]
+      add(params)
+
+    if hospital["icuTotal"] is not None:
+      params["category"] = "ICU"
+      params["available"] = hospital["icuAvailable"]
+      params["total"] = hospital["icuTotal"]
+      add(params)
+
+    if hospital["ventilatorsTotal"] is not None:
+      params["category"] = "vent"
+      params["available"] = hospital["ventilatorsAvailable"]
+      params["total"] = hospital["ventilatorsTotal"]
+      add(params)
+
+  for locality_id, locality_hospitals in hospitals.items():
+    for hospital in locality_hospitals:
+      params = {
+        "name": hospital["name"],
+        "website": hospital["website"],
+        "phone": hospital["phone"],
+        "location": Point(hospital["longitude"], hospital["latitude"]),
+        "place_id": hospital["placeId"],
+        "category": hospital["category"],
+        "locality_id":locality_id,
+        "postal_code": hospital["postalCode"],
+        "city": hospital["city"],
+        "district": hospital["district"],
+        "state": hospital["state"],
+      }
+      obj = Hospital.objects.filter(name=hospital["name"], locality_id=locality_id).first()
+
+      if obj is None:
+        obj = Hospital(**params)
+        obj.save()
+
+      hospital["id"] = obj.id
+      add_data(hospital)
+
 
 data = get_data()
 localities = get_localities(copy.deepcopy(data))
@@ -144,4 +212,4 @@ add_hospitals(hospitals)
 
 import json
 with open("data.json", 'w') as file:
-  json.dump(localities, file, indent=2)
+  json.dump(hospitals, file, indent=2)
