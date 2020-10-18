@@ -1,0 +1,19 @@
+FROM nginx/unit:1.19.0-full
+
+RUN mkdir /var/app
+WORKDIR /var/app
+COPY ./requirements.txt ./requirements.txt
+COPY ./api ./api
+
+COPY ./conf/.unit.conf.json /docker-entrypoint.d/.unit.conf.json
+
+RUN apt-get update
+RUN apt-get install --no-install-recommends --no-install-suggests -y gnupg
+RUN curl -sL https://nginx.org/keys/nginx_signing.key | apt-key add - && \
+    echo "deb https://packages.nginx.org/unit/debian/ buster unit" >> /etc/apt/sources.list.d/unit.list && \
+    echo "deb-src https://packages.nginx.org/unit/debian/ buster unit" >> /etc/apt/sources.list.d/unit.list
+RUN apt-get update && apt-get install -y --no-install-recommends --no-install-suggests gcc unit-dev \
+    python3 python3-pip python3-setuptools python3-wheel libpq-dev binutils libproj-dev gdal-bin vim
+RUN pip3 install -r requirements.txt
+
+CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
