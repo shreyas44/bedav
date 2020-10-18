@@ -121,7 +121,9 @@ def update_data(data, locality_id):
 def get_all():
     options = Options()
     options.headless = True
-    driver = webdriver.Chrome('./chromedriver', options=options)
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    driver = webdriver.Chrome(options=options)
     driver.get("http://dashboard.covid19.ap.gov.in/ims/hospbed_reports/")
     ids = [
         7,  # Anantapur

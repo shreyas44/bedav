@@ -4,6 +4,7 @@ RUN mkdir /var/app
 WORKDIR /var/app
 COPY ./requirements.txt ./requirements.txt
 COPY ./api ./api
+COPY ./scripts ./scripts
 COPY ./pull.py ./pull.py
 
 RUN apt-get update
