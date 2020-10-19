@@ -6,8 +6,6 @@ WORKDIR /var/app
 COPY ./package.json ./package.json
 RUN npm install
 
-COPY /env /env
-
 COPY ./webpack.common.js ./webpack.common.js
 COPY ./webpack.prod.js ./webpack.prod.js
 COPY ./.babelrc ./.babelrc
