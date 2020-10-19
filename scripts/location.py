@@ -1,7 +1,7 @@
 import requests, urllib, json, os
 from django.contrib.gis.geos import Point
 
-KEY = os.environ("MAPS_API_KEY")
+KEY = os.environ["MAPS_API_KEY"]
 
 def get_location_info(name=None, city='', state='', country='India', address=None):
     ret_data = {}
