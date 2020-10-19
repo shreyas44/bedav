@@ -10,8 +10,6 @@ services:
       DB_USER: bedav
       DB_PASS: abcd
     restart: on-failure
-    ports:
-      - 8000:80
   
   bedav-scripts:
     build:
