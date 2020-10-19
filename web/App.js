@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
-import Header from './components/header'
+import Header from './components/Header'
 import {BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom'
 import NotLiveRoute from 'react-live-route'
 import { ApolloProvider } from '@apollo/client'

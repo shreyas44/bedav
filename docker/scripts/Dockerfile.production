@@ -1,0 +1,23 @@
+FROM python:3.8
+
+RUN mkdir /var/app
+WORKDIR /var/app
+COPY ./requirements.txt ./requirements.txt
+COPY ./api ./api
+COPY ./scripts ./scripts
+COPY ./pull.py ./pull.py
+
+RUN apt-get update
+RUN apt-get install -y binutils libproj-dev gdal-bin vim
+RUN pip install -r requirements.txt
+
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    rm -r ./google-chrome-stable_current_amd64.deb 
+
+RUN wget https://chromedriver.storage.googleapis.com/86.0.4240.22/chromedriver_linux64.zip && \
+    unzip chromedriver_linux64.zip && \
+    mv chromedriver /usr/local/bin && \
+    rm -r chromedriver_linux64.zip
+
+CMD cd scripts && python bangalore.py && python pune.py

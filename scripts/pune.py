@@ -169,7 +169,9 @@ def upadate_pune_data(data, locality_id):
 def get_all():
   options = Options()
   options.headless = True
-  driver = webdriver.Chrome('./chromedriver', options=options)
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+  driver = webdriver.Chrome(options=options)
   driver.get("https://www.divcommpunecovid.com/ccsbeddashboard/hsr")
   ids = {
     1: 2,

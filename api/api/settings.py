@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'bedav',
         'USER': os.environ['DB_USER'],
         'PASSWORD': os.environ['DB_PASS'],
-        'HOST': 'localhost',
+        'HOST': 'bedav-db',
         'PORT': '5432',
     }
 }

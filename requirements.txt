@@ -11,6 +11,8 @@ cryptography==3.0
 distro==1.5.0
 Django==3.1
 django-debug-toolbar==2.2
+django-graphql-playground==1.0
+django-progressive-web-app==0.1.1
 djangorestframework==3.11.1
 et-xmlfile==1.0.1
 graphene==2.1.8
@@ -25,7 +27,7 @@ pandas==1.1.0
 pathtools==0.1.2
 pdfminer.six==20200726
 promise==2.3
-psycopg2==2.8.5
+psycopg2-binary==2.8.5
 pycparser==2.20
 PyPDF2==1.26.0
 python-dateutil==2.8.1

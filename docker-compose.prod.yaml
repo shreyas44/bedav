@@ -1,0 +1,44 @@
+version: "3.7"
+
+services:
+  bedav-api:
+    build:
+      context: ./
+      dockerfile: ./docker/api/Dockerfile.production
+    image: bedav-api
+    env_file: 
+      - /env/db.env
+    restart: on-failure
+  
+  bedav-scripts:
+    build:
+      context: ./
+      dockerfile: ./docker/scripts/Dockerfile.production
+    image: bedav-scripts
+    restart: on-failure
+    env_file: 
+      - /env/db.env
+
+  bedav-web:
+    build:
+      context: ./
+      dockerfile: ./docker/web/Dockerfile.production
+    image: bedav-web
+    ports: 
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+
+  bedav-db:
+    build:
+      context: ./
+      dockerfile: ./docker/db/Dockerfile.production
+    image: bedav-db
+    volumes:
+      - bedav-data:/var/lib/postgresql/data
+    env_file: 
+      - /env/db.env
+
+volumes:
+  bedav-data:
