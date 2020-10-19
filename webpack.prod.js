@@ -10,7 +10,7 @@ module.exports = merge(common, {
     path: path.resolve(__dirname, "./dist/bundles/"),
     publicPath: '/bundles/',
   },
-  pulgins: [
+  plugins: [
     new Dotenv({
       path: '/env/map.env'
     })
