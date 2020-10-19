@@ -37,7 +37,13 @@ services:
     ports:
       - 80:80
     volumes:
+      - ./node_modules:/var/app/node_modules
       - ./web:/var/app/web
+      - ./package.json:/var/app/package.json
+      - ./package-lock.json:/var/app/package-lock.json
+      - ./webpack.dev.js:/var/app/webpack.dev.js
+      - ./.babelrc:/var/app/.babelrc
+      - ./map.dev.env:/var/app/map.dev.env
 
   bedav-db:
     build:

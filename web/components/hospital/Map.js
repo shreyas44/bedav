@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { GoogleMap, LoadScript, Marker, TrafficLayer, OverlayView } from '@react-google-maps/api'
 
-const apiKey = "AIzaSyDMJnJXbyp-pH4xaWY8_S1RI-mUEV1EzB0"
+const apiKey = process.env.MAPS_API_KEY
 
 const MapContainer = styled.div`
   width: 100%;
