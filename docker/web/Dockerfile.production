@@ -1,10 +1,12 @@
 FROM node:slim as build
 
-RUN mkdir /var/app
+RUN mkdir /var/app && mkdir /env
 WORKDIR /var/app
 
 COPY ./package.json ./package.json
 RUN npm install
+
+COPY /env /env
 
 COPY ./webpack.common.js ./webpack.common.js
 COPY ./webpack.prod.js ./webpack.prod.js
