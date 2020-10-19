@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const Dotenv = require("dotenv-webpack")
 
 module.exports = {
   entry: {
@@ -26,7 +26,6 @@ module.exports = {
       entry: "./web/sw.js",
       filename: "../sw.js",
     }),
-    //new BundleAnalyzerPlugin()
   ],
   module: {
     rules: [
