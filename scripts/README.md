@@ -6,6 +6,8 @@ The Python files in this directory are scripts that scrape data off of official 
 
 For general instructions on contributing and setting up the local development environment look at [CONTRIBUTING](../CONTRIBUTING.md).
 
+Check out [MODELS](../) to view the Database Structure.
+
 ## Notes
 
 `location.py` contains code that fetches extra information about a Hospital such as phone number, website, co-ordinates, etc. using the Google Maps Places and Geocoding API's.
