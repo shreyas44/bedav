@@ -3,13 +3,11 @@
 1. Node & npm
 2. Docker and Docker hub
 
-<br/>
-
 # Contributing
 
-## 1. Fork the repository
+### 1. Fork the repository
 
-## 2. Clone the forked repository
+### 2. Clone the forked repository
 
   Run the below code to clone the forked repository
 
@@ -17,32 +15,43 @@
   git clone https://github.com/<your-username>/bedav
   ```
 
-## 3. Create a new branch
+### 3. Create a new branch
 
   To create a new branch run `git branch <branch_name>`. The branch name is often the feature/fix you'll be working on in the branch. After creating the new branch run `git checkout <branch_name>` to switch to that branch.
 
-## 4. Run the following commands to setup your dev environment
+### 4. Setup dev environment
 
+#### Install npm dependencies
 ```
 npm install
-docker-compose up -d
 ```
 
-*Note: the first time you run docker-compose up, the docker images will have to be built, which may take a while*
+#### Create and run docker containers
+```
+docker-compose up -d
+```
 
 You can run `docker-compose logs` to view the logs from all the docker containers.
 
 Once the containers are built and running, you can go to `http://localhost/` to view the website, `http://localhost/playground` to view the GraphQL Playground.
 
-## 5. Make, commit and push your changes
+To stop the docker containers run `docker-compose down`.
+
+When you run `docker-compose up` and `docker-compose down` make sure you're in the root directory of the project.
+
+*Note: the first time you run docker-compose up, the docker images will have to be built, which may take a while*
+
+### Optional
+
+If you have access to Google Maps API keys, then you can go to `map.dev.env` and set `MAPS_API_KEY` to your Google Maps API key to view a complete version of the Google Maps on the website. 
+
+### 5. Make, commit and push your changes
 
 To commit your changes run `git commit <commit_message>`. The commit message should give a brief description on the changes you've made. To push your changes to GitHub run `git push origin <branch_name>`.
 
-## 6. Create a Pull Request
+### 6. Create a Pull Request
 
-<br/> 
-
-# Project Structure
+## Project Structure
 
 There are three parts to the project
 
