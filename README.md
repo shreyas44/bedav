@@ -17,7 +17,17 @@ Using the data the API provides, the website displays the relevant information.
 
 To learn more about the tech stack, checkout my [blog post on Medium](https://medium.com/@shreyas.sreenivas/building-bedav-org-83ce6a61fab6)
 
-### Local Setup
+## Project Structure
+
+There are three parts to the project
+
+1. [API](/api) - A GraphQL API which provides access to the data in the database
+2. [Scripts](/scripts) - Python scripts which scrape hospital data and the availability of beds from websites, get additional data of the hospitals such as co-ordinates, phone number and website and add it to the database
+3. [Website](/web) - The front end website responsible for representing the data provided by the GraphQL API
+
+To learn more about each project headover to their respective directories
+
+## Local Setup
 
 #### Install npm dependencies
 ```
@@ -42,16 +52,6 @@ When you run `docker-compose up` and `docker-compose down` make sure you're in t
 #### Optional - Configure Environment
 
 If you have access to a Google Maps API key that has access to the JavaScript Maps API, then you can go to `map.dev.env` and set `MAPS_API_KEY` to your Google Maps API key to view a complete version of the Google Maps on the website.
-
-## Project Structure
-
-There are three parts to the project
-
-1. [API](/api) - A GraphQL API which provides access to the data in the database
-2. [Scripts](/scripts) - Python scripts which scrape hospital data and the availability of beds from websites, get additional data of the hospitals such as co-ordinates, phone number and website and add it to the database
-3. [Website](/web) - The front end website responsible for representing the data provided by the GraphQL API
-
-To learn more about each project headover to their respective directories
 
 ## Contributing
 
