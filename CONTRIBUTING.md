@@ -60,4 +60,3 @@ There are three parts to the project
 3. [Website](/web) - The front end website responsible for representing the data provided by the GraphQL API
 
 To learn more about each project headover to their respective directories.
-
