@@ -21,7 +21,7 @@ module.exports = merge(common, {
     hot: true,
     historyApiFallback: true,
     proxy: [{
-        context: ['/graphql/'],
+        context: ['/graphql', '/playground'],
         target: 'http://bedav-api'
       },
     ],
