@@ -6,7 +6,7 @@ WORKDIR /var/app/website
 COPY ./website .
 RUN npm ci
 
-COPY ./icons ../icons
+COPY ./icons ./icons
 COPY ./env /env
 RUN npm run build-prod
 

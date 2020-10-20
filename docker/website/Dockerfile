@@ -3,13 +3,11 @@ FROM node:slim
 RUN mkdir /var/app/website
 WORKDIR /var/app/website
 
-COPY ./website/package.json ./package.json
-COPY ./website/package-lock.json ./package-lock.json
+COPY ./website .
 
 RUN npm install
 
-COPY ./website .
-COPY ./icons ../icons
+COPY ./icons ./icons
 
 RUN npm run build-dev
 

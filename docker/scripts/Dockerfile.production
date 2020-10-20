@@ -1,11 +1,10 @@
 FROM python:3.8
 
-RUN mkdir /var/app
-WORKDIR /var/app
-COPY ./requirements.txt ./requirements.txt
-COPY ./api ./api
-COPY ./scripts ./scripts
-COPY ./pull.py ./pull.py
+RUN mkdir /var/app/scripts
+WORKDIR /var/app/scripts
+COPY ./scripts/requirements.txt ./requirements.txt
+COPY ./api ../api
+COPY ./scripts .
 
 RUN apt-get update
 RUN apt-get install -y binutils libproj-dev gdal-bin vim
@@ -20,4 +19,4 @@ RUN wget https://chromedriver.storage.googleapis.com/86.0.4240.22/chromedriver_l
     mv chromedriver /usr/local/bin && \
     rm -r chromedriver_linux64.zip
 
-CMD cd scripts && python bangalore.py && python pune.py
+CMD python bangalore.py && python pune.py
