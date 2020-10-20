@@ -13,6 +13,7 @@ services:
     environment:
       DB_USER: bedav
       DB_PASS: abcd
+      DJANGO_SECRET_KEY: "8+!qygafxk#dv@0a+7eywf9cgybqi3uzr#1$$1n_146z+ig!1yv"
     restart: on-failure
 
 
@@ -27,6 +28,7 @@ services:
     environment:
       DB_USER: bedav
       DB_PASS: abcd
+      DJANGO_SECRET_KEY: "8+!qygafxk#dv@0a+7eywf9cgybqi3uzr#1$$1n_146z+ig!1yv"
     restart: on-failure
   
   bedav-web:
