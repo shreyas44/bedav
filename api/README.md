@@ -1,6 +1,6 @@
 # bedav API
 
-This directory contains a Django Project named API. The Django application serves a GraphQL API built using Graphene and connected to the database via the Django ORM.
+This directory contains a Django Project named API. The Django application serves a GraphQL API built using Graphene and Graphene Django and connected to the database via the Django ORM.
 
 The GraphQL Schema Definition can be accessed at `/api/schema.graphql`
 

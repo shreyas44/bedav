@@ -1,61 +1,19 @@
 # bedav website
 
+All React components and service worker are in this directory.
+
 ## Contributing
 
-### Prerequisites
+For general instructions on contributing and setting up the local development environment look at [CONTRIBUTING](../CONTRIBUTING.md).
 
-1. virtualenv - If you don't have it, run `pip3 install virtualenv`
-2. node & npm
-3. PostgreSQL
+## Notes
 
-#### Go to your terminal and run the following commands
+The website is built using React as the frontend Javascript library and Apollo Client to fetch and cache data from the GraphQL API. For state management the Context API was used along with Hooks.
 
-### 1. Clone the repository
+### PWA and Offline Capabilites
 
-```
-mkdir bedav && \
-cd bedav && \
-git clone https://github.com/shreyas44/bedav && \
-```
+### Searching and Filtering
 
-### 2. Setup Python Virtual environment
+---
 
-```
-pip3 install virtualenv && \
-virtualenv . && \
-source bin/activate && \
-pip install -r requirements.txt && \
-```
-
-### 3. Run Scripts to Get initial data
-
-```
-cd scripts && \
-python bangalore.py && \
-python pune.py && \
-cd ..
-```
-
-### 4. Run python api server
-
-```
-cd api && \
-python manage.py runserver
-```
-
-### 5. Install node dependencies and build static files
-
-```
-npm install && \
-npm run build-dev
-```
-
-### 6. Run the webpack dev server
-
-```
-npm run start
-```
-
-Go to `http://localhost:9000` to view the website!
-
-**Make your changes, commit, push to your fork and create a Pull Request!**
+To learn more about making the website an Offline First PWA, check out [my blog post on Medium](https://medium.com/swlh/improving-the-user-experience-on-bedav-org-104640e3f455).
