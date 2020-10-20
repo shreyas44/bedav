@@ -7,11 +7,11 @@ const Dotenv = require("dotenv-webpack")
 
 module.exports = {
   entry: {
-    main: "./web/index.js",
+    main: "./src/index.js",
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./web/index.html",
+      template: "./src/index.html",
       filename: "../index.html",
       manifest: "./manifest.json"
     }),
@@ -23,7 +23,7 @@ module.exports = {
       ]
     }),
     new ServiceWorkerWebpackPlugin({
-      entry: "./web/sw.js",
+      entry: "./src/sw.js",
       filename: "../sw.js",
     }),
   ],
