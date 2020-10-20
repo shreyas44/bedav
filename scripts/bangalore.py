@@ -5,7 +5,6 @@ import django
 import time
 from pathlib import Path
 import pandas as pd
-import numpy as np
 import requests
 from bs4 import BeautifulSoup as bs
 from location import get_location_info, get_contact_info
