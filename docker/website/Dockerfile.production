@@ -1,12 +1,12 @@
 FROM node:slim as build
 
-RUN mkdir /var/app/website
+RUN mkdir -p /var/app/website
 WORKDIR /var/app/website
 
 COPY ./website .
 RUN npm ci
 
-COPY ./icons ./icons
+COPY ./website/icons ./icons
 COPY ./env /env
 RUN npm run build-prod
 

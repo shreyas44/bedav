@@ -1,6 +1,6 @@
 FROM python:3.8
 
-RUN mkdir /var/app/scripts
+RUN mkdir -p /var/app/scripts
 WORKDIR /var/app/scripts
 COPY ./scripts/requirements.txt ./requirements.txt
 COPY ./api ../api

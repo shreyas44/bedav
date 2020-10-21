@@ -1,6 +1,6 @@
 FROM nginx/unit:1.19.0-full
 
-RUN mkdir /var/app/api
+RUN mkdir -p /var/app/api
 WORKDIR /var/app/api
 COPY ./api/requirements.txt ./requirements.txt
 COPY ./api .

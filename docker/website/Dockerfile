@@ -1,14 +1,16 @@
 FROM node:slim
 
-RUN mkdir /var/app/website
+RUN mkdir -p /var/app/website
 WORKDIR /var/app/website
 
 COPY ./website .
 
 RUN npm install
 
-COPY ./icons ./icons
+COPY ./website/icons ./icons
 
 RUN npm run build-dev
+
+EXPOSE 80
 
 CMD ["npm", "run", "start"]
