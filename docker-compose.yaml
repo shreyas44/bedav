@@ -24,7 +24,7 @@ services:
     image: bedav-scripts
     volumes:
       - ./api:/var/app/api
-      - ./pull.py:/var/app/pull.py
+      - ./scripts:/var/app/scripts
     environment:
       DB_USER: bedav
       DB_PASS: abcd
@@ -34,7 +34,7 @@ services:
   bedav-web:
     build:
       context: ./
-      dockerfile: ./docker/web/Dockerfile
+      dockerfile: ./docker/website/Dockerfile
     image: bedav-web
     ports:
       - 80:80
