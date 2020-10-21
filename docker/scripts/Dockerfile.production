@@ -19,4 +19,4 @@ RUN wget https://chromedriver.storage.googleapis.com/86.0.4240.22/chromedriver_l
     mv chromedriver /usr/local/bin && \
     rm -r chromedriver_linux64.zip
 
-CMD python bangalore.py && python pune.py
+CMD python scrape.py
