@@ -18,7 +18,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new CopyPlugin({
       patterns: [
-        { from: "./web/manifest.json", to: "../manifest.json" },
+        { from: "./src/manifest.json", to: "../manifest.json" },
         { from: "./icons/**", to: "../" }
       ]
     }),
