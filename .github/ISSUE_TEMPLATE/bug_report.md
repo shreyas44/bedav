@@ -7,6 +7,13 @@ assignees: ''
 
 ---
 
+**Affected part of the App**
+Which part of the App is the Bug/Problem present in?
+- [ ] API
+- [ ] Scripts
+- [ ] Website
+- [ ] Other
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
