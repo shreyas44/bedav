@@ -6,7 +6,7 @@ from pathlib import Path
 import django
 from django.contrib.gis.geos import Point
 
-bedav_dir = str(Path(os.getcwd())) + '/api'
+bedav_dir = str(Path(os.getcwd())) + '/../api'
 sys.path.append(bedav_dir)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.settings')
 django.setup()
@@ -208,8 +208,3 @@ localities = get_localities(copy.deepcopy(data))
 hospitals = get_hospitals(data)
 add_localities(localities)
 add_hospitals(hospitals)
-
-
-import json
-with open("data.json", 'w') as file:
-  json.dump(hospitals, file, indent=2)
