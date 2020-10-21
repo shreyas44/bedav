@@ -21,9 +21,9 @@
 
 ### 4. Setup dev environment
 
-#### Install npm dependencies
+#### Install npm dependencies for the website and create a development build of it
 ```
-npm install
+cd website && npm install && npm run build-dev && cd ..
 ```
 
 #### Create and run docker containers
@@ -43,7 +43,7 @@ When you run `docker-compose up` and `docker-compose down` make sure you're in t
 
 ### Optional
 
-If you have access to Google Maps API keys, then you can go to `map.dev.env` and set `MAPS_API_KEY` to your Google Maps API key to view a complete version of the Google Maps on the website. 
+If you have access to Google Maps API keys, then you can go to `website/map.dev.env` and set `MAPS_API_KEY` to your Google Maps API key to view a complete version of the Google Maps on the website. 
 
 ### 5. Make, commit and push your changes
 
