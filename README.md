@@ -6,7 +6,7 @@ Find the number of available beds in hospitals across India
 The data for availility of beds in hospitals in scraped off official websites such as [BBMP](https://apps.bbmpgov.in/covidbedstatus/) using Selenium, Beautiful Soup 4 in Python.
 This data is then added to a database in a uniform format.
 
-A Django server then reads the data from the database and exposes the data in the form of a GraphQL API at https://bedav.org/graphql. You can play with the API at https://bedav.org/palyground.
+A Django server then reads the data from the database and exposes the data in the form of a GraphQL API at https://bedav.org/graphql. You can play with the API at https://bedav.org/playground.
 
 Using the data the API provides, the website displays the relevant information.
 
