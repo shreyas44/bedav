@@ -18,4 +18,4 @@ chromedriver
 **.log
 letsencrypt
 map.dev.env
-env
+*.env
