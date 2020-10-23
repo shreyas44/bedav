@@ -1,5 +1,5 @@
 # bedav (https://bedav.org)
-Find the number of available beds in hospitals across India
+Bedav is a website that keeps a track of the number of available beds reserved for covid patients in multiple regions across India. It also provides additional information of the hospitals including contact information, website and directions.
 
 ## How does the website work?
 
