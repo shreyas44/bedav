@@ -7,8 +7,7 @@ services:
       dockerfile: ./docker/api/Dockerfile.production
     image: bedav-api
     env_file: 
-      - /env/db.env
-      - /env/django.env
+      - ./.env
     restart: on-failure
   
   bedav-scripts:
@@ -18,9 +17,7 @@ services:
     image: bedav-scripts
     restart: on-failure
     env_file: 
-      - /env/db.env
-      - /env/map.env
-      - /env/django.env
+      - ./.env
 
   bedav-web:
     build:
@@ -41,7 +38,7 @@ services:
     volumes:
       - bedav-data:/var/lib/postgresql/data
     env_file: 
-      - /env/db.env
+      - ./.env
 
 volumes:
   bedav-data:
