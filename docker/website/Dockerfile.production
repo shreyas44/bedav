@@ -7,7 +7,6 @@ COPY ./website .
 RUN npm ci
 
 COPY ./website/icons ./icons
-COPY ./env /env
 RUN npm run build-prod
 
 FROM nginx
