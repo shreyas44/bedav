@@ -16,7 +16,6 @@ services:
       DJANGO_SECRET_KEY: "8+!qygafxk#dv@0a+7eywf9cgybqi3uzr#1$$1n_146z+ig!1yv"
     restart: on-failure
 
-
   bedav-scripts:
     build:
       context: ./
@@ -30,6 +29,7 @@ services:
       DB_PASS: abcd
       DJANGO_SECRET_KEY: "8+!qygafxk#dv@0a+7eywf9cgybqi3uzr#1$$1n_146z+ig!1yv"
     restart: on-failure
+    stdin_open: true  
   
   bedav-web:
     build:
@@ -51,7 +51,6 @@ services:
     environment:         
       POSTGRES_USER: bedav
       POSTGRES_PASSWORD: abcd
-
 
 volumes:
   bedav-data:
