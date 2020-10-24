@@ -10,4 +10,4 @@ RUN apt-get update
 RUN apt-get install -y binutils libproj-dev gdal-bin vim
 RUN pip install -r requirements.txt
 
-CMD ["python", "pull.py"]
+CMD python pull.py && sleep infinity

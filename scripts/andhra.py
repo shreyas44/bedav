@@ -29,12 +29,12 @@ def get_data(driver, city):
         columns = row.find_elements_by_tag_name("td")[1:]
         hospital = {
             "name": columns[0].text.rstrip(),
-            "ICU_total": int(columns[1].text),
-            "ICU_occupied": int(columns[2].text),
-            "gen_total": int(columns[4].text) + int(columns[7].text),
-            "gen_occupied": int(columns[5].text) + int(columns[8].text),
-            "oxy_total": int(columns[4].text),
-            "oxy_occupied": int(columns[5].text),
+            "ICU_total": int(columns[2].text),
+            "ICU_occupied": int(columns[3].text),
+            "gen_total": int(columns[5].text) + int(columns[8].text),
+            "gen_occupied": int(columns[6].text) + int(columns[9].text),
+            "oxy_total": int(columns[5].text),
+            "oxy_occupied": int(columns[6].text),
             "vent_total": int(columns[-1].text),
             "vent_occupied": 0,
             "city": city
