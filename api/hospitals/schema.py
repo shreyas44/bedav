@@ -172,7 +172,7 @@ class LocalityType(DjangoObjectType):
           {joins}
           {where_claus}
         ) data
-        WHERE data.locality_id = {locality.id} AND distance IS NOT NULL AND data.category != 'pri covid'
+        WHERE data.locality_id = {locality.id} AND distance IS NOT NULL AND (data.category != 'pri covid' OR data.category IS null)
         AND (data.hdu_total IS NOT NULL OR data.icu_total IS NOT NULL OR data.ventilators_total IS NOT NULL or general_total IS NOT NULL)
         ORDER BY COALESCE({order}, {"''" if order == 'name' else 0}) {'DESC' if descending else 'ASC'}
       '''
@@ -399,7 +399,7 @@ class Query(graphene.ObjectType):
           SELECT available, total, category, branch_id, time
           FROM "Equipment"
         ) AS b on b.branch_id = hos.id AND b.time = a.time
-        WHERE hos.category != 'pri covid'
+        WHERE hos.category != 'pri covid' OR hos.category IS null
         GROUP BY hos.id, a.time
         ORDER BY hos.name
       ) c on "Locality".id = c.locality_id
