@@ -172,7 +172,7 @@ class LocalityType(DjangoObjectType):
           {joins}
           {where_claus}
         ) data
-        WHERE data.locality_id = {locality.id} AND distance IS NOT NULL AND data.category != 'pri covid'
+        WHERE data.locality_id = {locality.id} AND distance IS NOT NULL AND (data.category != 'pri covid' OR data.category IS null)
         AND (data.hdu_total IS NOT NULL OR data.icu_total IS NOT NULL OR data.ventilators_total IS NOT NULL or general_total IS NOT NULL)
         ORDER BY COALESCE({order}, {"''" if order == 'name' else 0}) {'DESC' if descending else 'ASC'}
       '''
