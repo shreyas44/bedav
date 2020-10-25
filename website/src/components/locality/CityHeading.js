@@ -4,7 +4,7 @@ import { getFormattedTimestamp } from '../extra/funcs'
 
 const HeadingContainer = styled.div`
   font-family: "Quicksand", sans-serif;
-  color: #415c8a
+  color: var(--east-bay)
 `
 
 export const CityH = styled.h1`

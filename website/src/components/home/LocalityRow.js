@@ -8,7 +8,7 @@ const Row = styled.div`
   display: contents;
 
   & > div {
-    background-color: ${({counter}) => counter % 2 == 0 ? "white" : "#f8f8f8"}
+    background-color: ${({counter}) => counter % 2 == 0 ? "white" : "var(--alabaster)"}
   }
 `
 

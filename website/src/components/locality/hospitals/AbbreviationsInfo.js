@@ -6,14 +6,14 @@ import data from '../../extra'
 
 const StyledDiv = styled.div`
   font-size: 15px;
-  color: #777;
+  color: var(--boulder);
   display: ${({visible}) => visible ? "block" : "none"};
   margin-left: 5px;
 `
 
 const StyledInfoIcon = styled(InfoIcon)`
   font-size: 30px !important;
-  color: #555;
+  color: var(--emperor);
   cursor: pointer;
 `
 

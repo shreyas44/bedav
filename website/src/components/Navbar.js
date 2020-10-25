@@ -15,11 +15,11 @@ const NavbarContainer = styled.div`
 const StyledIconWrapper = styled.div`
   display: inline-block;
   cursor: pointer;
-  color: ${({active}) => active ? "#0275b3" : "#444"};
+  color: ${({ active }) => active ? "var(--deep-cerulean)" : "var(--tundora)"};
   margin-left: 10px;
 
   &:hover {
-    color: #0275b3;
+    color: var(--deep-cerulean);
   }
 `
 
@@ -27,7 +27,7 @@ export const StyledIcon = css`
   font-size: 2em;
   cursor: pointer;
   transition: font-size,color 0.1s;
-  color: #444;
+  color: var(--tundora);
   color: inherit;
 `
 

@@ -2,9 +2,9 @@
   "name": "bedav",
   "short_name": "bedav",
   "display": "standalone",
-  "background_color": "white",
+  "background_color": "var(--white)",
   "start_url": "/",
-  "theme_color": "#FFFFFF",
+  "theme_color": "var(--white)",
   "orientation": "portrait-primary",
   "icons": [
     {

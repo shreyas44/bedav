@@ -8,7 +8,7 @@ const DropdownItem = styled.div`
   align-items: center;
 
   &:hover {
-    background-color: #eee;
+    background-color: var(--gallery);
   }
 
   &:first-child {

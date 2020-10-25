@@ -20,7 +20,7 @@ export const StyledNumber = styled(GridCell)`
 
 const StyledInfoIcon = styled(InfoOutlinedIcon)`
   font-size: 19px !important;
-  color: #aaa;
+  color: var(--silver-chalice);
   padding-left: 5px;
 `
 
@@ -107,9 +107,9 @@ function HospitalRow(props) {
     <StyledRow counter={counter}>
       <HospitalName name={hospital.name} counter={counter} id={hospital.id}/>
 
-      <StyledNumber style={{color: '#004266'}} counter={counter}>{hospital.category !== "" && hospital.category !== null ? width <= 600 ? mobileCategories[categories[hospital.category]] : categories[hospital.category] : "N.A."}</StyledNumber>
+      <StyledNumber style={{ color: 'var(--regal-blue)'}} counter={counter}>{hospital.category !== "" && hospital.category !== null ? width <= 600 ? mobileCategories[categories[hospital.category]] : categories[hospital.category] : "N.A."}</StyledNumber>
 
-      <StyledNumber style={{color: '#004266'}} counter={counter} >{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
+      <StyledNumber style={{ color: 'var(--regal-blue)'}} counter={counter} >{props.geolocation ? `${hospital.distance} km` : "N.A."}</StyledNumber>
       
       {renderedFields}
     </StyledRow>

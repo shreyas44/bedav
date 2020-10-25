@@ -5,7 +5,7 @@ import { getFormattedTimestamp } from '../extra/funcs'
 
 const HeadingContainer = styled.div`
   margin: 0 auto;
-  color: #415c8a;
+  color: var(--east-bay);
   text-align: center;
 `
 

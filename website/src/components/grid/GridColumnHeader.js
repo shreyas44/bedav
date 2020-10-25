@@ -3,8 +3,8 @@ import GridCell from './GridCell'
 
 const GridColumnHeader = styled(GridCell)`
   font-weight: bold;
-  background-color: #f8f8f8 !important;
-  color: #0275b3;
+  background-color: var(--alabaster) !important;
+  color: var(--deep-cerulean);
   transition: all 0.1s;
   cursor: pointer;
   text-decoration: none;
@@ -13,8 +13,8 @@ const GridColumnHeader = styled(GridCell)`
   z-index: 2;
 
   &:hover {
-    color: #004266;
-    background-color: #eee !important;
+    color: var(--regal-blue);
+    background-color: var(--gallery) !important;
   }
 
   @media only screen and (max-width: 600px) {
