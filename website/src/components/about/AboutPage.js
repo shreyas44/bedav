@@ -42,8 +42,8 @@ function AboutPage() {
       <br>
       <b>Bengaluru</b>: <a href="https://apps.bbmpgov.in/covidbedstatus/">BBMP (Bruhat Bengaluru Mahanagara Palike)</a>
       <br>
-      <b>Pune</b>: <a href="https://www.divcommpunecovid.com/ccsbeddashboard/hsr">https://www.divcommpunecovid.com/ccsbeddashboard/hsr</a>
-    `,
+      <b>Pune, Kolapur, Sangli, Satara, Solapur</b>: <a href="https://www.divcommpunecovid.com/ccsbeddashboard/hsr">https://www.divcommpunecovid.com/ccsbeddashboard/hsr</a>
+      `,
     "How often is the data updated?": "The data is fetched from the sources every few hours, but it is updated only when the data has changed.",
     "Can I get access to the data?": "You can explore the current GraphQL API at <a href='/graphql'>Bedav GraphQL API</a>. However, this is just meant for the website. I am currently working on an API that everyone can use to get access to all the data available.",
     "Can I contribute?": "Yes, you can! Email me at <a href='mailto:shreyas.sreenivasa@gmail.com'>shreyas.sreenivasa@gmail.com</a>",
