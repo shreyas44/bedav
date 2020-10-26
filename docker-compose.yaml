@@ -37,7 +37,7 @@ services:
       dockerfile: ./docker/website/Dockerfile
     image: bedav-web
     ports:
-      - 80:80
+      - 80:8000
     volumes:
       - ./website:/var/app/website
 
