@@ -1,4 +1,7 @@
 # bedav (https://bedav.org)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 Bedav is a website that keeps a track of the number of available beds reserved for covid patients in multiple regions across India. It also provides additional information of the hospitals including contact information, website and directions.
 
 ## How does the website work?
@@ -58,3 +61,10 @@ If you have access to a Google Maps API key that has access to the JavaScript Ma
 You can contribute to the [scripts](/scripts), the [API](/api) or the [website](/website) itself. To learn more about contributing headover to [CONTRIBUTING](/CONTRIBUTING.md).
 
 ## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
