@@ -36,7 +36,7 @@ function AboutPage() {
 
   const faq = {
     "Is this official?": "No, this is not official. However, the data is from official sources. Look below for more info.",
-    "Who are you?": "My name is Shreyas, and I am a student currently in the 11th grade and studying at Delhi Public School Bangalore East in Bangalore.",
+    "Who made this?": "My name is Shreyas, and I am a student currently in the 11th grade and studying at Delhi Public School Bangalore East in Bangalore. I started this project, but it has since become open source, meaning other developers from around the world also contribute to this website.",
     "What are your sources?": `
       Sources for the respective cities are:
       <br>
@@ -46,7 +46,7 @@ function AboutPage() {
       `,
     "How often is the data updated?": "The data is fetched from the sources every few hours, but it is updated only when the data has changed.",
     "Can I get access to the data?": "You can explore the current GraphQL API at <a href='/graphql'>Bedav GraphQL API</a>. However, this is just meant for the website. I am currently working on an API that everyone can use to get access to all the data available.",
-    "Can I contribute?": "Yes, you can! Email me at <a href='mailto:shreyas.sreenivasa@gmail.com'>shreyas.sreenivasa@gmail.com</a>",
+    "Can I contribute?": "Yes, you can! Go to the <a href='https://github.com/shreyas44/bedav' target="_blank" >official github repository</a> or email me at <a href='mailto:shreyas.sreenivasa@gmail.com'>shreyas.sreenivasa@gmail.com</a>",
     "Is this only for Bengaluru?": "Currently yes it is only for Bengaluru. However, we are looking to expand to other cities quickly."
   }
 
