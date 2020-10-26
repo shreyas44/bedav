@@ -41,6 +41,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
+    "all-contributors-cli": "^6.19.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-relay": "^10.0.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
