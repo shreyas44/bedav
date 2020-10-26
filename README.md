@@ -56,3 +56,5 @@ If you have access to a Google Maps API key that has access to the JavaScript Ma
 ## Contributing
 
 You can contribute to the [scripts](/scripts), the [API](/api) or the [website](/website) itself. To learn more about contributing headover to [CONTRIBUTING](/CONTRIBUTING.md).
+
+## Contributors
