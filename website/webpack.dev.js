@@ -15,7 +15,7 @@ module.exports = merge(common, {
       "*"
     ],
     host: '0.0.0.0',
-    port: 80,
+    port: 8000,
     contentBase: "./dist",
     compress: true,
     hot: true,
