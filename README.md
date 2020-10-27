@@ -1,6 +1,6 @@
 # bedav (https://bedav.org)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 Bedav is a website that keeps a track of the number of available beds reserved for covid patients in multiple regions across India. It also provides additional information of the hospitals including contact information, website and directions.
 
@@ -69,6 +69,7 @@ You can contribute to the [scripts](/scripts), the [API](/api) or the [website](
   <tr>
     <td align="center"><a href="http://bedav.org"><img src="https://avatars2.githubusercontent.com/u/46835608?v=4" width="100px;" alt=""/><br /><sub><b>Shreyas Sreenivas</b></sub></a><br /><a href="https://github.com/shreyas44/bedav/commits?author=shreyas44" title="Code">💻</a> <a href="https://github.com/shreyas44/bedav/commits?author=shreyas44" title="Documentation">📖</a> <a href="#design-shreyas44" title="Design">🎨</a> <a href="#ideas-shreyas44" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-shreyas44" title="Maintenance">🚧</a> <a href="https://github.com/shreyas44/bedav/pulls?q=is%3Apr+reviewed-by%3Ashreyas44" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://sudipto.ghosh.pro"><img src="https://avatars3.githubusercontent.com/u/11232940?v=4" width="100px;" alt=""/><br /><sub><b>Sudipto Ghosh</b></sub></a><br /><a href="https://github.com/shreyas44/bedav/commits?author=sudiptog81" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/jeremylgrice"><img src="https://avatars0.githubusercontent.com/u/12513606?v=4" width="100px;" alt=""/><br /><sub><b>Jeremy Grice</b></sub></a><br /><a href="#content-jeremylgrice" title="Content">🖋</a></td>
   </tr>
 </table>
 
