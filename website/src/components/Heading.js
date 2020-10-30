@@ -27,7 +27,7 @@ function Heading() {
   return (
     <HeadingContainer>
       <StyledLink to="/">
-        Bedav -
+        Bedav
         <StyledDescription>
             Find hospital bed availability for COVID Patients across India
         </StyledDescription>
