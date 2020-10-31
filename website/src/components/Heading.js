@@ -29,7 +29,7 @@ function Heading() {
       <StyledLink to="/">
         Bedav
         <StyledDescription>
-            Find hospital bed availability for COVID Patients across India
+          Find the hospital you need
         </StyledDescription>
       </StyledLink>
       <Metadata></Metadata>
