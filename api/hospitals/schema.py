@@ -11,9 +11,9 @@ from django.db import connection
 from collections import namedtuple
 
 def namedtuplefetch(cursor, name):
-      desc = cursor.description
-      nt_result = namedtuple(name, [col[0] for col in desc])
-      return [nt_result(*row) for row in cursor.fetchall()]
+  desc = cursor.description
+  nt_result = namedtuple(name, [col[0] for col in desc])
+  return [nt_result(*row) for row in cursor.fetchall()]
 
 def get_id(encoded_id, is_int=True):
   id = base64.b64decode(encoded_id).decode("utf-8")
@@ -47,25 +47,24 @@ class DataCategory(graphene.Enum):
   VENTLILATORS = "vent"
 
 class HospitalType(graphene.ObjectType):
-  general_available = graphene.Int()
-  oxygen_available = graphene.Int()
-  icu_available = graphene.Int()
-  ventilators_available = graphene.Int()
-  hdu_available = graphene.Int()
-  general_total = graphene.Int()
-  oxygen_total = graphene.Int()
-  icu_total = graphene.Int()
-  ventilators_total = graphene.Int()
-  hdu_total = graphene.Int()
-  general_occupied = graphene.Int()
-  oxygen_occupied = graphene.Int()
-  icu_occupied = graphene.Int()
-  hdu_occupied = graphene.Int()
-  ventilators_occupied = graphene.Int()
-  distance = graphene.Float()
+  general_available = graphene.Int(description="Beds available in the General Ward")
+  oxygen_available = graphene.Int(description="Beds available with Oxygen")
+  icu_available = graphene.Int(description="Beds available in the Intensive Care Unit")
+  ventilators_available = graphene.Int(description="Ventilators Available")
+  hdu_available = graphene.Int(description="Beds available in the High Dependency Unit")
+  general_total = graphene.Int(description="Total number of beds in the General Ward")
+  oxygen_total = graphene.Int(description="Total number of beds with Oxygen")
+  icu_total = graphene.Int(description="Total number beds in the Intensive Care Unit")
+  ventilators_total = graphene.Int(description="Total number of Ventilators")
+  hdu_total = graphene.Int(description="Total number beds in the High Dependency Unit")
+  general_occupied = graphene.Int(description="Number of beds occupied in the General Ward")
+  oxygen_occupied = graphene.Int(description="Number of beds occupied with Oxygen")
+  icu_occupied = graphene.Int(description="Number of beds occupied in the Intensive Care Unit")
+  hdu_occupied = graphene.Int(description="Number of beds occupied in the HIgh Dependency Unit")
+  ventilators_occupied = graphene.Int(description="Number of ventilators occupied")
   locality = graphene.Field("hospitals.schema.LocalityType")
 
-  id = graphene.NonNull(graphene.ID)
+  id = graphene.NonNull(graphene.ID, description="Base64 encoded string which can be decoded to `Hospital:<hospitalId>` where `hospitalId` is a whole number unique to the hospital")
   name = graphene.String()
   website = graphene.String()
   phone = graphene.String()
@@ -100,12 +99,9 @@ class LocalityType(DjangoObjectType):
   occupied = graphene.Int()
   last_updated = graphene.Float()
   hospitals = relay.ConnectionField(HospitalConnection,
-    order_by=graphene.Argument(HospitalSortField,
-    required=False, default_value="distance"),
+    order_by=graphene.Argument(HospitalSortField, required=False, default_value="distance"),
     descending=graphene.Boolean(default_value=False, required=False),
     category_filters=graphene.List(graphene.String, required=False, default_value=[]),
-    lat=graphene.Float(required=False, default_value=0),
-    lon=graphene.Float(required=False, default_value=0),
     search_query=graphene.String(required=False, default_value='')
   )
 
