@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
-
+import Metadata from './Metadata'
 const HeadingContainer = styled.div`
   font-family: "Quicksand", sans-serif;
   float: left;
@@ -27,11 +27,12 @@ function Heading() {
   return (
     <HeadingContainer>
       <StyledLink to="/">
-        bedav
+        Bedav
         <StyledDescription>
           Find the hospital you need
         </StyledDescription>
       </StyledLink>
+      <Metadata></Metadata>
     </HeadingContainer>
   )
 }
