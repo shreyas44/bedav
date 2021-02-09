@@ -216,7 +216,12 @@ class Query(graphene.ObjectType):
   hospital = graphene.Field(HospitalType, id=graphene.NonNull(graphene.ID), lat=graphene.Float(default_value=0), lon=graphene.Float(default_value=0))
 
   localities = relay.ConnectionField(LocalityConnection)
-  locality = graphene.Field(LocalityType, name=graphene.String())
+  locality = graphene.Field(LocalityType, name=graphene.String(
+    description="The name of the locality if of the form `<city/district_name>-<state_name>`. \
+    For example, for Bangalore, Karnataka the locality name would be `bangalore-karnataka` and for \
+    West Godavri, Andhra Pradesh, it will be `west godavari-andhra pradesh`. A mapping of all \
+    the locations available to their locality names can be found at https://bedav.org/locality_mapping.json"
+  ))
 
   country = graphene.Field(CountryType)
 

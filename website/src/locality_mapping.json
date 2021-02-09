@@ -1,0 +1,24 @@
+{
+    "bangalore": "bengaluru-karnataka",
+    "bengaluru": "bengaluru-karnataka",
+
+    "pune": "pune-maharashtra",
+    "kohlapur": "kohlapur-maharashtra",
+    "sangli": "sangli-maharashtra",
+    "satara": "satara-maharashtra",
+    "solapur": "solapur-maharashtra",
+
+    "anatapur": "anatapur-andhra pradesh",
+    "chittoor": "chittoor-andhra pradesh",
+    "east godavari": "east godavari-andhra pradesh",
+    "guntur": "guntur-andhra pradesh",
+    "krishna": "krishna-andhra pradesh",
+    "kurnool": "kurnool-andhra pradesh",
+    "prakasam": "prakasam-andhra pradesh",
+    "nellore": "spsr nellore-andhra pradesh",
+    "srikakulam": "srikakulam-andhra pradesh",
+    "vishakapatanam": "vishakapatanam-andhra pradesh",
+    "vizianagaram": "vizianagaram-andhra pradesh",
+    "west godavari": "west godavari-andhra pradesh",
+    "kadapa": "kadapa-andhra pradesh" 
+}
