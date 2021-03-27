@@ -19,7 +19,7 @@ function Spinner() {
       <Loader 
         visible
         type="TailSpin"
-        color="#415c8a"
+        color="var(--east-bay)"
         height={50}
         width={50}
       />

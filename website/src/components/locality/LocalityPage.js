@@ -91,7 +91,7 @@ function LocalityPage(props) {
       confirmButtonText: "Always Allow",
       padding: '3em 1em',
       width: '33em',
-      confirmButtonColor: "#28a745"
+      confirmButtonColor: "var(--eucalyptus)"
     }).then(result => {
       if(result.isConfirmed === true) {
         setPosition()

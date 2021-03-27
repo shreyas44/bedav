@@ -15,14 +15,14 @@ const IconContainer = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.7);
 
   &:hover {
-    background-color: #f6f6f6; 
+    background-color: var(--wild-sand); 
   }
 `
 
 const StyledIcon = styled(props => <FontAwesomeIcon icon={faFilter} {...props}/>)`
   font-size: 1.3em !important;
   transition: font-size,color 0.1s;
-  color: #444;
+  color: var(--tundora);
   display: flex !important;
   align-content: center;
   justify-content: center;

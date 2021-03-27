@@ -17,7 +17,7 @@ const StyledHeadingName = styled(GridColumnHeader)`
 
   &:hover {
     font-size: 16px;
-    background-color: #f8f8f8;
+    background-color: var(--alabaster);
   }
 
   @media only screen and (max-width: 600px) {
@@ -28,8 +28,8 @@ const StyledHeadingName = styled(GridColumnHeader)`
 const StyledHeading = styled(StyledNumber)`
   font-weight: bold;
   padding: 15px;
-  background-color: #f8f8f8;
-  ${({sortable}) => sortable ? "cursor: pointer; &:hover {background-color: #eee;}" : null}
+  background-color: var(--alabaster);
+  ${({ sortable }) => sortable ? "cursor: pointer; &:hover {background-color: var(--gallery);}" : null}
 
   @media only screen and (max-width: 600px) {
     padding: 15px 10px;
@@ -41,7 +41,7 @@ const StyledWarningIcon = styled(ErrorOutlineIcon)`
   font-size: 20px !important;
   position: relative;
   bottom: 1px;
-  color: #e67519;
+  color: var(--zest);
   cursor: pointer;
 
   @media only screen and (max-width: 600px) {
@@ -57,7 +57,7 @@ const StyledOrderIcon = styled(FilterListIcon)`
   top: 5px;
   right: 5px;
   font-size: 16px !important;
-  color: ${({active}) => active ? '#ba7e0f' : '#ccc'};
+  color: ${({ active }) => active ? 'var(--meteor)' : 'var(--silver)'};
   transform: ${({descending}) => !descending ? 'rotate(180deg)' : 'rotate(0)'};
   transition: all 0.1s !important;
 
@@ -131,10 +131,10 @@ function HospitalGridHeader(props) {
     <StyledRow visible>
 
       <StyledHeadingName counter={2}>Name</StyledHeadingName>
-      <StyledHeading style={{color: '#004266'}}>Hospital Type</StyledHeading>
+      <StyledHeading style={{color: 'var(--regal-blue)'}}>Hospital Type</StyledHeading>
 
       <StyledHeading 
-        style={{color: '#004266'}}
+        style={{color: 'var(--regal-blue)'}}
         value="distance"
         onClick={props.geolocation ? handleClick : null}
         sortable={props.geolocation ? true : undefined}

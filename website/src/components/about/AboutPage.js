@@ -11,12 +11,12 @@ const MainContainer = styled.div`
   font-family: "Quicksand", sans-serif;
 
   & a, & a:visited {
-    color: #0071a6;
+    color: var(--allports);
     word-wrap: break-word;
   }
 
   & a:hover {
-    color: #003e5c;
+    color: var(--astronaut-blue);
   }
 
   @media only screen and (max-width: 600px) {

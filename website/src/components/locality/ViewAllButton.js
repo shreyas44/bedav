@@ -7,13 +7,13 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   font-family: "Quicksand", sans-serif;
   padding: 8px 15px;
-  box-shadow: 0 0 10px #ccc;
+  box-shadow: 0 0 10px var(--silver);
   border-radius: 5px;
   cursor: pointer;
   color: black;
 
   &:hover {
-    background-color: #eee;
+    background-color: var(--gallery);
   }
 
   &:visited {

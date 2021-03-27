@@ -7,9 +7,9 @@ const StyledDiv = styled.div`
   width: ${({size}) => size === "large" ? "25px" : size === "medium" ? "20px" : null};
   height: ${({size}) => size === "large" ? "25px" : size === "medium" ? "20px" : null};
   border-radius: 100%;
-  border: ${({checked}) => checked ? "none" : "1px solid #ccc" };
+  border: ${({ checked }) => checked ? "none" : "1px solid var(--silver)" };
   box-sizing: border-box;
-  background: ${({checked}) => checked ? "#0B6E4F" : "white"};
+  background: ${({ checked }) => checked ? "var(--salem)" : "var(--white)"};
   display: inline-block;
   cursor: pointer;
   display: flex;

@@ -32,14 +32,14 @@ const HospitalName = styled.div`
 
 const GetDirectionsButton = styled.div`
   font-weight: bold;
-  color: #34a1eb;
+  color: var(--picton-blue);
   padding: 8px 10px 10px;
-  border-top: 1px solid #aaa;
+  border-top: 1px solid var(--silver-chalice);
   cursor: pointer;
   border-radius: 0 0 5px 5px;
 
   &:hover {
-    background-color: #444;
+    background-color: var(--tundora);
   }
 
   & a {
@@ -48,7 +48,7 @@ const GetDirectionsButton = styled.div`
   }
 
   & a:visited {
-    color: #34a1eb;
+    color: var(--picton-blue);
   }
 `
 

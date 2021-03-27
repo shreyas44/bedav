@@ -31,7 +31,7 @@ const StyledText = styled.div`
   box-sizing: border-box;
   font-size: 16px;
   font-weight: bold;
-  color: #0073b5;
+  color: var(--deep-cerulean);
   text-decoration: none;
 
   & a, & a:visited {

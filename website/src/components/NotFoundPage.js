@@ -5,7 +5,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 const StyledIcon = styled(ErrorOutlineIcon)`
   font-size: 100px !important;
   margin: auto;
-  color: #ffcc00;
+  color: var(--supernova);
 `
 
 const NotFoundText = styled.div`
@@ -32,7 +32,7 @@ const NotFoundContainer = styled.div`
   height: 100vh;
   top: 0;
   width: 100%;
-  color: #cfa500;
+  color: var(--buddha-gold);
   margin-left: -10px;
 `
 

@@ -4,7 +4,7 @@ import { GridColumnHeader, GridCell } from '../grid'
 
 const Header = styled(GridCell)`
   font-weight: bold;
-  background-color: #f8f8f8;
+  background-color: var(--alabaster);
   display: flex;
   justify-content: center;
 `

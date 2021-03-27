@@ -4,7 +4,7 @@ import data from '../extra'
 
 const HeadingContainer = styled.div`
   margin: 0 0 25px 0;
-  color: #0275b3;
+  color: var(--deep-cerulean);
   font-family: "Quicksand", sans-seif;
 `
 

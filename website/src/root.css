@@ -1,0 +1,31 @@
+:root {
+  --white: #FFFFFF;
+  --alabaster: #FAFAFA;
+  --white-2: #FEFEFE;
+  --gallery: #EEEEEE;
+  --alto: #DDDDDD;
+  --silver: #CCCCCC;
+  --silver-chalice: #AAAAAA;
+  --boulder: #777777;
+  --dove-gray: #666666;
+  --emperor: #555555;
+  --tundora: #444444;
+  --mine-shaft: #333333;
+  --black: #000000; 
+
+  --wild-sand: #F6F6F6;
+  --east-bay: #415C8A;
+  --picton-blue: #34A1EB;
+  --deep-cerulean: #0275B3;
+  --allports: #0071A6;
+  --regal-blue: #004266;
+  --astronaut-blue: #003E5C;
+  --salem: #0B6E4F;
+  --fun-green: #008033;
+  --eucalyptus: #28A745;
+  --supernova: #FFCC00;
+  --buddha-gold: #CFA500;
+  --meteor: #BA7E0F;
+  --zest: #E67519;
+  --mojo: #C3423F;
+}

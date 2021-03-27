@@ -13,7 +13,7 @@ const SearchContainer = styled.div`
   box-shadow: 7px 15px 25px 0px rgba(0,0,0,0.1);
   margin: 10px 0 0;
   height: 60px;
-  border: 1px solid #FEFEFE;
+  border: 1px solid var(--white-2);
   display: flex;
   align-content: center;
   transition: all 0.1s;
@@ -45,7 +45,7 @@ const StyledIcon = css`
   padding: 0 0 0 20px !important;
   font-size: 1.75rem !important;
   transition: color 0.1s !important;
-  color: ${props => props.focused ? "#000" : "#777"};
+  color: ${props => props.focused ? "var(--black)" : "var(--boulder)"};
   background-color: white;
 
   @media only screen and (max-width: 600px) {

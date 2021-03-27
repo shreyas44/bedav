@@ -70,15 +70,15 @@ function AmountCard(props) {
 
   switch(name) {
     case 'Total':
-      color = "#004266"
+      color = "var(--regal-blue)"
       break
 
     case 'Available':
-      color = "#008033"
+      color = "var(--fun-green)"
       break
 
     case 'Occupied':
-      color = "#C3423F"
+      color = "var(--mojo)"
       break
   }
 

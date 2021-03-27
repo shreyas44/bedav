@@ -13,7 +13,7 @@ const BedTypeSectionContainer = styled.div`
 const BedTypeSectionHeader = styled.h2`
   margin: 0;
   font-size: 18px;
-  color: #333;
+  color: var(--mine-shaft);
 `
 
 const BedTypeCardsContainer = styled.div`
