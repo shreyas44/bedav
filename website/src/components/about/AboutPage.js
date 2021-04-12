@@ -26,7 +26,12 @@ const MainContainer = styled.div`
 
 const PageHeading = styled.h1`
   font-size: 30px;
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
+`
+
+const Announcement = styled.h3`
+  font-size: 22px;
+  margin: 0 0 20px;
 `
 
 function AboutPage() {
@@ -42,7 +47,9 @@ function AboutPage() {
       <br>
       <b>Bengaluru</b>: <a href="https://apps.bbmpgov.in/covidbedstatus/">BBMP (Bruhat Bengaluru Mahanagara Palike)</a>
       <br>
-      <b>Pune, Kolapur, Sangli, Satara, Solapur</b>: <a href="https://www.divcommpunecovid.com/ccsbeddashboard/hsr">https://www.divcommpunecovid.com/ccsbeddashboard/hsr</a>
+      <b>Pune, Kolapur, Sangli, Satara, Solapur</b>: <a href="https://www.divcommpunecovid.com/ccsbeddashboard/hsr">divcommpunecovid.com/ccsbeddashboard/hsr</a>
+      <br>
+      <b>Anatapur, Chittoor, East Godavari, Guntur, Krishna, Kurnool, Prakasam, Nellore, Srikakulam, Vishakapatanam, Vizianagaram, West Godavari, Kadapa</b>: <a href="http://dashboard.covid19.ap.gov.in/ims/hospbed_reports">dashboard.covid19.ap.gov.in/ims/hospbed_reports</a>
       `,
     "How often is the data updated?": "The data is fetched from the sources every few hours, but it is updated only when the data has changed.",
     "Can I get access to the data?": "You can explore the current GraphQL API at <a href='/graphql'>Bedav GraphQL API</a>. However, this is just meant for the website. I am currently working on an API that everyone can use to get access to all the data available.",
@@ -68,6 +75,9 @@ function AboutPage() {
       <PageHeading>
         About
       </PageHeading>
+      <Announcement>
+        Note, Bangalore is not visible anymore as BBMP stopped updating the data.
+      </Announcement>
       {items}
     </MainContainer>
   )
