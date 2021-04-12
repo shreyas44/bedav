@@ -49,7 +49,7 @@ function AboutPage() {
     "How often is the data updated?": "The data is fetched from the sources every few hours, but it is updated only when the data has changed.",
     "Can I get access to the data?": "You can explore the current GraphQL API at <a href='/graphql'>Bedav GraphQL API</a>. However, this is just meant for the website. I am currently working on an API that everyone can use to get access to all the data available.",
     "Can I contribute?": "Yes, you can! You can find our Github repository <a href='https://github.com/shreyas44/bedav' target='_blank'>here</a> or you can email me at <a href='mailto:shreyas.sreenivasa@gmail.com'>shreyas.sreenivasa@gmail.com</a>",
-    "Why is Bengaluru not visible anymore?": "Because BBMP stopped updating the data, and the website where they share the data has been down for a while."
+    "Why is Bengaluru not visible anymore?": "Because BBMP stopped updating the data, and <a href=\"https://apps.bbmpgov.in/covidbedstatus/\">the website</a> where they share the data has been down for a while."
   }
 
   const items = Object.keys(faq).map((question, index) => {
