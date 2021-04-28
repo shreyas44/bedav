@@ -5,19 +5,9 @@ import { connectionPlugin, makeSchema } from "nexus";
 
 import { ApolloServer } from "apollo-server";
 import { PrismaClient } from ".prisma/client";
-import { executor } from "./executor";
 import { join } from "path";
 
-const prisma = new PrismaClient({
-  log: [
-    {
-      emit: "event",
-      level: "query",
-    },
-  ],
-});
-
-prisma.$on("query", (e) => console.log(e.query));
+const prisma = new PrismaClient();
 
 const schema = makeSchema({
   types: { ...types, ...queries },
