@@ -1,6 +1,7 @@
+// @ts-nocheck
+
 import { Browser } from "puppeteer";
 import { LocationData } from "./types";
-// @ts-ignore
 import { PdfReader } from "pdfreader";
 import cheerio from "cheerio";
 import fs from "fs";

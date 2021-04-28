@@ -125,6 +125,7 @@ export function mergeLocationHospitals(locations: LocationData[]) {
 }
 
 export function mergeLocationData(arrays: LocationData[][]) {
+  arrays.map((array) => console.log(array.length));
   const locations: LocationData[] = [];
 
   for (const array of arrays) {
@@ -133,6 +134,9 @@ export function mergeLocationData(arrays: LocationData[][]) {
     }
   }
 
+  locations.map(({ name, state, hospitals }) =>
+    console.log({ name, state, length: hospitals.length })
+  );
   return locations;
 }
 

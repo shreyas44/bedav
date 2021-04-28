@@ -19,9 +19,9 @@ export interface HospitalData {
   address?: string;
   website?: string;
   email?: string;
-  coordiantes?: {
+  coordinates?: {
     latitude: number;
-    longitutde: number;
+    longitude: number;
   };
   placeId?: string;
 

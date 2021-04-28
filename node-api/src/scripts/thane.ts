@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HospitalData, LocationData } from "./types";
 
 import { Browser } from "puppeteer";

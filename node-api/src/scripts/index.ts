@@ -1,5 +1,4 @@
 import { cleanLocationNames, mergeLocationData } from "./utils";
-import { getObjects, saveUpdates } from "./saveData";
 
 import { LocationData } from "./types";
 import { getAndhraPageData } from "./andhra";
@@ -14,6 +13,7 @@ import { getThanePageData } from "./thane";
 import { getVadodaraPageData } from "./vadodara";
 import { join } from "path";
 import puppeteer from "puppeteer";
+import { saveData } from "./saveData";
 import { writeFileSync } from "fs";
 
 interface Times {
@@ -47,10 +47,12 @@ async function main() {
   console.log("--------Scraping Ended-----------");
 
   startTime = Date.now();
+
+  const updateTimestamp = Math.floor(Date.now() / 1000);
   let data = mergeLocationData(locationObjects);
   data = cleanLocationNames(data);
-  data = await getObjects(data);
-  await saveUpdates(data);
+  await saveData(data, updateTimestamp);
+
   endTime = Date.now();
 
   console.log(

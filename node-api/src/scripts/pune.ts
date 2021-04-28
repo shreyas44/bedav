@@ -153,8 +153,6 @@ export async function getPunePageData(
         page.waitForNavigation({ waitUntil: "networkidle0" }),
       ]);
 
-      console.log("hello");
-
       const cityHospitals = await getDistrictPageData(page);
       const index = getIndexOfLocation(city, hospitals);
       hospitals[index].hospitals = cityHospitals;

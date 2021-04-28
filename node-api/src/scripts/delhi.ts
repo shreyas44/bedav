@@ -62,6 +62,7 @@ async function getPageData(
       [type]: {
         total: parseInt(columns[1]),
         available: parseInt(columns[2]),
+        occupied: parseInt(columns[1]) - parseInt(columns[2]),
       },
     };
     hospitals.push(hospital);
