@@ -1,7 +1,5 @@
 import { arg, nonNull, queryField, stringArg } from "nexus";
 
-import { getCountry } from "../prisma/rawQueries";
-
 export const countryQuery = queryField("country", {
   type: "Country",
   resolve: () => ({}),

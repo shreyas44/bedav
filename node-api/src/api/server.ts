@@ -21,10 +21,6 @@ const schema = makeSchema({
         module: "@prisma/client",
         alias: "Prisma",
       },
-      {
-        module: require.resolve("./sourceTypes"),
-        alias: "SourceTypes",
-      },
     ],
     mapping: {
       State: "Prisma.State",
@@ -37,6 +33,7 @@ const schema = makeSchema({
     alias: "Context",
     export: "Context",
   },
+  shouldGenerateArtifacts: process.env.NODE_ENV === "production" ? false : true,
   plugins: [connectionPlugin()],
 });
 
