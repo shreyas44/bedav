@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["orderByAggregateGroup"]
+}
+
+enum Category {
+  icu
+  hdu
+  oxygen
+  general
+  ventilator
+}
+
+enum StateAbbreviation {
+  AN
+  AP
+  AR
+  AS
+  BR
+  CG
+  CH
+  DN
+  DD
+  DL
+  GA
+  GJ
+  HR
+  HP
+  JK
+  JH
+  KA
+  KL
+  LA
+  LD
+  MP
+  MH
+  MN
+  ML
+  MZ
+  NL
+  OR
+  PY
+  PB
+  RJ
+  SK
+  TN
+  TS
+  TR
+  UP
+  UK
+  WB
+}
+
+model State {
+  id        StateAbbreviation @id
+  name      String            @unique
+  locations Location[]
+
+  @@map("States")
+}
+
+model Location {
+  id        String            @id @default(uuid())
+  name      String
+  state     State             @relation(fields: [stateId], references: [id])
+  stateId   StateAbbreviation
+  hospitals Hospital[]
+
+  @@unique([name, stateId])
+  @@map("Locations")
+}
+
+model Hospital {
+  id   String @id @default(uuid())
+  name String
+
+  latitude  Float?
+  longitude Float?
+  address   String?
+
+  placeId String?
+
+  phone   String?
+  email   String?
+  website String?
+
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId String
+
+  availability       AvailabilityUpdate[]
+  latestAvailability LatestAvailabilityUpdate[]
+  lastUpdateAt       Int
+
+  @@unique([name, locationId])
+  @@map("Hospitals")
+}
+
+model AvailabilityUpdate {
+  id String @id @default(uuid())
+
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+  hospitalId String
+
+  category Category
+
+  available Int
+  occupied  Int?
+  total     Int?
+  timestamp Int
+
+  @@map("AvailabilityUpdates")
+}
+
+model LatestAvailabilityUpdate {
+  id String @id @default(uuid())
+
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+  hospitalId String
+
+  category Category
+
+  available Int
+  occupied  Int?
+  total     Int?
+  timestamp Int
+
+  @@unique([hospitalId, category])
+  @@map("AvailabilityUpdates")
+}
