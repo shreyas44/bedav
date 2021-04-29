@@ -1,0 +1,44 @@
+{
+  "name": "node-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.1.16",
+    "@prisma/client": "^2.21.2",
+    "apollo-server": "2.18.2",
+    "apollo-server-express": "^2.23.0",
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.6",
+    "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "graphql-jit": "^0.5.0",
+    "js-base64": "^3.6.0",
+    "nexus": "^1.0.0",
+    "pdf2json": "^1.2.1",
+    "pdfreader": "^1.2.8",
+    "prisma": "^2.21.2",
+    "puppeteer": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/node": "^15.0.0",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.4"
+  },
+  "scripts": {
+    "dev": "ts-node-dev --transpile-only --no-notify src/api/server.ts",
+    "scrape": "docker-compose exec api yarn docker:scrape",
+    "docker:scrape": "ts-node src/scripts/index.ts",
+    "prisma:migrate:dev": "docker-compose exec api yarn docker:prisma:migrate:dev",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio",
+    "docker:prisma:migrate:dev": "prisma migrate dev",
+    "build": "tsc",
+    "start": "node dist/api/server.js",
+    "scrape:prod": "node dist/scripts/index.js"
+  },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
+  }
+}
