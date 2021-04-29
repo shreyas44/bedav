@@ -30,14 +30,12 @@ const data = {
     },
     "delhi-dl": {
       categories: {
-        DCH: "Dedicated Covid Hospital",
-        DCHC: "Dedicated Covid Health Centre",
-        CCC: "Covid Care Centre",
+        PH: "Private Hospital",
+        GH: "Government Hospital",
       },
       mobileCategories: {
-        "Dedicated Covid Hospital": "DCH",
-        "Dedicated Covid Health Centre": "DCHC",
-        "Covid Care Centre": "CCC",
+        "Private Hospital": "PH",
+        "Government Hospital": "GH",
       },
     },
   },
@@ -62,61 +60,74 @@ const data = {
   },
 };
 
-data.localities["solapur-mh"] = data.localities["pune-mh"];
-data.localities["satara-mh"] = data.localities["pune-mh"];
-data.localities["sangli-mh"] = data.localities["pune-mh"];
-data.localities["kohlapur-mh"] = data.localities["pune-mh"];
+const mh1Locations = ["solapur-mh", "satara-mh", "sangli-mh", "kohlapur-mh"];
 
-data.columns["solapur-mh"] = data.columns["pune-mh"];
-data.columns["satara-mh"] = data.columns["pune-mh"];
-data.columns["sangli-mh"] = data.columns["pune-mh"];
-data.columns["kohlapur-mh"] = data.columns["pune-mh"];
+const tsLocations = [
+  "adilabad-ts",
+  "badradri-ts",
+  "hyderabad-ts",
+  "jagtial-ts",
+  "jangaon-ts",
+  "jayashankar-ts",
+  "jogulamba-ts",
+  "kamareddy-ts",
+  "karimnagar-ts",
+  "khammam-ts",
+  "komaram_bheem-ts",
+  "mahabubabad-ts",
+  "mahabubnagar-ts",
+  "mancherial-ts",
+  "medak-ts",
+  "medchal-ts",
+  "mulugu-ts",
+  "nagarkurnool-ts",
+  "nalgonda-ts",
+  "narayanpet-ts",
+  "nirmal-ts",
+  "nizamabad-ts",
+  "peddapalli-ts",
+  "rajanna-ts",
+  "rangareddy-ts",
+  "sangareddy-ts",
+  "siddipet-ts",
+  "suryapet-ts",
+  "vikarabad-ts",
+  "wanaparthy-ts",
+  "warangal_rural-ts",
+  "warangal_urban-ts",
+  "yadadri-ts",
+];
 
-data.columns["anantapur-ap"] = data.columns["pune-mh"];
-data.columns["chittoor-ap"] = data.columns["pune-mh"];
-data.columns["east_godavari-ap"] = data.columns["pune-mh"];
-data.columns["guntur-ap"] = data.columns["pune-mh"];
-data.columns["krishna-ap"] = data.columns["pune-mh"];
-data.columns["kurnool-ap"] = data.columns["pune-mh"];
-data.columns["prakasam-ap"] = data.columns["pune-mh"];
-data.columns["spsr_nellore-ap"] = data.columns["pune-mh"];
-data.columns["srikakulam-ap"] = data.columns["pune-mh"];
-data.columns["vishakapatanam-ap"] = data.columns["pune-mh"];
-data.columns["vizianagaram-ap"] = data.columns["pune-mh"];
-data.columns["west_godavari-ap"] = data.columns["pune-mh"];
-data.columns["kadapa-ap"] = data.columns["pune-mh"];
+const apLocations = [
+  "anantapur-ap",
+  "chittoor-ap",
+  "east_godavari-ap",
+  "guntur-ap",
+  "krishna-ap",
+  "kurnool-ap",
+  "prakasam-ap",
+  "spsr_nellore-ap",
+  "srikakulam-ap",
+  "visakhapatanam-ap",
+  "vizianagaram-ap",
+  "west_godavari-ap",
+  "kadapa-ap",
+];
 
-data.columns["badradri-ts"] = data.columns["adilabad-ts"];
-data.columns["hyderabad-ts"] = data.columns["adilabad-ts"];
-data.columns["jagtial-ts"] = data.columns["adilabad-ts"];
-data.columns["jangaon-ts"] = data.columns["adilabad-ts"];
-data.columns["jayashankar-ts"] = data.columns["adilabad-ts"];
-data.columns["jogulamba-ts"] = data.columns["adilabad-ts"];
-data.columns["kamareddy-ts"] = data.columns["adilabad-ts"];
-data.columns["karimnagar-ts"] = data.columns["adilabad-ts"];
-data.columns["khammam-ts"] = data.columns["adilabad-ts"];
-data.columns["komaram_bheem-ts"] = data.columns["adilabad-ts"];
-data.columns["mahabubabad-ts"] = data.columns["adilabad-ts"];
-data.columns["mahabubnagar-ts"] = data.columns["adilabad-ts"];
-data.columns["mancherial-ts"] = data.columns["adilabad-ts"];
-data.columns["medak-ts"] = data.columns["adilabad-ts"];
-data.columns["medchal-ts"] = data.columns["adilabad-ts"];
-data.columns["mulugu-ts"] = data.columns["adilabad-ts"];
-data.columns["nagarkurnool-ts"] = data.columns["adilabad-ts"];
-data.columns["nalgonda-ts"] = data.columns["adilabad-ts"];
-data.columns["narayanpet-ts"] = data.columns["adilabad-ts"];
-data.columns["nirmal-ts"] = data.columns["adilabad-ts"];
-data.columns["nizamabad-ts"] = data.columns["adilabad-ts"];
-data.columns["peddapalli-ts"] = data.columns["adilabad-ts"];
-data.columns["rajanna-ts"] = data.columns["adilabad-ts"];
-data.columns["rangareddy-ts"] = data.columns["adilabad-ts"];
-data.columns["sangareddy-ts"] = data.columns["adilabad-ts"];
-data.columns["siddipet-ts"] = data.columns["adilabad-ts"];
-data.columns["suryapet-ts"] = data.columns["adilabad-ts"];
-data.columns["vikarabad-ts"] = data.columns["adilabad-ts"];
-data.columns["wanaparthy-ts"] = data.columns["adilabad-ts"];
-data.columns["warangal_rural-ts"] = data.columns["adilabad-ts"];
-data.columns["warangal_urban-ts"] = data.columns["adilabad-ts"];
-data.columns["yadadri-ts"] = data.columns["adilabad-ts"];
+apLocations.map(
+  (location) => (data.columns[location] = data.columns["pune-mh"])
+);
+
+mh1Locations.map((location) => {
+  data.localities[location] = data.localities["pune-mh"];
+  data.columns[location] = data.columns["pune-mh"];
+});
+
+tsLocations.map((location) => {
+  data.localities[location] = data.localities["delhi-dl"];
+  data.columns[location] = data.columns["adilabad-ts"];
+});
+
+data.localities["nashik-mh"] = data.localities["pune-mh"];
 
 export default data;

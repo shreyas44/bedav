@@ -131,15 +131,23 @@ function HospitalRow(props) {
     </NumberCell>
   ));
 
+  const categoryKey = {
+    dchc: "DCHC",
+    dch: "DCH",
+    ccc: "CCC",
+    gov: "GH",
+    pri: "PH",
+  };
+
   return (
     <StyledRow counter={counter}>
       <HospitalName name={hospital.name} counter={counter} id={hospital.id} />
 
       <StyledNumber style={{ color: "#004266" }} counter={counter}>
-        {hospital.category !== "" && hospital.category !== null
+        {hospital.category
           ? width <= 600
-            ? mobileCategories[categories[hospital.category]]
-            : categories[hospital.category]
+            ? mobileCategories[categories[categoryKey[hospital.category]]]
+            : categories[categoryKey[hospital.category]]
           : "N.A."}
       </StyledNumber>
 

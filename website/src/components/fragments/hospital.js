@@ -7,6 +7,7 @@ export const HospitalInfo = gql`
     latitude
     longitude
     placeId
+    category
 
     icu {
       available

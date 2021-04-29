@@ -37,7 +37,9 @@ function HospitalGrid(props) {
         columnTemplate={`minmax(250px, 300px) minmax(150px, 225px) repeat(${
           columns.length + 1
         }, auto)`}
-        mobileColumnTemplate="minmax(150px, 175px) repeat(6, auto)"
+        mobileColumnTemplate={`minmax(150px, 175px) repeat(${
+          columns.length + 2
+        }, auto)`}
       >
         <HospitalGridHeader
           geolocation={props.geolocation}
