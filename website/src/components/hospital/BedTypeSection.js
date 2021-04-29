@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import AmountCard from './AmountCard'
+import AmountCard from "./AmountCard";
+import React from "react";
+import styled from "styled-components";
 
 const BedTypeSectionContainer = styled.div`
   margin-bottom: 30px;
@@ -8,13 +8,13 @@ const BedTypeSectionContainer = styled.div`
   @media only screen and (max-width: 600px) {
     margin-bottom: 25px;
   }
-`
+`;
 
 const BedTypeSectionHeader = styled.h2`
   margin: 0;
   font-size: 18px;
   color: #333;
-`
+`;
 
 const BedTypeCardsContainer = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ const BedTypeCardsContainer = styled.div`
     padding: 15px;
     box-sizing: border-box;
     height: 100px;
-    box-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
     position: relative;
     border-radius: 5px;
 
@@ -47,25 +47,28 @@ const BedTypeCardsContainer = styled.div`
       margin: 0 5px;
       padding: 10px;
       height: 80px;
-      box-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+      box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
     }
   }
-`
+`;
 
 function BedTypeSection(props) {
-  const {sectionName, values} = props
+  let { sectionName, values } = props;
+  values = { ...values };
 
-  const cards = Object.keys(values).map((name, index) => <AmountCard key={index} name={name}>{values[name]}</AmountCard>)
+  if (values["__typename"]) delete values["__typename"];
+  const cards = Object.keys(values).map((name, index) => (
+    <AmountCard key={index} name={name}>
+      {values[name]}
+    </AmountCard>
+  ));
+
   return (
     <BedTypeSectionContainer>
-      <BedTypeSectionHeader>
-        {sectionName}
-      </BedTypeSectionHeader>
-      <BedTypeCardsContainer>
-        {cards}
-      </BedTypeCardsContainer>
+      <BedTypeSectionHeader>{sectionName}</BedTypeSectionHeader>
+      <BedTypeCardsContainer>{cards}</BedTypeCardsContainer>
     </BedTypeSectionContainer>
-  )
+  );
 }
 
-export default BedTypeSection
+export default BedTypeSection;

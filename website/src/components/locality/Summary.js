@@ -1,27 +1,21 @@
-import React from 'react'
-import styled from 'styled-components'
-import AmountCard from '../hospital/AmountCard'
+import AmountCard from "../hospital/AmountCard";
+import React from "react";
+import styled from "styled-components";
 
 const SummaryContainer = styled.div`
   display: flex;
   margin: 15px 0;
   justify-content: space-between;
-`
+`;
 
-function Summary({locality}) {
+function Summary({ availability }) {
   return (
     <SummaryContainer>
-      <AmountCard name="Available">
-        {locality.available}
-      </AmountCard>
-      <AmountCard name="Occupied">
-        {locality.occupied}
-      </AmountCard>
-     <AmountCard name="Total">
-        {locality.total}
-      </AmountCard>
+      <AmountCard name="Available">{availability.available}</AmountCard>
+      <AmountCard name="Occupied">{availability.occupied}</AmountCard>
+      <AmountCard name="Total">{availability.total}</AmountCard>
     </SummaryContainer>
-  )
+  );
 }
 
-export default Summary
+export default Summary;

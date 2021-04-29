@@ -1,12 +1,14 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 const CountryFragment = gql`
   fragment CountryFragment on Country {
+    availability {
+      total
+      occupied
+      available
+    }
     lastUpdated
-    available
-    occupied
-    total
   }
-`
+`;
 
-export default CountryFragment
+export default CountryFragment;

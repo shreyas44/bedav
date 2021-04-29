@@ -1,12 +1,12 @@
 const data = {
   localities: {
-    "bengaluru-karnataka": {
+    "bengaluru-ka": {
       categories: {
         "pri hos": "Private Hospital",
         "gov hos": "Government Hospital",
         "pri med": "Private Medical College",
         "gov med": "Government Medical College",
-        "covid": "Covid Care Centre",
+        covid: "Covid Care Centre",
       },
       mobileCategories: {
         "Government Hospital": "GH",
@@ -16,69 +16,59 @@ const data = {
         "Covid Care Centre": "CCC",
       },
     },
-    "pune-maharashtra": {
+    "pune-mh": {
       categories: {
-        "DCH": "Dedicated Covid Hospital",
-        "DCHC": "Dedicated Covid Health Centre",
-        "CCC": "Covid Care Centre"
+        DCH: "Dedicated Covid Hospital",
+        DCHC: "Dedicated Covid Health Centre",
+        CCC: "Covid Care Centre",
       },
       mobileCategories: {
         "Dedicated Covid Hospital": "DCH",
         "Dedicated Covid Health Centre": "DCHC",
-        "Covid Care Centre": "CCC"
-      }
-    }  
+        "Covid Care Centre": "CCC",
+      },
+    },
   },
   columns: {
-    "bengaluru-karnataka": [
-      "general",
-      "hdu",
-      "icu",
-      "ventilator"
-    ],
+    "bengaluru-ka": ["general", "hdu", "icu", "ventilator"],
 
-    "pune-maharashtra": [
-      "general",
-      "oxygen",
-      "icu",
-      "ventilator"
-    ]
+    "pune-mh": ["general", "oxygen", "icu", "ventilator"],
   },
   abbreviations: {
-    "HDU": "High Dependency Unit",
-    "ICU": "Intensive Care Unit"
+    HDU: "High Dependency Unit",
+    ICU: "Intensive Care Unit",
   },
   columnAbbreviations: {
     general: "General",
     oxygen: "General with O2",
     icu: "ICU",
     hdu: "HDU",
-    ventilator: "Ventilator"
+    ventilator: "Ventilator",
   },
-}
+};
 
-data.localities["solapur-maharashtra"] = data.localities["pune-maharashtra"]
-data.localities["satara-maharashtra"] = data.localities["pune-maharashtra"]
-data.localities["sangli-maharashtra"] = data.localities["pune-maharashtra"]
-data.localities["kohlapur-maharashtra"] = data.localities["pune-maharashtra"]
+data.localities["solapur-mh"] = data.localities["pune-mh"];
+data.localities["satara-mh"] = data.localities["pune-mh"];
+data.localities["sangli-mh"] = data.localities["pune-mh"];
+data.localities["kohlapur-mh"] = data.localities["pune-mh"];
 
-data.columns["solapur-maharashtra"] = data.columns["pune-maharashtra"]
-data.columns["satara-maharashtra"] = data.columns["pune-maharashtra"]
-data.columns["sangli-maharashtra"] = data.columns["pune-maharashtra"]
-data.columns["kohlapur-maharashtra"] = data.columns["pune-maharashtra"]
+data.columns["solapur-mh"] = data.columns["pune-mh"];
+data.columns["satara-mh"] = data.columns["pune-mh"];
+data.columns["sangli-mh"] = data.columns["pune-mh"];
+data.columns["kohlapur-mh"] = data.columns["pune-mh"];
 
-data.columns["anantapur-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["chittoor-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["east godavari-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["guntur-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["krishna-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["kurnool-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["prakasam-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["spsr nellore-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["srikakulam-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["vishakapatanam-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["vizianagaram-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["west godavari-andhra pradesh"] = data.columns["pune-maharashtra"]
-data.columns["kadapa-andhra pradesh"] = data.columns["pune-maharashtra"]
+data.columns["anantapur-ap"] = data.columns["pune-mh"];
+data.columns["chittoor-ap"] = data.columns["pune-mh"];
+data.columns["east_godavari-ap"] = data.columns["pune-mh"];
+data.columns["guntur-ap"] = data.columns["pune-mh"];
+data.columns["krishna-ap"] = data.columns["pune-mh"];
+data.columns["kurnool-ap"] = data.columns["pune-mh"];
+data.columns["prakasam-ap"] = data.columns["pune-mh"];
+data.columns["spsr_nellore-ap"] = data.columns["pune-mh"];
+data.columns["srikakulam-ap"] = data.columns["pune-mh"];
+data.columns["vishakapatanam-ap"] = data.columns["pune-mh"];
+data.columns["vizianagaram-ap"] = data.columns["pune-mh"];
+data.columns["west_godavari-ap"] = data.columns["pune-mh"];
+data.columns["kadapa-ap"] = data.columns["pune-mh"];
 
-export default data
+export default data;

@@ -1,37 +1,57 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
-const HospitalInfo = gql`
+export const HospitalInfo = gql`
   fragment HospitalInfoFragment on Hospital {
     id
     name
     latitude
     longitude
-    generalOccupied
-    generalAvailable
-    oxygenOccupied
-    oxygenAvailable
-    hduOccupied
-    hduAvailable
-    icuOccupied
-    icuAvailable
-    ventilatorsOccupied
-    ventilatorsAvailable
-    generalTotal
-    oxygenTotal
-    ventilatorsTotal
-    icuTotal
-    hduTotal
-    category
+    placeId
+
+    icu {
+      available
+      occupied
+      total
+    }
+
+    hdu {
+      available
+      occupied
+      total
+    }
+
+    ventilator {
+      available
+      occupied
+      total
+    }
+
+    general {
+      available
+      occupied
+      total
+    }
+
+    oxygen {
+      available
+      occupied
+      total
+    }
+
+    # category
     address
     phone
     website
 
-    locality {
+    location {
       id
       name
-      state
+      state {
+        id
+        name
+      }
     }
   }
-`
+`;
 
-export default HospitalInfo
+export default HospitalInfo;

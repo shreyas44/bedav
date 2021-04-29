@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import AmountCard from '../hospital/AmountCard'
-import { addCommas } from '../extra/funcs'
+import AmountCard from "../hospital/AmountCard";
+import React from "react";
+import { addCommas } from "../extra/funcs";
+import styled from "styled-components";
 
 const SummaryContainer = styled.div`
   display: flex;
@@ -9,22 +9,16 @@ const SummaryContainer = styled.div`
   max-width: 700px;
   margin: 20px auto 0;
   position: relative;
-`
+`;
 
-function Summary({country}) {
+function Summary({ availability }) {
   return (
     <SummaryContainer>
-      <AmountCard name="Available">
-        {country.available}
-      </AmountCard>
-      <AmountCard name="Occupied">
-        {country.occupied}
-      </AmountCard>
-      <AmountCard name="Total">
-        {country.total}
-      </AmountCard>
+      <AmountCard name="Available">{availability.available}</AmountCard>
+      <AmountCard name="Occupied">{availability.occupied}</AmountCard>
+      <AmountCard name="Total">{availability.total}</AmountCard>
     </SummaryContainer>
-  )
+  );
 }
 
-export default Summary
+export default Summary;

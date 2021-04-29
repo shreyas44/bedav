@@ -1,13 +1,22 @@
-import React, { useRef } from 'react'
-import styled from 'styled-components'
-import LocalityRow from './LocalityRow'
+import React, { useRef } from "react";
+
+import LocalityRow from "./LocalityRow";
 
 function LocalityList(props) {
-  const {localities} = props
-  const counter = useRef(-1)
-  const items = localities.map(locality => { counter.current += 1; return <LocalityRow key={`${locality.node.name}-${locality.node.state}`} locality={locality.node} counter={counter.current}/> } )
+  const { locations } = props;
+  const counter = useRef(-1);
+  const items = locations.map((location) => {
+    counter.current += 1;
+    return (
+      <LocalityRow
+        key={`${location.node.name}-${location.node.state.id}`}
+        location={location.node}
+        counter={counter.current}
+      />
+    );
+  });
 
-  return <>{items}</>
+  return <>{items}</>;
 }
 
-export default LocalityList
+export default LocalityList;

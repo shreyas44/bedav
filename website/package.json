@@ -7,11 +7,10 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev": "webpack --config webpack.dev.js",
-    "build-prod": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --config webpack.dev.js --open",
-    "relay": "relay-compiler --src ./src --schema ./src/schema.graphql"
+    "build:dev": "webpack --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js",
+    "dev": "webpack-dev-server --config webpack.dev.js --open",
+    "relay": "relay-compiler --src ./src --schema ../node-api/generated/schema.graphql"
   },
   "keywords": [],
   "author": "",

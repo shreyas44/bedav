@@ -1,14 +1,20 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
-const LocalityInfoFragment = gql`
-  fragment LocalityInfoFragment on Locality {
+const LocationInfoFragment = gql`
+  fragment LocationInfoFragment on Location {
     name
-    state
     lastUpdated
-    total
-    occupied
-    available
-    lastUpdated
+
+    availability {
+      total
+      occupied
+      available
+    }
+
+    state {
+      id
+      name
+    }
   }
-`
-export default LocalityInfoFragment
+`;
+export default LocationInfoFragment;
