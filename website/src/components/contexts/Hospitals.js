@@ -41,16 +41,22 @@ let HospitalsProvider = (props) => {
 
   //sorting
   hospitals.sort((hospital, nextHospital) => {
+    console.log(hospital.icu);
+    const currentValue =
+      (hospital[sortValue.field] && hospital[sortValue.field][dataToShow]) || 0;
+    const nextValue =
+      (nextHospital[sortValue.field] &&
+        nextHospital[sortValue.field][dataToShow]) ||
+      0;
+
     if (sortValue.descending) {
       return sortValue !== "distance"
-        ? nextHospital[sortValue.field][dataToShow] -
-            hospital[sortValue.field][dataToShow]
+        ? nextValue - currentValue
         : nextHospital.distance - hospital.distance;
     }
 
     return sortValue !== "distance"
-      ? hospital[sortValue.field][dataToShow] -
-          nextHospital[sortValue.field][dataToShow]
+      ? currentValue - nextValue
       : hospital.distance - nextHospital.distance;
   });
 

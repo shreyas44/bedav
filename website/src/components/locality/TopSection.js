@@ -47,7 +47,7 @@ function TopSection({ location }) {
       <InfoContainer>
         <CityContainer focused={focused && width <= 600 ? 1 : 0}>
           <CityHeading lastUpdated={location.lastUpdated}>
-            {location.name}
+            {location.name.split("_").join(" ")}
           </CityHeading>
           <ViewAllButton />
         </CityContainer>

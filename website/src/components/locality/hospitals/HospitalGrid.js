@@ -6,6 +6,7 @@ import HospitalGridHeader from "./HospitalGridHeader";
 import HospitalList from "./HospitalList";
 import React from "react";
 import styled from "styled-components";
+import { useColumns } from "../../hooks";
 
 const OptionsContainer = styled.div`
   height: fit-content;
@@ -25,6 +26,7 @@ const SectionContainer = styled.div`
 `;
 
 function HospitalGrid(props) {
+  const columns = useColumns();
   return (
     <SectionContainer>
       <OptionsContainer>
@@ -32,7 +34,9 @@ function HospitalGrid(props) {
         <HospitalDataDropdown />
       </OptionsContainer>
       <GridContainer
-        columnTemplate="minmax(250px, 300px) minmax(150px, 225px) repeat(5, auto)"
+        columnTemplate={`minmax(250px, 300px) minmax(150px, 225px) repeat(${
+          columns.length + 1
+        }, auto)`}
         mobileColumnTemplate="minmax(150px, 175px) repeat(6, auto)"
       >
         <HospitalGridHeader

@@ -58,7 +58,6 @@ function LocalityPage(props) {
       locationState: localityRef.current.split("-")[1]?.toUpperCase(),
     },
     fetchPolicy: "cache-and-network",
-    errorPolicy: "all",
   });
 
   useEffect(() => {

@@ -46,12 +46,16 @@ function LocalityRow(props) {
           onClick={(event) => event.stopPropagation()}
           to={`/${location.name.toLowerCase()}-${location.state.id.toLowerCase()}/`}
         >
-          {location.name}, {location.state.name}
+          {location.name.split("_").join(" ")}, {location.state.name}
         </StyledLink>
       </GridColumnHeader>
-      <NumberCell colorTheme="green">{availability.available}</NumberCell>
-      <NumberCell colorTheme="red">{availability.occupied}</NumberCell>
-      <NumberCell colorTheme="total">{availability.total}</NumberCell>
+      <NumberCell colorTheme="green">
+        {availability.available || "N.A."}
+      </NumberCell>
+      <NumberCell colorTheme="red">
+        {availability.occupied || "N.A."}
+      </NumberCell>
+      <NumberCell colorTheme="total">{availability.total || "N.A."}</NumberCell>
     </Row>
   );
 }

@@ -127,7 +127,7 @@ function HospitalRow(props) {
       : null;
   const renderedFields = columns.map((item, index) => (
     <NumberCell colorTheme={colorTheme} key={index} counter={counter}>
-      {hospital[item].total ? hospital[item][dataToShow] : "N.A."}
+      {hospital[item]?.total ? hospital[item][dataToShow] : "N.A."}
     </NumberCell>
   ));
 

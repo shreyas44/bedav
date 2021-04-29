@@ -7,13 +7,15 @@ function LocalityList(props) {
   const counter = useRef(-1);
   const items = locations.map((location) => {
     counter.current += 1;
-    return (
-      <LocalityRow
-        key={`${location.node.name}-${location.node.state.id}`}
-        location={location.node}
-        counter={counter.current}
-      />
-    );
+
+    if (location)
+      return (
+        <LocalityRow
+          key={`${location.node.name}-${location.node.state.id}`}
+          location={location.node}
+          counter={counter.current}
+        />
+      );
   });
 
   return <>{items}</>;
