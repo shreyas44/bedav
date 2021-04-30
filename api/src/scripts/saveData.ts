@@ -1,6 +1,13 @@
 import { Availability, HospitalData, LocationData } from "./types";
 import { Category, PrismaClient } from ".prisma/client";
 import { LatestAvailabilityUpdate, Prisma } from "@prisma/client";
+import {
+  generalLoader,
+  hduLoader,
+  icuLoader,
+  oxygenLoader,
+  ventilatorLoader,
+} from "../api/loaders";
 import { getLocationCoordinates, getPlaceDetails, states } from "../utils";
 
 import { Client } from "@googlemaps/google-maps-services-js";
@@ -34,9 +41,7 @@ function getSaveableUpdates(hospital: HospitalData, timestamp: number) {
 
 async function saveLatestTimestamps() {}
 
-async function saveLatestUpdate() {
-  const prisma = new PrismaClient();
-
+async function saveLatestUpdate(prisma: PrismaClient) {
   const locations = await prisma.location.findMany({
     include: {
       hospitals: {
@@ -88,7 +93,11 @@ async function saveLatestUpdate() {
   }
 
   await prisma.$transaction(updates);
-  await prisma.$disconnect();
+  icuLoader.clearAll();
+  hduLoader.clearAll();
+  ventilatorLoader.clearAll();
+  generalLoader.clearAll();
+  oxygenLoader.clearAll();
 }
 
 export async function saveData(
@@ -187,5 +196,5 @@ export async function saveData(
   }
 
   await prisma.$disconnect();
-  await saveLatestUpdate();
+  await saveLatestUpdate(prisma);
 }

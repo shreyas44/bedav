@@ -1,5 +1,12 @@
 import Prisma, { PrismaPromise, StateAbbreviation } from ".prisma/client";
 import { enumType, objectType } from "nexus";
+import {
+  generalLoader,
+  hduLoader,
+  icuLoader,
+  oxygenLoader,
+  ventilatorLoader,
+} from "./loaders";
 import { getConnection, getPrismaPaginationArgs } from "../utils";
 
 export const StateAbbreviationEnum = enumType({
@@ -249,72 +256,36 @@ export const Hospital = objectType({
 
     t.field("icu", {
       type: "Availability",
-      async resolve(hospital, args, ctx) {
-        const updates = await ctx.prisma.hospital
-          .findUnique({
-            where: { id: hospital.id },
-          })
-          .latestAvailability({
-            where: { category: "icu" },
-          });
-
-        return updates && updates[0];
+      resolve(hospital) {
+        return icuLoader.load(hospital.id);
       },
     });
 
     t.field("hdu", {
       type: "Availability",
-      async resolve(hospital, args, ctx) {
-        const updates = await ctx.prisma.hospital
-          .findUnique({
-            where: { id: hospital.id },
-          })
-          .latestAvailability({
-            where: { category: "hdu" },
-          });
-        return updates && updates[0];
+      resolve(hospital) {
+        return hduLoader.load(hospital.id);
       },
     });
 
     t.field("general", {
       type: "Availability",
-      async resolve(hospital, args, ctx) {
-        const updates = await ctx.prisma.hospital
-          .findUnique({
-            where: { id: hospital.id },
-          })
-          .latestAvailability({
-            where: { category: "general" },
-          });
-        return updates && updates[0];
+      resolve(hospital) {
+        return generalLoader.load(hospital.id);
       },
     });
 
     t.field("oxygen", {
       type: "Availability",
-      async resolve(hospital, args, ctx) {
-        const updates = await ctx.prisma.hospital
-          .findUnique({
-            where: { id: hospital.id },
-          })
-          .latestAvailability({
-            where: { category: "oxygen" },
-          });
-        return updates && updates[0];
+      resolve(hospital) {
+        return oxygenLoader.load(hospital.id);
       },
     });
 
     t.field("ventilator", {
       type: "Availability",
-      async resolve(hospital, args, ctx) {
-        const updates = await ctx.prisma.hospital
-          .findUnique({
-            where: { id: hospital.id },
-          })
-          .latestAvailability({
-            where: { category: "ventilator" },
-          });
-        return updates && updates[0];
+      resolve(hospital) {
+        return ventilatorLoader.load(hospital.id);
       },
     });
 
