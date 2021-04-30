@@ -1,8 +1,15 @@
-import React, { useState, useCallback, useRef } from 'react'
-import styled from 'styled-components'
-import { GoogleMap, LoadScript, Marker, TrafficLayer, OverlayView } from '@react-google-maps/api'
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  OverlayView,
+  TrafficLayer,
+} from "@react-google-maps/api";
+import React, { useCallback, useRef, useState } from "react";
 
-const apiKey = process.env.MAPS_API_KEY_WEBSITE
+import styled from "styled-components";
+
+const apiKey = process.env.MAPS_API_CLIENT_KEY;
 
 const MapContainer = styled.div`
   width: 100%;
@@ -13,7 +20,7 @@ const MapContainer = styled.div`
   @media only screen and (max-width: 600px) {
     height: 300px;
   }
-`
+`;
 
 const HospitalOverlayContainer = styled.div`
   color: white;
@@ -22,13 +29,13 @@ const HospitalOverlayContainer = styled.div`
   text-align: center;
   background-color: black;
   border-radius: 5px;
-`
+`;
 
 const HospitalName = styled.div`
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
-`
+`;
 
 const GetDirectionsButton = styled.div`
   font-weight: bold;
@@ -50,34 +57,32 @@ const GetDirectionsButton = styled.div`
   & a:visited {
     color: #34a1eb;
   }
-`
+`;
 
 function HospitalMap(props) {
-  const {lat, lon} = props
-  const ref = useRef()
+  const { lat, lon } = props;
+  const ref = useRef();
   const center = {
     lat: lat,
-    lng: lon
-  }
-  const [map, setMap] = useState(null)
+    lng: lon,
+  };
+  const [map, setMap] = useState(null);
 
-  const onLoad = useCallback(map => {
-    const bounds = new window.google.maps.LatLngBounds()
-    map.fitBounds(bounds)
-    setMap(map)
-  }, [])
+  const onLoad = useCallback((map) => {
+    const bounds = new window.google.maps.LatLngBounds();
+    map.fitBounds(bounds);
+    setMap(map);
+  }, []);
 
   return (
     <MapContainer>
       <LoadScript googleMapsApiKey={apiKey}>
         <GoogleMap
-          mapContainerStyle={{height: "100%", width: "100%"}}
+          mapContainerStyle={{ height: "100%", width: "100%" }}
           center={center}
           zoom={16}
         >
-          <Marker 
-            position={center}
-          />
+          <Marker position={center} />
           <TrafficLayer />
           <OverlayView
             position={center}
@@ -85,18 +90,18 @@ function HospitalMap(props) {
             zIndex={10}
           >
             <HospitalOverlayContainer>
-              <HospitalName>
-                {props.name} 
-              </HospitalName>
-              <GetDirectionsButton onClick={() => ref.current.click()}> 
-                <a href={props.url} ref={ref} target="_blank">Get Directions</a>
+              <HospitalName>{props.name}</HospitalName>
+              <GetDirectionsButton onClick={() => ref.current.click()}>
+                <a href={props.url} ref={ref} target="_blank">
+                  Get Directions
+                </a>
               </GetDirectionsButton>
             </HospitalOverlayContainer>
           </OverlayView>
         </GoogleMap>
       </LoadScript>
     </MapContainer>
-  )
+  );
 }
 
-export default React.memo(HospitalMap)
+export default React.memo(HospitalMap);
