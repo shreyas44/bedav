@@ -33,12 +33,14 @@ const limitCacheSize = (name, size) => {
 
 const query = `
   query {
-    locations(first: 1000) {
-      edges {
-        node {
-          name
-          state {
-            id
+    country {
+      locations(first: 1000) {
+        edges {
+          node {
+            name
+            state {
+              id
+            }
           }
         }
       }
@@ -71,11 +73,11 @@ self.addEventListener("install", (event) => {
           return response.json();
         })
         .then((response) => {
-          return response.data.localities.edges;
+          return response.data.country.locations.edges;
         })
         .then((edges) => {
-          const localities = edges.map((edge) => edge.node);
-          const urls = localities.map(
+          const locations = edges.map((edge) => edge.node);
+          const urls = locations.map(
             (locality) =>
               `/${locality.name.toLowerCase()}-${locality.state.id.toLowerCase()}/`
           );
