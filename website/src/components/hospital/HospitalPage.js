@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
-import { useLazyQuery, gql } from '@apollo/client'
-import Spinner from '../Spinner'
-import client from '../../client'
-import HospitalInfoFragment from '../fragments/hospital'
-import HospitalInfoSection from './HospitalInfoSection'
-import BedInfoSection from './BedInfoSection'
+import React, { useEffect, useState } from "react";
+import { gql, useApolloClient, useLazyQuery } from "@apollo/client";
+
+import BedInfoSection from "./BedInfoSection";
+import HospitalInfoFragment from "../fragments/hospital";
+import HospitalInfoSection from "./HospitalInfoSection";
+import Spinner from "../Spinner";
+import styled from "styled-components";
+import { useParams } from "react-router-dom";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -34,74 +34,69 @@ const MainContainer = styled.div`
     }
 
     & > div {
-        width: 100%;
-        margin: 10px 0;
-      }
-  }
-`
-
-const PageQuery =  gql`
-    query HospitalPageQuery($hospitalId: ID!) {
-      hospital(id: $hospitalId) {
-        ...HospitalInfoFragment
-      }
+      width: 100%;
+      margin: 10px 0;
     }
-    ${HospitalInfoFragment}
-  ` 
+  }
+`;
+
+const PageQuery = gql`
+  query HospitalPageQuery($hospitalId: ID!) {
+    hospital(id: $hospitalId) {
+      ...HospitalInfoFragment
+    }
+  }
+  ${HospitalInfoFragment}
+`;
 
 function HospitalPage(props) {
-  let {hospitalId} = useParams()
-  hospitalId = decodeURIComponent(hospitalId)
+  let { hospitalId } = useParams();
+  const client = useApolloClient();
+  hospitalId = decodeURIComponent(hospitalId);
 
   useEffect(() => {
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
-  })
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  });
 
   let cachedHospital = client.readFragment({
     id: `Hospital:${hospitalId}`,
-    fragment: HospitalInfoFragment
-  })
+    fragment: HospitalInfoFragment,
+  });
 
-  const [hospital, setHospital] = useState(cachedHospital)
-  const [ getHospital, {data, loading} ] = useLazyQuery(
-    PageQuery,
-    {
-      variables: {
-        hospitalId: hospitalId
-      }
-    }
-  )
+  const [hospital, setHospital] = useState(cachedHospital);
+  const [getHospital, { data, loading }] = useLazyQuery(PageQuery, {
+    variables: {
+      hospitalId: hospitalId,
+    },
+  });
 
- 
   if (data && data.hospital && !hospital) {
-    setHospital(data.hospital)
+    setHospital(data.hospital);
   }
 
   if (hospital) {
-    document.title = 'Bedav - ' + hospital.name
+    document.title = "Bedav - " + hospital.name;
   } else if (loading) {
-    return <Spinner />
+    return <Spinner />;
   } else if (hospital === null) {
     getHospital({
       variables: {
-        hospitalId
-      }
-    })
+        hospitalId,
+      },
+    });
 
-    return <Spinner />
+    return <Spinner />;
   }
- 
+
   return (
     <>
       <MainContainer>
-      <BedInfoSection hospital={hospital}/>
-      <HospitalInfoSection hospital={hospital}/>
+        <BedInfoSection hospital={hospital} />
+        <HospitalInfoSection hospital={hospital} />
       </MainContainer>
     </>
-  )
+  );
 }
 
-export default HospitalPage
-
-
+export default HospitalPage;
