@@ -1,4 +1,4 @@
-# bedav website
+# Bedav Website
 
 All React components and service worker are in this directory.
 

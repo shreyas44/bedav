@@ -21,9 +21,9 @@
 
 ### 4. Setup dev environment
 
-#### Install npm dependencies for the website and create a development build of it
+#### Install dependencies for the website and create a development build of it
 ```
-cd website && npm install && npm run build-dev && cd ..
+cd website && yarn && yarn build:dev && cd ..
 ```
 
 #### Create and run docker containers
@@ -39,11 +39,17 @@ To stop the docker containers run `docker-compose down`.
 
 When you run `docker-compose up` and `docker-compose down` make sure you're in the root directory of the project.
 
-*Note: the first time you run docker-compose up, the docker images will have to be built, which may take a while*
+*Note, the first time you run docker-compose up, the docker images will have to be built, which may take a while*
 
-### Optional
+### API Keys (Optional)
 
-If you have access to Google Maps API keys, then you can go to `website/map.dev.env` and set `MAPS_API_KEY` to your Google Maps API key to view a complete version of the Google Maps on the website. 
+You can add the API keys to `.env` in the root folder of the repository.
+
+The following API keys are supported:
+1. `MAPS_API_KEY` - A Google Maps API key with access to the Google Maps Places API and Google Maps Geocoding API
+2. `MAPS_API_CLIENT_KEY` - A Google Maps API key with access to the Google Maps Javascript API
+
+*When you register with the Google Maps Platform, you get $200 worth of free credits every month. Keep an eye on the used credits to make sure you aren't charged as you can use them up fairly quickly.*
 
 ### 5. Make, commit and push your changes
 
