@@ -18,16 +18,10 @@ module.exports = merge(common, {
     compress: true,
     hot: true,
     historyApiFallback: true,
-    proxy: [
-      {
-        context: ["/graphql", "/playground"],
-        target: "http://bedav-api",
-      },
-    ],
   },
   plugins: [
     new Dotenv({
-      path: path.resolve(__dirname, "./map.dev.env"),
+      path: path.resolve(__dirname, "../.env"),
       allowEmptyValues: true,
     }),
   ],

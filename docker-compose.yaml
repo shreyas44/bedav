@@ -1,56 +1,52 @@
 version: "3.7"
 
 services:
-  bedav-api:
+  api:
     build:
       context: ./
       dockerfile: ./docker/api/Dockerfile
     image: bedav-api
-    ports:
-      - 8000:80
     volumes:
-      - ./api:/var/app/api
+      - ./api:/var/api
     environment:
-      DB_USER: bedav
-      DB_PASS: abcd
-      DJANGO_SECRET_KEY: "8+!qygafxk#dv@0a+7eywf9cgybqi3uzr#1$$1n_146z+ig!1yv"
-    restart: on-failure
+      DB_URL: postgresql://bedav:bedav@db:5432/bedav?schema=public
+    env_file:
+      - ./.env
 
-  bedav-scripts:
-    build:
-      context: ./
-      dockerfile: ./docker/scripts/Dockerfile
-    image: bedav-scripts
+  prisma-studio:
+    image: bedav-api
+    ports:
+      - 8888:5555
     volumes:
-      - ./api:/var/app/api
-      - ./scripts:/var/app/scripts
+      - ./api:/var/api
     environment:
-      DB_USER: bedav
-      DB_PASS: abcd
-      DJANGO_SECRET_KEY: "8+!qygafxk#dv@0a+7eywf9cgybqi3uzr#1$$1n_146z+ig!1yv"
-    restart: on-failure
-    stdin_open: true  
-  
-  bedav-web:
+      DB_URL: postgresql://bedav:bedav@db:5432/bedav?schema=public
+    command: yarn prisma:studio
+
+  website:
     build:
       context: ./
       dockerfile: ./docker/website/Dockerfile
     image: bedav-web
-    ports:
-      - 80:8000
     volumes:
-      - ./website:/var/app/website
+      - ./website:/var/website
+    environment:
+      FORCE_COLOR: 3
 
-  bedav-db:
-    build:
-      context: ./
-      dockerfile: ./docker/db/Dockerfile
-    image: bedav-db
-    volumes: 
+  proxy:
+    image: nginx
+    ports:
+      - 3000:3000
+    volumes:
+      - ./conf/nginx.dev.conf:/etc/nginx/nginx.conf
+
+  db:
+    image: postgres
+    volumes:
       - bedav-data:/var/lib/postgresql/data
-    environment:         
+    environment:
       POSTGRES_USER: bedav
-      POSTGRES_PASSWORD: abcd
+      POSTGRES_PASSWORD: bedav
 
 volumes:
   bedav-data:

@@ -1,17 +1,19 @@
-FROM python:3.8
+FROM node:slim
 
-RUN mkdir -p /var/app/api
-WORKDIR /var/app/api
-COPY ./api/requirements.txt ./requirements.txt
-COPY ./api .
+RUN mkdir /var/api/
+WORKDIR /var/api
 
-RUN apt-get update
-RUN apt-get install -y binutils libproj-dev gdal-bin vim
-RUN pip install -r requirements.txt
+RUN apt-get update && apt-get install -y libssl1.1 vim
 
-EXPOSE 80
+RUN apt-get update \
+    && apt-get install -y wget gnupg \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+      --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
-CMD rm -rf api/__pycache__ && \
-    rm -rf hospitals/__pycache__ && rm -rf hospitals/migrations && \
-    python manage.py makemigrations hospitals && python manage.py migrate && \
-    python manage.py runserver 0.0.0.0:80
+RUN chmod 777 /root/
+
+CMD yarn prisma:generate && yarn docker:prisma:migrate:dev && yarn dev
