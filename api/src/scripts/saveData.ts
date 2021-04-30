@@ -1,4 +1,9 @@
-import { Availability, HospitalData, LocationData } from "./types";
+import {
+  Availability,
+  GetDetailsReturnType,
+  HospitalData,
+  LocationData,
+} from "./types";
 import { Category, PrismaClient } from ".prisma/client";
 import { LatestAvailabilityUpdate, Prisma } from "@prisma/client";
 import {
@@ -38,8 +43,6 @@ function getSaveableUpdates(hospital: HospitalData, timestamp: number) {
 
   return updates;
 }
-
-async function saveLatestTimestamps() {}
 
 async function saveLatestUpdate(prisma: PrismaClient) {
   const locations = await prisma.location.findMany({
@@ -162,42 +165,54 @@ export async function saveData(
       });
 
       if (hospitalObject) {
-        await prisma.hospital.update({
-          where: {
-            id: hospitalObject.id,
-          },
-          data: {
-            category: hospital.category,
-            availability: {
-              createMany: { data: updates },
+        try {
+          await prisma.hospital.update({
+            where: {
+              id: hospitalObject.id,
             },
-          },
-        });
+            data: {
+              category: hospital.category,
+              availability: {
+                createMany: { data: updates },
+              },
+            },
+          });
+        } catch (err) {
+          console.log(hospital, location.name, location.state);
+          throw new Error(err);
+        }
       } else {
-        const details = await getPlaceDetails({ maps, hospital, location });
+        // const details = await getPlaceDetails({ maps, hospital, location });
+        const details = null as GetDetailsReturnType | null;
+        console.log(`Getting details for ${hospital.name}, ${location.name}`);
 
-        await prisma.hospital.create({
-          data: {
-            name: hospital.name,
-            address: details?.formattedAddress || hospital.address,
-            phone: details?.phone || hospital.phone,
-            website: details?.website || hospital.website,
-            placeId: details?.placeId,
-            latitude: details?.coordinates?.latitude,
-            longitude: details?.coordinates?.longitude,
-            locationId: locationObject.id,
-            category: hospital.category,
-            lastUpdated: timestamp,
+        try {
+          await prisma.hospital.create({
+            data: {
+              name: hospital.name,
+              address: details?.formattedAddress || hospital.address,
+              phone: details?.phone || hospital.phone,
+              website: details?.website || hospital.website,
+              placeId: details?.placeId,
+              latitude: details?.coordinates?.latitude,
+              longitude: details?.coordinates?.longitude,
+              locationId: locationObject.id,
+              category: hospital.category,
+              lastUpdated: timestamp,
 
-            availability: {
-              createMany: { data: updates },
+              availability: {
+                createMany: { data: updates },
+              },
             },
-          },
-        });
+          });
+        } catch (err) {
+          console.log(hospital, location.name, location.state);
+          throw new Error(err);
+        }
       }
     }
   }
 
-  await prisma.$disconnect();
   await saveLatestUpdate(prisma);
+  await prisma.$disconnect();
 }

@@ -34,30 +34,46 @@ export async function getNashikPageData(
         ? "ccc"
         : undefined;
 
+      let getNumber = (value: string) => {
+        const temp = parseInt(value.replace(/o/g, "0"));
+        if ((temp !== 0 && !temp) || isNaN(temp)) return;
+        return temp;
+      };
+
       const hospital: HospitalData = {
-        name: columns[1],
+        name: columns[1].replace("(Click here for contact details)", ""),
         category,
         general: {
-          available: parseInt(columns[4]),
-          total: parseInt(columns[3]),
-          occupied: parseInt(columns[3]) - parseInt(columns[4]),
+          available: getNumber(columns[4]) as number,
+          total: getNumber(columns[3]),
         },
         oxygen: {
-          available: parseInt(columns[6]),
-          total: parseInt(columns[5]),
-          occupied: parseInt(columns[5]) - parseInt(columns[5]),
+          available: getNumber(columns[6]) as number,
+          total: getNumber(columns[5]),
         },
         icu: {
-          available: parseInt(columns[8]),
-          total: parseInt(columns[7]),
-          occupied: parseInt(columns[7]) - parseInt(columns[8]),
+          available: getNumber(columns[8]) as number,
+          total: getNumber(columns[7]),
         },
         ventilator: {
-          available: parseInt(columns[10]),
-          total: parseInt(columns[9]),
-          occupied: parseInt(columns[9]) - parseInt(columns[10]),
+          available: getNumber(columns[10]) as number,
+          total: getNumber(columns[9]),
         },
       };
+
+      if (hospital.general?.total!)
+        hospital.general.occupied =
+          hospital.general.total - hospital.general.available;
+      if (hospital.icu?.total)
+        hospital.icu.occupied = hospital.icu.total - hospital.icu.available;
+      if (hospital.hdu?.total)
+        hospital.hdu.occupied = hospital.hdu.total - hospital.hdu.available;
+      if (hospital.oxygen?.total)
+        hospital.oxygen.occupied =
+          hospital.oxygen.total - hospital.oxygen.available;
+      if (hospital.ventilator?.total)
+        hospital.ventilator.occupied =
+          hospital.ventilator.total - hospital.ventilator.available;
 
       hospitals.push(hospital);
     }

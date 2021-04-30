@@ -17,27 +17,30 @@ async function scrape(): Promise<LocationData[]> {
     args: ["--no-sandbox"],
   });
 
-  const locationObjects: LocationData[][] = await Promise.all([
-    getPunePageData(browser),
-    getBangalorePageData(browser),
-    getDelhiPageData(browser),
+  const locationObjects: LocationData[][] = [
+    await getPunePageData(browser),
+    await getBangalorePageData(browser),
+    await getDelhiPageData(browser),
     // getVadodaraPageData(browser),
-    getNagpurPageData(browser),
-    getNashikPageData(browser),
+    await getNagpurPageData(browser),
+    await getNashikPageData(browser),
     // getGurgaonPageData(browser), website has changed
-    getTelanganaData(browser),
-    getAndhraPageData(browser),
-  ]);
+    await getTelanganaData(browser),
+    await getAndhraPageData(browser),
+  ];
 
   await browser.close();
   return cleanLocationNames(mergeLocationData(locationObjects));
 }
 
-async function main() {
+export async function main() {
   console.log("-------Scraping Started---------");
   let startTime = Date.now();
 
   const locations = await scrape();
+  locations.map(({ hospitals: { length: hospitals }, name, state }) =>
+    console.log({ name, state, hospitals })
+  );
 
   let endTime = Date.now();
   console.log(`Scraping took ${(endTime - startTime) / 1000}s`);
@@ -57,4 +60,3 @@ async function main() {
 }
 
 main();
-setInterval(() => main(), 3600 * 1000);
