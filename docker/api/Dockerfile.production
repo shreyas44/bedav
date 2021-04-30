@@ -1,19 +1,22 @@
-FROM nginx/unit:1.19.0-full
+FROM node:slim 
 
-RUN mkdir -p /var/app/api
-WORKDIR /var/app/api
-COPY ./api/requirements.txt ./requirements.txt
-COPY ./api .
+RUN mkdir /var/api
+WORKDIR /var/api
 
-COPY ./conf/.unit.conf.json /docker-entrypoint.d/.unit.conf.json
+COPY ./api ./
 
-RUN apt-get update
-RUN apt-get install --no-install-recommends --no-install-suggests -y gnupg
-RUN curl -sL https://nginx.org/keys/nginx_signing.key | apt-key add - && \
-    echo "deb https://packages.nginx.org/unit/debian/ buster unit" >> /etc/apt/sources.list.d/unit.list && \
-    echo "deb-src https://packages.nginx.org/unit/debian/ buster unit" >> /etc/apt/sources.list.d/unit.list
-RUN apt-get update && apt-get install -y --no-install-recommends --no-install-suggests gcc unit-dev \
-    python3 python3-pip python3-setuptools python3-wheel libpq-dev binutils libproj-dev gdal-bin vim
-RUN pip3 install -r requirements.txt
+RUN apt-get update \
+    && apt-get install -y wget gnupg \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+      --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
-CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]
+RUN yarn install --frozen-lockfile
+RUN yarn build
+
+ENV NODE_ENV=production
+
+CMD yarn start

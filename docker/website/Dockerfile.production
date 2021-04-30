@@ -5,10 +5,10 @@ WORKDIR /var/app/website
 
 COPY ./website .
 COPY ./.env ../.env
-RUN npm ci
+RUN yarn install --frozen-lockfile
 
 COPY ./website/icons ./icons
-RUN npm run build-prod
+RUN yarn build:prod
 
 FROM nginx
 
@@ -16,4 +16,4 @@ RUN mkdir -p /var/app/website
 WORKDIR /var/app/website
 
 COPY --from=build /var/app/website/dist /var/app/website/dist
-COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./conf/nginx.website.conf /etc/nginx/nginx.conf
