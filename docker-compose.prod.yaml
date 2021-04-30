@@ -20,8 +20,6 @@ services:
       context: ./
       dockerfile: ./docker/website/Dockerfile.production
     image: bedav-web
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt
     env_file:
       - ./.env
 
@@ -31,6 +29,7 @@ services:
       - 80:80
       - 443:443
     volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
       - ./conf/nginx.proxy.conf:/etc/nginx/nginx.conf
 
   db:
