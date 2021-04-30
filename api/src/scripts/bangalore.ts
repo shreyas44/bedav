@@ -5,7 +5,7 @@ import puppeteer from "puppeteer";
 
 // bangalore
 
-const URL = "https://bbmpgov.com/";
+const URL = "https://bbmpgov.com/chbms/";
 
 function replaceId(html: string, replacementId: string): string {
   let counter = 0;
