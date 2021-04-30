@@ -60,3 +60,4 @@ export async function main() {
 }
 
 main();
+setTimeout(() => main(), 1000 * 3600);
