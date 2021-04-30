@@ -108,7 +108,7 @@ export async function saveData(
   const maps = new Client();
 
   for (const location of locations) {
-    if (location.hospitals.length > 0) continue;
+    if (location.hospitals.length < 1) continue;
     if (location.options?.onlyHasAvailable) continue;
 
     const locationObject = await prisma.location.upsert({
