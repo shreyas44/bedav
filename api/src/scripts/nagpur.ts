@@ -52,7 +52,7 @@ export async function getNagpurPageData(
         hospitals,
         options: {
           getPhone: true,
-          onlyHasAvailable: false,
+          onlyHasAvailable: true,
           useAddressForSearch: false,
         },
       },
