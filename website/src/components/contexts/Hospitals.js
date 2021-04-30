@@ -49,12 +49,12 @@ let HospitalsProvider = (props) => {
       0;
 
     if (sortValue.descending) {
-      return sortValue !== "distance"
+      return sortValue.field !== "distance"
         ? nextValue - currentValue
         : nextHospital.distance - hospital.distance;
     }
 
-    return sortValue !== "distance"
+    return sortValue.field !== "distance"
       ? currentValue - nextValue
       : hospital.distance - nextHospital.distance;
   });
