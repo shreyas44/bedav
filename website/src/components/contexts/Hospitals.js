@@ -41,7 +41,6 @@ let HospitalsProvider = (props) => {
 
   //sorting
   hospitals.sort((hospital, nextHospital) => {
-    console.log(hospital.icu);
     const currentValue =
       (hospital[sortValue.field] && hospital[sortValue.field][dataToShow]) || 0;
     const nextValue =

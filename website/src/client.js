@@ -1,24 +1,20 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client'
-import { persistCache } from 'apollo-cache-persist'
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { LocalForageWrapper, persistCache } from "apollo3-cache-persist";
 
-const cache =  new InMemoryCache({
-  typePolicies: {
-    Locality: {
-      keyFields: ["name", "state"]
-    }
-  }
-})
+import localForage from "localforage";
 
-persistCache({
-  cache,
-  storage: window.localStorage
-})
+export default async function getClient() {
+  const cache = new InMemoryCache();
 
-const client = new ApolloClient({
-  cache,
-  uri: "/graphql/",
-  connectToDevTools: true
-})
+  await persistCache({
+    cache,
+    storage: new LocalForageWrapper(localForage),
+  });
 
+  const client = new ApolloClient({
+    cache,
+    uri: "/graphql",
+  });
 
-export default client
+  return client;
+}
