@@ -86,6 +86,14 @@ self.addEventListener("install", (event) => {
             cache.addAll(urls);
           });
         }),
+
+      caches.keys().then((keys) => {
+        return Promise.all(
+          keys
+            .filter((key) => key !== bundleCacheName && key !== staticCacheName)
+            .map((key) => caches.delete(key))
+        );
+      }),
     ])
   );
 });
