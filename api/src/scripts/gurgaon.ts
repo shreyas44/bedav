@@ -38,30 +38,43 @@ function getTabData(
       .split("Allocated Beds:")[1]
       .trim();
 
-    const regex = /Isolation Beds: (?<general>\d+), (ICU|ICU Beds): (?<icu>\d+), Ventilators: (?<ventilator>\d+)/;
-    const available = regex.exec(availabilityText)!.groups!;
-    const total = regex.exec(totalText)!.groups!;
+    const regex = /Isolation Beds: ((?<general>\d+)|(?<generalOver>Beds Over Utilized \d+)), (ICU|ICU Beds): ((?<icu>\d+)|(?<icuOver>Beds Over Utilized \d+)), Ventilators: ((?<ventilator>\d+)|(?<ventilatorOver>Beds Over Utilized \d+))/;
+    try {
+      const available = regex.exec(availabilityText)!.groups!;
+      const total = regex.exec(totalText)!.groups!;
 
-    const hospital: HospitalData = {
-      name,
-      category,
-      ventilator: {
-        total: parseInt(total.ventilator),
-        available: parseInt(available.ventilator),
-        occupied: parseInt(total.ventilator) - parseInt(available.ventilator),
-      },
-      icu: {
-        total: parseInt(total.icu),
-        available: parseInt(available.icu),
-        occupied: parseInt(total.icu) - parseInt(available.icu),
-      },
-      general: {
-        total: parseInt(total.general),
-        available: parseInt(available.general),
-        occupied: parseInt(total.general) - parseInt(available.general),
-      },
-    };
-    hospitals.push(hospital);
+      const hospital: HospitalData = {
+        name,
+        category,
+        ventilator: {
+          total: parseInt(total.ventilator),
+          available: available.ventilatorOver
+            ? 0
+            : parseInt(available.ventilator),
+          occupied: available.ventilatorOver
+            ? parseInt(total.ventilator)
+            : parseInt(total.ventilator) - parseInt(available.ventilator),
+        },
+        icu: {
+          total: parseInt(total.icu),
+          available: available.icuOver ? 0 : parseInt(available.icu),
+          occupied: available.icuOver
+            ? parseInt(total.icu)
+            : parseInt(total.icu) - parseInt(available.icu),
+        },
+        general: {
+          total: parseInt(total.general),
+          available: available.generalOver ? 0 : parseInt(available.general),
+          occupied: available.generalOver
+            ? parseInt(total.general)
+            : parseInt(total.general) - parseInt(available.general),
+        },
+      };
+      hospitals.push(hospital);
+    } catch {
+      console.log({ name, availabilityText, totalText });
+      continue;
+    }
   }
 
   return hospitals;
@@ -77,7 +90,7 @@ export async function getGurgaonPageData(
     const $ = cheerio.load(await page.content());
 
     const tab0 = $("#tab0 .psahuDiv");
-    const tab1 = $("#tab1").children(".psahuDiv");
+    const tab1 = $("#tab1 .psahuDiv");
 
     let hospitals = [...getTabData($, tab0), ...getTabData($, tab1, "ccc")];
 
