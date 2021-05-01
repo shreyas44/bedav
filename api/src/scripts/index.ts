@@ -4,6 +4,7 @@ import { LocationData } from "./types";
 import { getAndhraPageData } from "./andhra";
 import { getBangalorePageData } from "./bangalore";
 import { getDelhiPageData } from "./delhi";
+import { getGurgaonPageData } from "./gurgaon";
 import { getNagpurPageData } from "./nagpur";
 import { getNashikPageData } from "./nashik";
 import { getPunePageData } from "./pune";
@@ -24,7 +25,7 @@ async function scrape(): Promise<LocationData[]> {
     // getVadodaraPageData(browser),
     await getNagpurPageData(browser),
     await getNashikPageData(browser),
-    // getGurgaonPageData(browser), website has changed
+    await getGurgaonPageData(browser),
     await getTelanganaData(browser),
     await getAndhraPageData(browser),
   ];
