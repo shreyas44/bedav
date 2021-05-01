@@ -38,14 +38,23 @@ const data = {
         "Government Hospital": "GH",
       },
     },
+    "gurugram-hr": {
+      categories: {
+        CCC: "Covid Care Centre",
+      },
+      mobileCategories: {
+        "Covid Care Centre": "CCC",
+      },
+    },
   },
   columns: {
     "bengaluru-ka": ["general", "hdu", "icu", "ventilator"],
     "pune-mh": ["general", "oxygen", "icu", "ventilator"],
     "delhi-dl": ["general", "icu"],
     "adilabad-ts": ["general", "oxygen", "icu"],
-    "nagpur-mh": ["gneral", "oxygen", "icu", "ventilator"],
-    "nashik-mh": ["gneral", "oxygen", "icu", "ventilator"],
+    "nagpur-mh": ["general", "oxygen", "icu", "ventilator"],
+    "nashik-mh": ["general", "oxygen", "icu", "ventilator"],
+    "gurugram-hr": ["general", "icu", "ventilator"],
   },
   abbreviations: {
     HDU: "High Dependency Unit",
