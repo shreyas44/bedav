@@ -166,24 +166,40 @@ export async function saveData(
 
       if (hospitalObject) {
         try {
+          let data: Prisma.HospitalUpdateInput = {
+            category: hospital.category,
+            availability: {
+              createMany: { data: updates },
+            },
+          };
+
+          if (!hospitalObject.placeId) {
+            const details = await getPlaceDetails({ maps, hospital, location });
+            console.log(
+              `Getting details for ${hospital.name}, ${location.name}`
+            );
+
+            data = {
+              ...data,
+              address: details?.formattedAddress || hospital.address,
+              phone: details?.phone || hospital.phone,
+              website: details?.website || hospital.website,
+              placeId: details?.placeId,
+              latitude: details?.coordinates?.latitude,
+              longitude: details?.coordinates?.longitude,
+            };
+          }
+
           await prisma.hospital.update({
-            where: {
-              id: hospitalObject.id,
-            },
-            data: {
-              category: hospital.category,
-              availability: {
-                createMany: { data: updates },
-              },
-            },
+            where: { id: hospitalObject.id },
+            data,
           });
         } catch (err) {
           console.log(hospital, location.name, location.state);
           throw new Error(err);
         }
       } else {
-        // const details = await getPlaceDetails({ maps, hospital, location });
-        const details = null as GetDetailsReturnType | null;
+        const details = await getPlaceDetails({ maps, hospital, location });
         console.log(`Getting details for ${hospital.name}, ${location.name}`);
 
         try {
