@@ -166,33 +166,14 @@ export async function saveData(
 
       if (hospitalObject) {
         try {
-          let data: Prisma.HospitalUpdateInput = {
-            category: hospital.category,
-            availability: {
-              createMany: { data: updates },
-            },
-          };
-
-          if (!hospitalObject.placeId) {
-            const details = await getPlaceDetails({ maps, hospital, location });
-            console.log(
-              `Getting details for ${hospital.name}, ${location.name}`
-            );
-
-            data = {
-              ...data,
-              address: details?.formattedAddress || hospital.address,
-              phone: details?.phone || hospital.phone,
-              website: details?.website || hospital.website,
-              placeId: details?.placeId,
-              latitude: details?.coordinates?.latitude,
-              longitude: details?.coordinates?.longitude,
-            };
-          }
-
           await prisma.hospital.update({
             where: { id: hospitalObject.id },
-            data,
+            data: {
+              category: hospital.category,
+              availability: {
+                createMany: { data: updates },
+              },
+            },
           });
         } catch (err) {
           console.log(hospital, location.name, location.state);
@@ -200,7 +181,6 @@ export async function saveData(
         }
       } else {
         const details = await getPlaceDetails({ maps, hospital, location });
-        console.log(`Getting details for ${hospital.name}, ${location.name}`);
 
         try {
           await prisma.hospital.create({
