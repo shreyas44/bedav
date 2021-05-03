@@ -59,10 +59,9 @@ To commit your changes run `git commit <commit_message>`. The commit message sho
 
 ## Project Structure
 
-There are three parts to the project
+There are two parts to the project
 
 1. [API](/api) - A GraphQL API which provides access to the data in the database
-2. [Scripts](/scripts) - Python scripts which scrape hospital data and the availability of beds from websites, get additional data of the hospitals such as co-ordinates, phone number and website and add it to the database
 3. [Website](/web) - The front end website responsible for representing the data provided by the GraphQL API
 
 To learn more about each project headover to their respective directories.
